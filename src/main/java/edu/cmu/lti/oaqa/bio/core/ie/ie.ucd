@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="ie" size="941,466" id="edu.cmu.lti.oaqa.bio.core.ie" metadata="uml2-1.0" initialized="true" tag="10" key="32303037303533312D31302044656661756C745141">
+  <children xsi:type="editmodel:ClassEditModel" name="GoldStandardPassageExtractor" location="306,50" size="200,67" id="edu.cmu.lti.oaqa.bio.core.ie/GoldStandardPassageExtractor" runTimeClassModel="process(Lorg.apache.uima.jcas.JCas;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="57,18">
+      <children xsi:type="editmodel:MethodEditModel" name="process" id="edu.cmu.lti.oaqa.bio.core.ie/GoldStandardPassageExtractor#process(Lorg.apache.uima.jcas.JCas;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="FirstLegalSpanPassageExtractor" location="50,50" size="206,67" id="edu.cmu.lti.oaqa.bio.core.ie/FirstLegalSpanPassageExtractor" runTimeClassModel="initialize(Lorg.apache.uima.UimaContext;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="60,18">
+      <children xsi:type="editmodel:MethodEditModel" name="initialize" id="edu.cmu.lti.oaqa.bio.core.ie/FirstLegalSpanPassageExtractor#initialize(Lorg.apache.uima.UimaContext;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="PassageTextAppender" location="50,167" size="157,67" id="edu.cmu.lti.oaqa.bio.core.ie/PassageTextAppender" runTimeClassModel="process(Lorg.apache.uima.jcas.JCas;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="57,18">
+      <children xsi:type="editmodel:MethodEditModel" name="process" id="edu.cmu.lti.oaqa.bio.core.ie/PassageTextAppender#process(Lorg.apache.uima.jcas.JCas;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="DefaultPassageExtractor" location="556,50" size="169,67" id="edu.cmu.lti.oaqa.bio.core.ie/DefaultPassageExtractor" runTimeClassModel="initialize(Lorg.apache.uima.UimaContext;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="60,18">
+      <children xsi:type="editmodel:MethodEditModel" name="initialize" id="edu.cmu.lti.oaqa.bio.core.ie/DefaultPassageExtractor#initialize(Lorg.apache.uima.UimaContext;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="edu.cmu.lti.oaqa.bio.core.keyterm" location="225,157" size="186,88" id="edu.cmu.lti.oaqa.bio.core.keyterm">
+    <children xsi:type="editmodel:ClassEditModel" name="DefaultKeytermExtractor" location="54,45" size="170,67" id="edu.cmu.lti.oaqa.bio.core.keyterm/DefaultKeytermExtractor" runTimeClassModel="initialize(Lorg.apache.uima.UimaContext;)">
+      <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="60,18">
+        <children xsi:type="editmodel:MethodEditModel" name="initialize" id="edu.cmu.lti.oaqa.bio.core.keyterm/DefaultKeytermExtractor#initialize(Lorg.apache.uima.UimaContext;)"/>
+      </children>
+      <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+      <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+    </children>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="edu.cmu.lti.oaqa.bio.core.retrieval" location="450,160" size="226,226" id="edu.cmu.lti.oaqa.bio.core.retrieval">
+    <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.5/@children.1/@sourceConnections.0" name="DefaultRetrievalStrategist" location="28,39" size="175,85" id="edu.cmu.lti.oaqa.bio.core.retrieval/DefaultRetrievalStrategist" runTimeClassModel="retrieveDocuments(Ljava.lang.String;Ljava.util.List;),initialize(Lorg.apache.uima.UimaContext;)">
+      <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="101,36">
+        <children xsi:type="editmodel:MethodEditModel" name="initialize" id="edu.cmu.lti.oaqa.bio.core.retrieval/DefaultRetrievalStrategist#initialize(Lorg.apache.uima.UimaContext;)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="retrieveDocuments" id="edu.cmu.lti.oaqa.bio.core.retrieval/DefaultRetrievalStrategist#retrieveDocuments(Ljava.lang.String;Ljava.util.List;)"/>
+      </children>
+      <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+      <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" name="StoppingIndriRetrievalStrategist" location="42,195" size="208,67" id="edu.cmu.lti.oaqa.bio.core.retrieval/StoppingIndriRetrievalStrategist" runTimeClassModel="initialize(Lorg.apache.uima.UimaContext;)">
+      <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="60,18">
+        <children xsi:type="editmodel:MethodEditModel" name="initialize" id="edu.cmu.lti.oaqa.bio.core.retrieval/StoppingIndriRetrievalStrategist#initialize(Lorg.apache.uima.UimaContext;)"/>
+      </children>
+      <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+      <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="edu.cmu.lti.oaqa.bio.core.retrieval/DefaultRetrievalStrategist&lt;-edu.cmu.lti.oaqa.bio.core.retrieval/StoppingIndriRetrievalStrategist" source="//@children.5/@children.1" target="//@children.5/@children.0" targetEnd="//@children.5/@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@children.1/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+        <children xsi:type="editmodel:AssociationEndEditModel" location="80,0" attachSource="true"/>
+        <children xsi:type="editmodel:AssociationEndEditModel" location="94,85"/>
+      </sourceConnections>
+      <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+    </children>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" level="-1" showScope="InPackage" properties="wireOptions=1;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>
