@@ -1,0 +1,8 @@
+class: edu.cmu.lti.oaqa.bio.core.retrieval.StoppingIndriRetrievalStrategist
+hit-list-size: 1000
+server: peace.isri.cs.cmu.edu
+port: 21237
+stop-word-list: [is, who, what, the, a, of, in, an, how, do, does, and]
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider

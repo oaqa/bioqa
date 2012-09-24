@@ -11,7 +11,6 @@ import edu.cmu.lti.oaqa.bio.framework.retrieval.DocumentRetrieverWrapper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.PassageCandidate;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
-import edu.cmu.lti.oaqa.mergeqa.ie.AbstractPassageExtractor;
 
 /**
  * 

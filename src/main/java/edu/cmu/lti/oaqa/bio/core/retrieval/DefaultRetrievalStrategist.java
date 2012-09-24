@@ -11,7 +11,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import edu.cmu.lti.oaqa.bio.core.provider.indri.IndriWrapper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
-import edu.cmu.lti.oaqa.mergeqa.retrieval.AbstractRetrievalStrategist;
 
 /**
  * 

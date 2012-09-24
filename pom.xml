@@ -3,7 +3,7 @@
 	<groupId>edu.cmu.lti.oaqa.bio.core</groupId>
 	<artifactId>bioqa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-    <name>Bimedical Question Answering Pipeline</name>
+    <name>Biomedical Question Answering Pipeline</name>
 	<parent>
 		<groupId>edu.cmu.lti.oaqa</groupId>
 		<artifactId>oaqa</artifactId>
@@ -198,7 +198,7 @@
 							also adding the project build directory -->
 						<classpath />
 						<argument>edu.cmu.lti.oaqa.ecd.driver.ECDDriver</argument>
-						<argument>default.default-test</argument>
+						<argument>bioqa.bioqa-test</argument>
 					</arguments>
 				</configuration>
 			</plugin>
@@ -257,7 +257,7 @@
     <dependency>
       <groupId>edu.cmu.lti.oaqa.bio.core</groupId>
       <artifactId>baseqa</artifactId>
-      <version>1.6.1-SNAPSHOT</version>
+      <version>1.7.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>edu.cmu.lti.oaqa.bio.model</groupId>
@@ -267,7 +267,7 @@
     <dependency>
     	<groupId>edu.cmu.lti.oaqa.framework.impl</groupId>
     	<artifactId>jdbc-providers</artifactId>
-    	<version>1.0.0-SNAPSHOT</version>
+    	<version>2.2.0</version>
     </dependency>
 	</dependencies>
 </project>
