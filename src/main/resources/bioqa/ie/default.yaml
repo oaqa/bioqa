@@ -1,0 +1,11 @@
+class: edu.cmu.lti.oaqa.bio.core.ie.DefaultPassageExtractor
+hit-list-size: 1000
+server: peace.isri.cs.cmu.edu
+port: 21237
+gzip: true
+PassageSpan: legalspan
+#cross-opts:
+#  PassageSpan: [legalspan,sentence]
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider
