@@ -16,7 +16,7 @@ import edu.cmu.lti.oaqa.framework.eval.gs.AbstractGoldStandardPersistenceProvide
 public class CSEGoldStandardPersistenceProvider extends AbstractGoldStandardPersistenceProvider {
 
   @Override
-  public List<Passage> populateRetrievalGS(final String dataset, final int sequenceId, final JCas docGSView) throws SQLException {
+  public List<Passage> populateRetrievalGS(final String dataset, final String sequenceId, final JCas docGSView) throws SQLException {
     RowMapper<Passage> mapper = new RowMapper<Passage>() {
       @Override
      public Passage mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -36,7 +36,7 @@ public class CSEGoldStandardPersistenceProvider extends AbstractGoldStandardPers
     PreparedStatementSetter pss = new PreparedStatementSetter() {
       public void setValues(PreparedStatement ps) throws SQLException {
         ps.setString(1, dataset);
-        ps.setInt(2, sequenceId);
+        ps.setString(2, sequenceId);
       }
     };
     return DataStoreImpl.getInstance().jdbcTemplate().query(query, pss, mapper);

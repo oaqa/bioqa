@@ -39,7 +39,7 @@ private JdbcTemplate jdbcTemplate;
 
   protected DataElement getDataElement(MapMessage map) throws Exception {
     String dataset = map.getString("dataset");
-    int seqId = map.getInt("sequenceId");
+    String seqId = map.getString("sequenceId");
     DataElement result = jdbcTemplate.queryForObject(getSelectQueryForId(),
             new DataElementRowMapper(), dataset, seqId);
     return result;

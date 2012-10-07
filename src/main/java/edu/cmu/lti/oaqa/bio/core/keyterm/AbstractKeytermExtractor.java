@@ -37,7 +37,7 @@ public abstract class AbstractKeytermExtractor extends AbstractLoggedComponent {
   protected abstract List<Keyterm> getKeyterms(String question);
 
   @Deprecated
-  protected List<Keyterm> getKeyterms(String question, int topicId) {
+  protected List<Keyterm> getKeyterms(String question, String topicId) {
     return getKeyterms(question);
   }
 
@@ -46,7 +46,7 @@ public abstract class AbstractKeytermExtractor extends AbstractLoggedComponent {
     super.process(jcas);
     InputElement input = (InputElement) JCasHelper.getAnnotation(jcas, InputElement.type);
     String question = input.getQuestion();
-    int sequenceId = input.getSequenceId();
+    String sequenceId = input.getSequenceId();
     List<Keyterm> keyterms = getKeyterms(question, sequenceId);
     JCasHelper.storeKeyterms(jcas, keyterms);
     log(keyterms.toString());
