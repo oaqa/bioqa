@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,7 +12,7 @@ import java.util.Set;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSList;
 import org.apache.uima.jcas.cas.StringArray;
-import org.oaqa.model.AbstractQuery;
+import org.oaqa.model.QueryConcept;
 
 import edu.cmu.lti.oaqa.ExternalResource;
 import edu.cmu.lti.oaqa.TagInfo;
@@ -40,7 +39,7 @@ public class BioKeyterm extends Keyterm implements Serializable {
 
   private int sequenceId = -1;
 
-  private int type = UNKNOWN;
+  private int tokenType = UNKNOWN;
 
   private Map<String, Set<String>> tag2sources = new HashMap<String, Set<String>>();
 
@@ -50,30 +49,14 @@ public class BioKeyterm extends Keyterm implements Serializable {
 
   private Map<String, Set<String>> synonym2sources = new HashMap<String, Set<String>>();
 
-  /**
-   * Default constructor where sequenceId will be set -1, and type will be set <code>UNKNOWN</code>.
-   * 
-   * @param concept
-   *          token or phrase
-   */
-  public BioKeyterm(Token token) {
-    super(token.getText());
-    sequenceId = token.getSequence();
-    type = token.getCType();
-    for (TagInfo tag : BaseJCasHelper.<TagInfo> fsIterator(token.getTags())) {
-      addTag(tag.getTag(), tag.getSource());
-    }
-    for (ExternalResource resource : BaseJCasHelper.<ExternalResource> fsIterator(token
-            .getResources())) {
-      addExternalResource(resource.getConcept(), resource.getCategory(),
-              Arrays.asList(resource.getSynonyms().toArray()), resource.getSource());
-    }
+  public BioKeyterm() {
+    super();
   }
-
-  public BioKeyterm(String text, int sequenceId, int type) {
+  
+  public BioKeyterm(String text, int sequenceId, int tokenType) {
     super(text);
     this.sequenceId = sequenceId;
-    this.type = type;
+    this.tokenType = tokenType;
   }
 
   public void addTag(String tag, String source) {
@@ -216,72 +199,68 @@ public class BioKeyterm extends Keyterm implements Serializable {
     return sequenceId;
   }
 
-  public int getType() {
-    return type;
+  public int getTokenType() {
+    return tokenType;
   }
 
   public boolean isToken() {
-    return type == TOKEN;
+    return tokenType == TOKEN;
   }
 
   public boolean isPhrase() {
-    return type == PHRASE;
+    return tokenType == PHRASE;
   }
 
-  public static List<Keyterm> getKeyterms(JCas jcas) {
-
-    List<Keyterm> result = new ArrayList<Keyterm>();
-    AbstractQuery query = (AbstractQuery) BaseJCasHelper.getFS(jcas, AbstractQuery.type);
-
-    if (query != null) {
-      FSList constituent = query.getConcepts();
-      for (Token concept : BaseJCasHelper.<Token> fsIterator(constituent)) {
-        result.add(new BioKeyterm(concept));
-      }
+  @Override
+  public void wrap(QueryConcept top) {
+    super.wrap(top);
+    Token token = (Token) top;
+    sequenceId = token.getSequence();
+    tokenType = token.getCType();
+    for (TagInfo tag : BaseJCasHelper.<TagInfo> fsIterator(token.getTags())) {
+      addTag(tag.getTag(), tag.getSource());
     }
-    return result;
+    for (ExternalResource resource : BaseJCasHelper.<ExternalResource> fsIterator(token
+            .getResources())) {
+      addExternalResource(resource.getConcept(), resource.getCategory(),
+              Arrays.asList(resource.getSynonyms().toArray()), resource.getSource());
+    }
   }
 
-  public static void storeKeyterms(JCas jcas, List<BioKeyterm> keyterms) {
-
-    Iterator<?> it = jcas.getJFSIndexRepository().getAllIndexedFS(AbstractQuery.type);
-    while (it.hasNext()) {
-      AbstractQuery query = (AbstractQuery) it.next();
-      query.removeFromIndexes();
+  @Override
+  public QueryConcept unwrap(JCas jcas) throws Exception {
+    Token keyterm = (Token) super.unwrap(jcas);
+    keyterm.setSequence(getSequenceId());
+    keyterm.setText(getText());
+    keyterm.setCType(getTokenType());
+    keyterm.setImplementingWrapper(getClass().getCanonicalName());
+    FSList tags = new FSList(jcas);
+    for (String source : getAllTagSources()) {
+      TagInfo tag = new TagInfo(jcas);
+      tag.setSource(source);
+      tag.setTag(getTagBySource(source));
+      tags = BaseJCasHelper.addToFSList(jcas, tags, tag);
     }
-
-    FSList constituents = new FSList(jcas);
-    for (BioKeyterm keyterm : keyterms) {
-      Token constituent = new Token(jcas);
-      constituent.setSequence(keyterm.getSequenceId());
-      constituent.setText(keyterm.getText());
-      constituent.setCType(keyterm.getType());
-      FSList tags = new FSList(jcas);
-      for (String source : keyterm.getAllTagSources()) {
-        TagInfo tag = new TagInfo(jcas);
-        tag.setSource(source);
-        tag.setTag(keyterm.getTagBySource(source));
-        tags = BaseJCasHelper.addToFSList(jcas, tags, tag);
-      }
-      constituent.setTags(tags);
-      FSList resources = new FSList(jcas);
-      for (String source : keyterm.getAllResourceSources()) {
-        ExternalResource resource = new ExternalResource(jcas);
-        resource.setSource(source);
-        resource.setConcept(keyterm.getConceptBySource(source));
-        resource.setCategory(keyterm.getCategoryBySource(source));
-        List<String> synonyms = keyterm.getSynonymsBySource(source);
-        StringArray array = new StringArray(jcas, synonyms.size());
-        array.copyFromArray(synonyms.toArray(new String[0]), 0, 0, synonyms.size());
-        resource.setSynonyms(array);
-        resources = BaseJCasHelper.addToFSList(jcas, resources, resource);
-      }
-      constituent.setResources(resources);
-      constituents = BaseJCasHelper.addToFSList(jcas, constituents, constituent);
+    keyterm.setTags(tags);
+    FSList resources = new FSList(jcas);
+    for (String source : getAllResourceSources()) {
+      ExternalResource resource = new ExternalResource(jcas);
+      resource.setSource(source);
+      resource.setConcept(getConceptBySource(source));
+      resource.setCategory(getCategoryBySource(source));
+      List<String> synonyms = getSynonymsBySource(source);
+      StringArray array = new StringArray(jcas, synonyms.size());
+      array.copyFromArray(synonyms.toArray(new String[0]), 0, 0, synonyms.size());
+      resource.setSynonyms(array);
+      resources = BaseJCasHelper.addToFSList(jcas, resources, resource);
     }
-
-    AbstractQuery query = new AbstractQuery(jcas);
-    query.setConcepts(constituents);
-    query.addToIndexes();
+    keyterm.setResources(resources);
+    return keyterm;
   }
+
+  @Override
+  public Class<? extends QueryConcept> getType() {
+    return Token.class;
+  }
+
 }

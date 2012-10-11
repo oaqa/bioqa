@@ -17,21 +17,21 @@ import edu.cmu.lti.oaqa.framework.data.TextSpan;
 public class DocumentRetrieverWrapper {
 
   /**
- * @uml.property  name="retriever"
- * @uml.associationEnd  multiplicity="(1 1)"
- */
-private DocumentRetriever retriever;
+   * @uml.property name="retriever"
+   * @uml.associationEnd multiplicity="(1 1)"
+   */
+  private DocumentRetriever retriever;
 
   /**
- * @uml.property  name="prefix"
- */
-private String prefix;
+   * @uml.property name="prefix"
+   */
+  private String prefix;
 
   /**
- * @uml.property  name="tempCas"
- * @uml.associationEnd  multiplicity="(1 1)"
- */
-private CAS tempCas;
+   * @uml.property name="tempCas"
+   * @uml.associationEnd multiplicity="(1 1)"
+   */
+  private CAS tempCas;
 
   public DocumentRetrieverWrapper(boolean gzip, boolean annotated) {
     this("http://peace.isri.cs.cmu.edu:9080/", gzip, annotated);
