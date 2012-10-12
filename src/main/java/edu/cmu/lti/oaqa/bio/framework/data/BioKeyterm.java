@@ -259,7 +259,7 @@ public class BioKeyterm extends Keyterm implements Serializable {
   }
 
   @Override
-  public Class<? extends QueryConcept> getType() {
+  public Class<? extends QueryConcept> getTypeClass() {
     return Token.class;
   }
 
