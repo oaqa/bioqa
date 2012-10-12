@@ -20,15 +20,15 @@ import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
 public class FirstLegalSpanPassageExtractor extends AbstractPassageExtractor {
 
   /**
- * @uml.property  name="hitListSize"
- */
-private int hitListSize = 0;
+   * @uml.property name="hitListSize"
+   */
+  private int hitListSize = 0;
 
   /**
- * @uml.property  name="retriever"
- * @uml.associationEnd  
- */
-private DocumentRetrieverWrapper retriever;
+   * @uml.property name="retriever"
+   * @uml.associationEnd
+   */
+  private DocumentRetrieverWrapper retriever;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -58,8 +58,8 @@ private DocumentRetrieverWrapper retriever;
         end = text.length();
       double score = 1.0 / rank;
       try {
-        PassageCandidate candidate = new PassageCandidate(doc.getDocID(), begin, end, score,
-                question);
+        PassageCandidate candidate = new PassageCandidate(doc.getDocID(), begin, end,
+                (float) score, question);
         candidates.add(candidate);
       } catch (AnalysisEngineProcessException e) {
         e.printStackTrace();

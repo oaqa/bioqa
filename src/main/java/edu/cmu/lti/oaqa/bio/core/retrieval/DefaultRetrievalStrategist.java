@@ -20,22 +20,22 @@ import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
 public class DefaultRetrievalStrategist extends AbstractRetrievalStrategist {
 
   /**
- * @uml.property  name="hitListSize"
- */
-protected int hitListSize;
-  
+   * @uml.property name="hitListSize"
+   */
+  protected int hitListSize;
+
   /**
- * @uml.property  name="wrapper"
- * @uml.associationEnd  
- */
-protected IndriWrapper wrapper;
+   * @uml.property name="wrapper"
+   * @uml.associationEnd
+   */
+  protected IndriWrapper wrapper;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     try {
       this.hitListSize = (Integer) aContext.getConfigParameterValue("hit-list-size");
-    } catch (ClassCastException e) { // all cross-opts are strings? 
+    } catch (ClassCastException e) { // all cross-opts are strings?
       this.hitListSize = Integer.parseInt((String) aContext
               .getConfigParameterValue("hit-list-size"));
     }
@@ -47,8 +47,8 @@ protected IndriWrapper wrapper;
       throw new ResourceInitializationException(e);
     }
   }
-  public final List<RetrievalResult> retrieveDocuments(String questionText,
-          List<Keyterm> keyterms) {
+
+  public final List<RetrievalResult> retrieveDocuments(String questionText, List<Keyterm> keyterms) {
     String query = formulateQuery(keyterms);
     log(query);
     query = wrapper.removeSpecialChar(query);
@@ -62,14 +62,14 @@ protected IndriWrapper wrapper;
     String query = result.toString();
     return query;
   }
-  
+
   protected List<RetrievalResult> retrieveDocuments(String query) {
     List<RetrievalResult> result = new ArrayList<RetrievalResult>();
     try {
       ScoredExtentResult[] sers = wrapper.getQueryEnvironment().runQuery(query, hitListSize);
       String[] ids = wrapper.getQueryEnvironment().documentMetadata(sers, "docno");
       for (int i = 0; i < ids.length; i++) {
-        RetrievalResult r = new RetrievalResult(ids[i], Math.exp(sers[i].score), query);
+        RetrievalResult r = new RetrievalResult(ids[i], (float) Math.exp(sers[i].score), query);
         result.add(r);
       }
     } catch (Exception e) {
@@ -77,5 +77,5 @@ protected IndriWrapper wrapper;
     }
     return result;
   }
-  
+
 }

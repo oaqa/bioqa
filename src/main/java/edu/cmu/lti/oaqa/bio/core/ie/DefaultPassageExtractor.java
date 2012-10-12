@@ -15,7 +15,6 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.PassageCandidate;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
 
-
 /**
  * 
  * @author Zi Yang <ziy@cs.cmu.edu>
@@ -24,41 +23,41 @@ import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
 public class DefaultPassageExtractor extends AbstractPassageExtractor {
 
   /**
- * @author   yanfang
- */
-protected static enum PassageSpanType {
+   * @author yanfang
+   */
+  protected static enum PassageSpanType {
     /**
-	 * @uml.property  name="legalspan"
-	 * @uml.associationEnd  
-	 */
+     * @uml.property name="legalspan"
+     * @uml.associationEnd
+     */
     legalspan, /**
-	 * @uml.property  name="sentence"
-	 * @uml.associationEnd  
-	 */
+     * @uml.property name="sentence"
+     * @uml.associationEnd
+     */
     sentence
   };
 
   /**
- * @uml.property  name="hitListSize"
- */
-protected int hitListSize;
+   * @uml.property name="hitListSize"
+   */
+  protected int hitListSize;
 
   /**
- * @uml.property  name="batchSize"
- */
-protected int batchSize;
+   * @uml.property name="batchSize"
+   */
+  protected int batchSize;
 
   /**
- * @uml.property  name="passageSpan"
- * @uml.associationEnd  
- */
-protected PassageSpanType passageSpan;
-  
+   * @uml.property name="passageSpan"
+   * @uml.associationEnd
+   */
+  protected PassageSpanType passageSpan;
+
   /**
- * @uml.property  name="wrapper"
- * @uml.associationEnd  
- */
-protected IndriWrapper wrapper;
+   * @uml.property name="wrapper"
+   * @uml.associationEnd
+   */
+  protected IndriWrapper wrapper;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -86,7 +85,7 @@ protected IndriWrapper wrapper;
       throw new ResourceInitializationException(e);
     }
   }
-  
+
   @Override
   protected final List<PassageCandidate> extractPassages(String question, List<Keyterm> keyterms,
           List<RetrievalResult> documents) {
@@ -133,7 +132,7 @@ protected IndriWrapper wrapper;
         // wants to get the string from original document, i.e., the text field of indexed corpus,
         // the begin and end should be shifted by <code>offset</code>.
         PassageCandidate r = new PassageCandidate(ids[i], begin - offset, end - offset,
-                Math.exp(sers[i].score), query);
+                (float) Math.exp(sers[i].score), query);
         result.add(r);
       }
     } catch (Exception e) {
