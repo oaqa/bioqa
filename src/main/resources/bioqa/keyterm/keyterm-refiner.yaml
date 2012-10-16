@@ -1,0 +1,14 @@
+class: edu.cmu.lti.oaqa.bio.keyterm.yanfang.KeytermRefiner
+
+cross-opts:
+  MESH: [true]
+  ENTREZ: [true]
+  UMLS: [false]
+  LexicalVariants: [true]
+  PosTagger: [true]
+  MESH-Acronym: [false]
+  ENTREZ-Acronym: [false]
+  UMLS-Acronym: [true]
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider

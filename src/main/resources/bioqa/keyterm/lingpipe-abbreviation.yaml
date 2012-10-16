@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.LingPipeAndAbbreviation
+ModelFilePath: /ne-en-bio-genia.TokenShapeChunker
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider
