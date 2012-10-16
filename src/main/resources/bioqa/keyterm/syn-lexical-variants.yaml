@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.AddLexicalVariants
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider
