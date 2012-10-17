@@ -140,9 +140,9 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
 
         // TODO FIX THIS
         
-        //PassageCandidate r = new PassageCandidate(ids[i], begin - offset, end - offset,
-          //      Math.exp(sers[i].score), query);
-        //result.add(r);
+        PassageCandidate r = new PassageCandidate(ids[i], begin - offset, end - offset,
+                (float) Math.exp(sers[i].score), query);
+        result.add(r);
       }
 
       // to retrieve enough passages/documents
@@ -165,9 +165,9 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
           
           // TODO FIX THIS
           
-          //PassageCandidate r = new PassageCandidate(ids2[i], begin - offset, end - offset,
-            //      Math.exp(sers[i].score) / 10, query);
-          //result.add(r);
+          PassageCandidate r = new PassageCandidate(ids2[i], begin - offset, end - offset,
+                  (float) Math.exp(sers[i].score) / 10, query);
+          result.add(r);
         }
       }
 

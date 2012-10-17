@@ -133,8 +133,8 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
 
       for (int i = 0; i < docnos.length; i++) {
         // TODO  PLEASE FIX THIS
-        //RetrievalResult r = new RetrievalResult(docnos[i], Math.exp(sers[i].score), query);
-        //result.add(r);
+        RetrievalResult r = new RetrievalResult(docnos[i], (float)Math.exp(sers[i].score), query);
+        result.add(r);
       }
 
       /*
@@ -146,9 +146,9 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
         docnos2 = wrapper.getQueryEnvironment().documentMetadata(sers, "docno");
         for (int j = 0; j < docnos2.length; j++) {
           // TODO PLEASE FIX THIS
-          //RetrievalResult r = new RetrievalResult(docnos2[j], Math.exp(sers[j].score) / 10,
-            //      backupQuery);
-          //result.add(r);
+         RetrievalResult r = new RetrievalResult(docnos2[j], (float) Math.exp(sers[j].score) / 10,
+                  backupQuery);
+          result.add(r);
         }
       }
       
