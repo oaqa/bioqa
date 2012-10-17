@@ -1,0 +1,7 @@
+class: edu.cmu.lti.oaqa.bio.test.ziy.ie.PassageCandidateAnalyzer
+AnalyzeRecall: false
+AnalyzePrecision: true
+AnalyzeHitSize: 100
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider

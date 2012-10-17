@@ -1,0 +1,44 @@
+package edu.cmu.lti.oaqa.bio.test.ziy.keyterm.kb;
+
+import java.util.List;
+
+import edu.cmu.lti.oaqa.bio.annotate.graph.ConceptBundle;
+import edu.cmu.lti.oaqa.bio.annotate.umls.GraphQueryEngine;
+import edu.cmu.lti.oaqa.framework.data.Keyterm;
+import edu.cmu.lti.oaqa.mergeqa.keyterm.AbstractKeytermUpdater;
+
+public class UmlsGraphSynonymLookupper extends AbstractKeytermUpdater {
+
+  private GraphQueryEngine lookupper = new GraphQueryEngine();
+
+  @Override
+  protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
+    for (Keyterm keyterm : keyterms) {
+      ConceptBundle synonyms = lookupper.search(keyterm.getText());
+      if (synonyms == null) {
+        continue;
+      }
+      for (String synonym : synonyms.getSynonyms()) {
+        keyterm.addSynonym(synonym, "UMLS-GRAPH");
+      }
+      for (String definition : synonyms.getDefinitions()) {
+        keyterm.addConcept(definition, "UMLS-GRAPH");
+      }
+    }
+    return keyterms;
+  }
+
+  public static void main(String[] args) {
+    UmlsGraphSynonymLookupper lookupper = new UmlsGraphSynonymLookupper();
+    List<Keyterm> keyterms = lookupper.updateKeyterms(null, Vocabulary.keyterms);
+    for (Keyterm keyterm : keyterms) {
+      for (String source : keyterm.getAllResourceSources()) {
+        System.out.println("Keyterm > " + keyterm.getText());
+        System.out.println("Concept [" + source + "] > " + keyterm.getConceptBySource(source));
+        System.out.println("Category[" + source + "] > " + keyterm.getCategoryBySource(source));
+        System.out.println("Synonyms[" + source + "] > " + keyterm.getSynonymsBySource(source));
+      }
+    }
+  }
+
+}

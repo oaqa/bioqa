@@ -1,0 +1,68 @@
+configuration: 
+  name: generate-retrieval-ie-backup.yaml
+  author: ziy
+
+persistence-provider:
+  inherit: internal.db.cse-persistence-provider 
+
+collection-reader:
+  inherit: internal.db.collection-reader
+  dataset: BIO-COMBINED
+  sequence-start: 160
+  sequence-end: 187
+  
+pipeline:
+  - inherit: internal.cse.phase
+    name: tokenizer
+    options: |
+      - inherit: default.keyterm.default
+  
+  - inherit: internal.cse.phase  
+    name: pos-tagger
+    options: |
+      - inherit: testqa-ziy.keyterm.pos.lingpipe-hmm
+  
+  - inherit: internal.cse.phase
+    name: name-entity-recognizer
+    options: |
+      - inherit: testqa-ziy.keyterm.ner.lingpipe
+  
+  - inherit: internal.cse.phase
+    name: keyterm-restore
+    options: |
+      - inherit: testqa-ziy.keyterm.io.restore
+
+  - inherit: internal.cse.phase
+    name: retrieval-strategist
+    options: | 
+      - inherit: testqa-yanfang.retrieval.LevelOne
+  
+  - inherit: internal.cse.phase
+    name: retrieval-backup
+    options: |
+      - inherit: testqa-ziy.retrieval.io.backup
+      
+  - inherit: internal.cse.phase
+    name: passage-extractor
+    options: | 
+     - inherit: testqa-yanfang.ie.LevelOne
+  
+  - inherit: internal.cse.phase
+    name: ie-backup
+    options: |
+      - inherit: testqa-ziy.ie.io.backup
+
+  - inherit: internal.eval.cse-retrieval-aggregator-consumer
+  - inherit: internal.eval.cse-passage-map-aggregator-consumer
+
+post-process: 
+  - inherit: internal.eval.cse-retrieval-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.f-measure-report-component
+  - inherit: internal.eval.cse-passage-map-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.map-report-component
+  
+
