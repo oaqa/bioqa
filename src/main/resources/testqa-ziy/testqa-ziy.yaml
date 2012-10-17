@@ -1,0 +1,104 @@
+configuration: 
+  name: testqa-ziy-test
+  author: ziy
+
+persistence-provider:
+  inherit: bioqa.db.cse-persistence-provider  
+
+collection-reader:
+  inherit: bioqa.db.collection-reader
+  dataset: BIO-COMBINED
+  sequence-start: 160
+#  sequence-start: 187
+#  sequence-end: 160
+#  sequence-end: 169
+  sequence-end: 187
+  
+pipeline:
+  - inherit: internal.cse.phase
+    name: tokenizer
+    options: |
+      - inherit: default.keyterm.default
+  
+  - inherit: internal.cse.phase  
+    name: pos-tagger
+    options: |
+      - inherit: testqa-ziy.keyterm.pos.lingpipe-hmm
+#      - inherit: testqa-ziy.keyterm.pos.stanford-maxent
+  
+  - inherit: internal.cse.phase
+    name: name-entity-recognizer
+    options: |
+      - inherit: testqa-ziy.keyterm.ner.lingpipe
+    
+  - inherit: internal.cse.phase
+    name: restore
+    options: |
+      - inherit: testqa-ziy.keyterm.io.restore
+  
+#  - inherit: internal.cse.phase
+#    name: filter
+#    options: |
+#      - inherit: testqa-ziy.keyterm.filter
+         
+  - inherit: internal.cse.phase
+    name: retrieval-strategist
+    options: |
+      - inherit: testqa-ziy.retrieval.io.restore
+
+  - inherit: internal.cse.phase
+    name: passage-extractor
+    options: |
+      - inherit: testqa-ziy.ie.io.restore
+           
+  - inherit: internal.cse.phase
+    name: refine
+    options: |
+      - inherit: testqa-ziy.keyterm.refine
+
+  - inherit: internal.cse.phase 
+    name: passage-span
+    options: |
+      - inherit: testqa-ziy.ie.span.important-sentence
+#      - inherit: base.noop
+
+  - inherit: internal.cse.phase 
+    name: passage-rank
+    options: |
+      - inherit: testqa-ziy.ie.rank.proximity
+#      - inherit: base.noop
+      
+  - inherit: internal.cse.phase 
+    name: score-combine
+    options: |
+      - inherit: testqa-ziy.ie.rank.combine
+#      - inherit: base.noop
+
+  - inherit: internal.cse.phase 
+    name: passage-overlap
+    options: |
+      - inherit: testqa-ziy.ie.overlap.merge
+#      - inherit: testqa-ziy.ie.overlap.filter
+      
+#  - inherit: internal.cse.phase
+#    name: analyzer
+#    options: |
+#      - inherit: testqa-ziy.ie.analyze
+  
+  - inherit: eval.trace-consumer
+    listeners:
+      - inherit!internal.baseqa.trec-writer-listener
+      
+  - inherit: internal.eval.cse-retrieval-aggregator-consumer
+  - inherit: internal.eval.cse-passage-map-aggregator-consumer
+
+post-process: 
+  - inherit: internal.eval.cse-retrieval-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.f-measure-report-component
+  - inherit: internal.eval.cse-passage-map-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.map-report-component
+  

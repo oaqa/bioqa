@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bio.test.ziy.ie.io.PassageCandidateBackuper
+PassageCandidateDirPath: src/main/resources/ie-cache
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider

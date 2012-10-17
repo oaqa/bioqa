@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bio.test.ziy.keyterm.pos.StanfordMaxentPosTagger
+ModelFilePath: /wsj-0-18-left3words.tagger
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider

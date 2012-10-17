@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.bio.test.ziy.keyterm.kb.UmlsGraphSynonymLookupper
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider

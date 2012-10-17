@@ -32,31 +32,7 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
 
   private String smoothingLambda;
 
-  private String conceptTermWeight;
-
-  private String regularTermWeight;
-
-  private String verbTermWeight;
-
-  private String geneTermWeight;
-
   private String backupQuery;
-
-  private boolean useUMLS;
-
-  private boolean useENTREZ;
-
-  private boolean useMESH;
-  
-  private boolean useUMLSAcronym;
-
-  private boolean useENTREZAcronym;
-
-  private boolean useMESHAcronym;
-
-  private boolean useLexicalVariants;
-
-  private boolean usePosTagger;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -67,20 +43,7 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
     this.smoothing = (String) aContext.getConfigParameterValue("smoothing");
     this.smoothingMu = (String) aContext.getConfigParameterValue("smoothing-mu");
     this.smoothingLambda = (String) aContext.getConfigParameterValue("smoothing-lambda");
-    this.conceptTermWeight = (String) aContext.getConfigParameterValue("concept-term-weight");
-    this.regularTermWeight = (String) aContext.getConfigParameterValue("regular-term-weight");
-    this.verbTermWeight = (String) aContext.getConfigParameterValue("verb-term-weight");
-    this.geneTermWeight = (String) aContext.getConfigParameterValue("gene-term-weight");
-    this.useENTREZ = UimaContextHelper.getConfigParameterBooleanValue(aContext, "ENTREZ", false);
-    this.useMESH = UimaContextHelper.getConfigParameterBooleanValue(aContext, "MESH", false);
-    this.useUMLS = UimaContextHelper.getConfigParameterBooleanValue(aContext, "UMLS", false);
-    this.useENTREZAcronym = UimaContextHelper.getConfigParameterBooleanValue(aContext, "ENTREZ-Acronym", false);
-    this.useMESHAcronym = UimaContextHelper.getConfigParameterBooleanValue(aContext, "MESH-Acronym", false);
-    this.useUMLSAcronym = UimaContextHelper.getConfigParameterBooleanValue(aContext, "UMLS-Acronym", false);
-    this.useLexicalVariants = UimaContextHelper.getConfigParameterBooleanValue(aContext,
-            "LexicalVariants", false);
-    this.usePosTagger = UimaContextHelper.getConfigParameterBooleanValue(aContext, "PosTagger",
-            false);
+
   }
 
   @Override
@@ -132,7 +95,6 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
       String[] docnos2 = new String[hitListSize];
 
       for (int i = 0; i < docnos.length; i++) {
-        // TODO  PLEASE FIX THIS
         RetrievalResult r = new RetrievalResult(docnos[i], (float)Math.exp(sers[i].score), query);
         result.add(r);
       }
@@ -145,7 +107,6 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
         sers = wrapper.getQueryEnvironment().runQuery(backupQuery, hitListSize - docnos.length);
         docnos2 = wrapper.getQueryEnvironment().documentMetadata(sers, "docno");
         for (int j = 0; j < docnos2.length; j++) {
-          // TODO PLEASE FIX THIS
          RetrievalResult r = new RetrievalResult(docnos2[j], (float) Math.exp(sers[j].score) / 10,
                   backupQuery);
           result.add(r);

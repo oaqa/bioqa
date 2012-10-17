@@ -22,7 +22,7 @@ public class CleanTerms {
    * @param term The term probably has special characters
    * @return modified term without Indri unexpected characters
    */
-  public String removeIndriSpeCha(String term) {
+  public static String removeIndriSpeCha(String term) {
     term = term.replaceAll("[\\+\\?\\(\\)\\[\\]\\,/<>\\:;]", " ");
     term = term.replace(".", "");
     term = term.replace("_", "");

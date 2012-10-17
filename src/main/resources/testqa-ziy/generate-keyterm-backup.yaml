@@ -1,0 +1,64 @@
+experiment: 
+  name: generate-keyterm-backup
+  author: ziy
+
+persistence-provider:
+  inherit: db.lti-persistence-provider  
+  
+configuration:
+  inherit: db.lti-cse-config
+
+collection-reader:
+  inherit: db.lti-collection-reader
+  dataset: BIO-COMBINED
+  sequence-start: 160
+  sequence-end: 187
+  
+pipeline:
+  - inherit: internal.cse.phase
+    name: tokenizer
+    options: |
+      - inherit: default.keyterm.default
+  
+  - inherit: internal.cse.phase  
+    name: pos-tagger
+    options: |
+      - inherit: testqa-ziy.keyterm.pos.lingpipe-hmm
+  
+  - inherit: internal.cse.phase
+    name: name-entity-recognizer
+    options: |
+      - inherit: testqa-ziy.keyterm.ner.lingpipe
+  
+  - inherit: internal.cse.phase
+    name: mesh-synonym-lookupper
+    options: |
+      - inherit: testqa-ziy.keyterm.kb.mesh
+    
+  - inherit: internal.cse.phase
+    name: entrezgene-synonym-lookupper
+    options: |
+      - inherit: testqa-ziy.keyterm.kb.entrezgene
+        
+  - inherit: internal.cse.phase
+    name: umls-synonym-lookupper
+    options: |
+      - inherit: testqa-ziy.keyterm.kb.umls
+  
+  - inherit: internal.cse.phase
+    name: backup
+    options: |
+      - inherit: testqa-ziy.keyterm.io.backup
+  
+  - inherit: eval.base-retrieval-aggregator
+  - inherit: eval.passage-aggregator
+
+post-process: 
+  - inherit: eval.cse-retrieval-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.f-measure-report-component
+  - inherit: eval.passage-measures-evaluator
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.map-report-component

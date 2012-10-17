@@ -1,0 +1,92 @@
+configuration: 
+  name: testqa-ziy-test
+  author: ziy
+
+persistence-provider:
+  inherit: internal.db.cse-persistence-provider  
+
+collection-reader:
+  inherit: internal.db.collection-reader
+  dataset: BIO-COMBINED
+  sequence-start: 160
+  sequence-end: 187
+  
+pipeline:
+  - inherit: internal.cse.phase
+    name: tokenizer
+    options: |
+      - inherit: default.keyterm.default
+  
+  - inherit: internal.cse.phase  
+    name: pos-tagger
+    options: |
+      - inherit: testqa-ziy.keyterm.pos.lingpipe-hmm
+      - inherit: testqa-ziy.keyterm.pos.stanford-maxent
+  
+  - inherit: internal.cse.phase
+    name: name-entity-recognizer
+    options: |
+      - inherit: testqa-ziy.keyterm.ner.lingpipe
+    
+  - inherit: cse.phase
+    name: mesh-synonym-lookupper
+    options: |
+      - inherit: testqa-ziy.keyterm.kb.mesh
+    
+  - inherit: cse.phase
+    name: entrezgene-synonym-lookupper
+    options: |
+      - inherit: testqa-ziy.keyterm.kb.entrezgene
+        
+  - inherit: cse.phase
+    name: umls-synonym-lookupper
+    options: |
+      - inherit: testqa-ziy.keyterm.kb.umls
+      - inherit: testqa-ziy.keyterm.kb.umls-graph
+      
+  - inherit: internal.cse.phase
+    name: retrieval-strategist
+    options: | 
+      - inherit: testqa-yanfang.retrieval.LevelOne
+ 
+  - inherit: internal.cse.phase
+    name: passage-extractor
+    options: | 
+     - inherit: testqa-yanfang.ie.LevelOne
+     
+  - inherit: internal.cse.phase
+    name: refine
+    options: |
+      - inherit: testqa-ziy.keyterm.refine
+      
+  - inherit: internal.cse.phase 
+    name: passage-span
+    options: |
+      - inherit: base.noop
+      - inherit: testqa-ziy.ie.span.important-sentence
+       
+  - inherit: internal.cse.phase 
+    name: passage-rank
+    options: |
+      - inherit: base.noop
+      - inherit: testqa-ziy.ie.rank.proximity
+ 
+  - inherit: internal.cse.phase 
+    name: score-combine
+    options: |
+      - inherit: base.noop
+      - inherit: testqa-ziy.ie.rank.combine
+  
+  - inherit: internal.eval.cse-retrieval-aggregator-consumer
+  - inherit: internal.eval.cse-passage-map-aggregator-consumer
+
+post-process: 
+  - inherit: internal.eval.cse-retrieval-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.f-measure-report-component
+  - inherit: internal.eval.cse-passage-map-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.map-report-component
+  
