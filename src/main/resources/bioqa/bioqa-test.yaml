@@ -1,6 +1,6 @@
 configuration: 
   name: bioqa-development-test
-  author: yanfang
+  author: ziy
 
 persistence-provider:
   inherit: bioqa.db.cse-persistence-provider  
@@ -23,10 +23,10 @@ pipeline:
     options: |
       - inherit: default.retrieval.default
       
-  #- inherit: internal.cse.phase 
-   # name: passage-extractor
-    #options: |
-     # - inherit: default.ie.default
+  - inherit: internal.cse.phase 
+    name: passage-extractor
+    options: |
+      - inherit: default.ie.default
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer
