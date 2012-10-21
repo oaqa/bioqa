@@ -2,10 +2,8 @@ package edu.cmu.lti.oaqa.bio.test.ziy.keyterm.kb;
 
 import java.util.List;
 
-import edu.cmu.lti.oaqa.bio.entrezgene_wrapper.EntrezGeneWrapper;
-import edu.cmu.lti.oaqa.bio.resource_warpper.Entity;
+import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
-import edu.cmu.lti.oaqa.mergeqa.keyterm.AbstractKeytermUpdater;
 
 public class EntrezGeneSynonymLookupper extends AbstractKeytermUpdater {
 

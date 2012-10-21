@@ -2,10 +2,10 @@ package edu.cmu.lti.oaqa.bio.test.ziy.ie.rank;
 
 import java.util.List;
 
+import edu.cmu.lti.oaqa.bio.core.ie.AbstractPassageUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.PassageCandidate;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
-import edu.cmu.lti.oaqa.mergeqa.ie.AbstractPassageUpdater;
 
 public class RandomScoreAssigner extends AbstractPassageUpdater {
 

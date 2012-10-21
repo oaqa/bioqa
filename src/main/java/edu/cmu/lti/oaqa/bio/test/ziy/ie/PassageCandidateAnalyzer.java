@@ -13,7 +13,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.oaqa.model.Passage;
 
 import edu.cmu.lti.oaqa.ecd.log.AbstractLoggedComponent;
-import edu.cmu.lti.oaqa.framework.JCasHelper;
 import edu.cmu.lti.oaqa.framework.UimaContextHelper;
 import edu.cmu.lti.oaqa.framework.ViewManager;
 import edu.cmu.lti.oaqa.framework.ViewManager.ViewType;
@@ -57,8 +56,8 @@ public class PassageCandidateAnalyzer extends AbstractLoggedComponent {
         id2gsPassages.get(id).add(gsPassage);
       }
       // collect extracted passages
-      List<PassageCandidate> candidates = JCasHelper
-              .getPassages(ViewManager.getCandidateView(jcas));
+      
+      List<PassageCandidate> candidates = JCasHelper.getPassages(ViewManager.getCandidateView(jcas));
       Map<String, List<PassageCandidate>> id2candidates = new HashMap<String, List<PassageCandidate>>();
       for (PassageCandidate candidate : candidates) {
         String id = candidate.getDocID();

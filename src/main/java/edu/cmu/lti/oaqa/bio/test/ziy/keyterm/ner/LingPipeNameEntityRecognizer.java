@@ -15,8 +15,9 @@ import com.aliasi.chunk.Chunker;
 import com.aliasi.chunk.Chunking;
 import com.aliasi.util.Streams;
 
+import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
+import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
-import edu.cmu.lti.oaqa.mergeqa.keyterm.AbstractKeytermUpdater;
 
 public class LingPipeNameEntityRecognizer extends AbstractKeytermUpdater {
 
@@ -64,7 +65,7 @@ public class LingPipeNameEntityRecognizer extends AbstractKeytermUpdater {
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (String nameEntity : getNameEntities(question)) {
-      keyterms.add(new Keyterm(nameEntity, -1, Keyterm.PHRASE));
+      keyterms.add(new BioKeyterm(nameEntity, -1, BioKeyterm.PHRASE));
     }
     return keyterms;
   }

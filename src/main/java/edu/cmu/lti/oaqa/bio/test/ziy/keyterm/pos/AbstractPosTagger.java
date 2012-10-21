@@ -3,8 +3,9 @@ package edu.cmu.lti.oaqa.bio.test.ziy.keyterm.pos;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
+import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
-import edu.cmu.lti.oaqa.mergeqa.keyterm.AbstractKeytermUpdater;
 
 public abstract class AbstractPosTagger extends AbstractKeytermUpdater {
 
@@ -19,7 +20,9 @@ public abstract class AbstractPosTagger extends AbstractKeytermUpdater {
     List<String> tags = getPosTag(tokens);
     int i = 0;
     for (Keyterm keyterm : keyterms) {
-      keyterm.addTag(tags.get(i++), getClass().getSimpleName());
+      BioKeyterm temp = (BioKeyterm) keyterm;
+      temp.addTag(tags.get(i++), getClass().getSimpleName());
+      keyterm = temp;
     }
     return keyterms;
   }

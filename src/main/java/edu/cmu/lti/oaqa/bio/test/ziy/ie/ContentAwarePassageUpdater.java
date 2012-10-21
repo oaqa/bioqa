@@ -13,11 +13,13 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import util.SimilarityUtils;
+
+import edu.cmu.lti.oaqa.bio.core.ie.AbstractPassageUpdater;
+import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.bio.framework.retrieval.DocumentRetrieverWrapper;
 import edu.cmu.lti.oaqa.bio.test.ziy.keyterm.pos.LingPipeHmmPosTagger;
 import edu.cmu.lti.oaqa.framework.UimaContextHelper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
-import edu.cmu.lti.oaqa.mergeqa.ie.AbstractPassageUpdater;
 
 public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater {
 
@@ -71,7 +73,8 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
     Map<String, String> synonym2keyterm = new HashMap<String, String>();
     for (Keyterm keyterm : keyterms) {
       String text = keyterm.getText();
-      for (String synonym : keyterm.getSynonyms()) {
+      BioKeyterm biokeyterm = (BioKeyterm) keyterm;
+      for (String synonym : biokeyterm.getSynonyms()) {
         synonym2keyterm.put(synonym.toLowerCase(), text);
       }
     }

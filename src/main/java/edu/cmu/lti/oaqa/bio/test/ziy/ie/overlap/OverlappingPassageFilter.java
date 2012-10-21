@@ -8,12 +8,12 @@ import java.util.Set;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import edu.cmu.lti.oaqa.bio.core.ie.AbstractPassageUpdater;
 import edu.cmu.lti.oaqa.bio.test.ziy.ie.overlap.OverlapDetector.Interval;
 import edu.cmu.lti.oaqa.framework.UimaContextHelper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.PassageCandidate;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
-import edu.cmu.lti.oaqa.mergeqa.ie.AbstractPassageUpdater;
 
 public class OverlappingPassageFilter extends AbstractPassageUpdater {
 

@@ -17,11 +17,37 @@ pipeline:
     name: keyterm-extractor
     options: |
       - inherit: default.keyterm.default
-  
+
   - inherit: internal.cse.phase 
-    name: retrieval-strategist
+    name: pos-tagger
     options: |
-      - inherit: default.retrieval.default
+      - inherit: bioqa.keyterm.lingpipe-hmm
+
+  - inherit: internal.cse.phase
+    name: name-entity-recognizer
+    options: |
+      #- inherit: testqa-yanfang.keyterm.lingpipe-abbreviation
+      - inherit: bioqa.keyterm.lingpipe
+
+  - inherit: internal.cse.phase
+    name: name-entity-recognizer
+    options: |
+      - inherit: bioqa.keyterm.syn-lexical-variants
+
+  - inherit: internal.cse.phase
+    name: restore
+    options: |
+      - inherit: bioqa.keyterm.restore
+
+  - inherit: internal.cse.phase
+    name: retrieval-strategist
+    options: | 
+      - inherit: bioqa.retrieval.BasicIndriRetrieval
+
+  #- inherit: internal.cse.phase 
+   # name: retrieval-strategist
+    #options: |
+     # - inherit: default.retrieval.default
       
   #- inherit: internal.cse.phase 
    # name: passage-extractor

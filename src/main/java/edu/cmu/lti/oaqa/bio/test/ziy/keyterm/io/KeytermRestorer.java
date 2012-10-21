@@ -8,8 +8,10 @@ import java.util.Map;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
+import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
-import edu.cmu.lti.oaqa.mergeqa.keyterm.AbstractKeytermUpdater;
+
 
 public class KeytermRestorer extends AbstractKeytermUpdater {
 
@@ -33,10 +35,12 @@ public class KeytermRestorer extends AbstractKeytermUpdater {
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {
-      Keyterm backup = text2keyterm.get(keyterm.getText());
+      BioKeyterm backup = (BioKeyterm) text2keyterm.get(keyterm.getText());
       for (String source : backup.getAllResourceSources()) {
-        keyterm.addExternalResource(backup.getConceptBySource(source),
+        BioKeyterm temp = (BioKeyterm) keyterm;
+        temp.addExternalResource(backup.getConceptBySource(source),
                 backup.getCategoryBySource(source), backup.getSynonymsBySource(source), source);
+        keyterm = temp;
       }
     }
     return keyterms;

@@ -3,6 +3,7 @@ package edu.cmu.lti.oaqa.bio.test.ziy.retrieval;
 import java.util.List;
 
 import edu.cmu.lti.oaqa.bio.core.retrieval.DefaultRetrievalStrategist;
+import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 public class SynonymAwareRetrievalStrategist extends DefaultRetrievalStrategist {
@@ -12,13 +13,14 @@ public class SynonymAwareRetrievalStrategist extends DefaultRetrievalStrategist 
     StringBuffer queryBuffer = new StringBuffer();
     queryBuffer.append("#combine(");
     for (Keyterm keyterm : keyterms) {
-      System.out.println(keyterm.getTags());
-      if (keyterm.isToken()) {
+      BioKeyterm bioKeyterm = (BioKeyterm) keyterm;
+      System.out.println(bioKeyterm.getTags());
+      if (bioKeyterm.isToken()) {
         queryBuffer.append(escape(keyterm.getText())).append(" ");
-      } else if (keyterm.isPhrase()) {
+      } else if (bioKeyterm.isPhrase()) {
         queryBuffer.append("#1(").append(escape(keyterm.getText())).append(") ");
       }
-      for (String synonym : keyterm.getSynonyms()) {
+      for (String synonym : bioKeyterm.getSynonyms()) {
         queryBuffer.append("#1(").append(escape(synonym)).append(") ");
       }
     }
