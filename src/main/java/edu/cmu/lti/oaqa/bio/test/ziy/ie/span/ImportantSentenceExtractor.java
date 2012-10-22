@@ -189,7 +189,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
               Math.min(passageStack.size(), maxNumSentInPassage)));
       try {
         newPassages.add(new PassageCandidate(passage.getDocID(), newSpan.begin, newSpan.end, sims
-                .get(i), passage.getQueryString()));
+                .get(i).floatValue(), passage.getQueryString()));
       } catch (AnalysisEngineProcessException e) {
         e.printStackTrace();
       }
@@ -199,7 +199,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     Collections.sort(newPassages, Collections.reverseOrder());
     newPassages = newPassages.subList(0, Math.min(newPassages.size(), maxNumPassageInParagragh));
     for (PassageCandidate newPassage : newPassages) {
-      newPassage.setScore(passage.getScore());
+      newPassage.setProbablity(passage.getProbability());
     }
     return newPassages;
   }

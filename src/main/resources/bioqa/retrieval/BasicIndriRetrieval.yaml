@@ -11,14 +11,6 @@ cross-opts:
   regular-term-weight: [0.4]
   verb-term-weight: [0.2]
   gene-term-weight: [0.3]
-  MESH: [true]
-  ENTREZ: [true]
-  UMLS: [false]
-  LexicalVariants: [true]
-  PosTagger: [true]
-  MESH-Acronym: [false]
-  ENTREZ-Acronym: [false]
-  UMLS-Acronym: [true]
 
 
 persistence-provider: |

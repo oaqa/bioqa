@@ -5,14 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
-
-import scala.actors.threadpool.Arrays;
 
 import com.aliasi.chunk.Chunk;
 import com.aliasi.chunk.Chunking;

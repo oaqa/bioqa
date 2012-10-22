@@ -1,4 +1,4 @@
-class: edu.cmu.lti.oaqa.bio.keyterm.yanfang.KeytermRefiner
+class: edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.KeytermRefiner
 
 cross-opts:
   MESH: [true]

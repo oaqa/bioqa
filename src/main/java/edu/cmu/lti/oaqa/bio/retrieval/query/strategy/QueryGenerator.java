@@ -9,6 +9,7 @@ import java.util.List;
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.bio.retrieval.query.structure.QueryComponent;
 import edu.cmu.lti.oaqa.bio.retrieval.query.structure.QueryComponentContainer;
+import edu.cmu.lti.oaqa.bio.retrieval.tools.CleanTerms;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 /**
@@ -121,8 +122,8 @@ public class QueryGenerator {
       String keyterm = "";
 
       // wraps the keyterm if it is a phrase with "#od2". Using "2" here is based on experiment.
-      keyterm = bk.getText().contains(" ") ? "#od2(" + bk.getText() + ")"
-              : bk.getText();
+      keyterm = bk.getText().contains(" ") ? "#od2(" + CleanTerms.removeIndriSpeCha(bk.getText()) + ")"
+              : CleanTerms.removeIndriSpeCha(bk.getText());
 
       // wraps the keyterm and synonyms
       String tempMain = bk.getSynonymsBySource("RefinedSynonyms").isEmpty() ? " " + keyterm : " #syn( " + keyterm

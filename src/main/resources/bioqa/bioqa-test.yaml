@@ -8,8 +8,8 @@ persistence-provider:
 collection-reader:
   inherit: bioqa.db.collection-reader
   dataset: BIO-COMBINED
-  sequence-start: 160
-  sequence-end: 187
+  sequence-start: 161
+  sequence-end: 161
 #  sequence-end: 160
   
 pipeline:
@@ -34,10 +34,30 @@ pipeline:
     options: |
       - inherit: bioqa.keyterm.syn-lexical-variants
 
+ # - inherit: internal.cse.phase
+  #  name: restore
+   # options: |
+      #- inherit: bioqa.keyterm.restore
+
   - inherit: internal.cse.phase
-    name: restore
+    name: synonyms
     options: |
-      - inherit: bioqa.keyterm.restore
+      - inherit: bioqa.keyterm.kb.mesh
+
+  - inherit: internal.cse.phase
+    name: synonyms
+    options: |
+      - inherit: bioqa.keyterm.kb.entrezgene
+
+  - inherit: internal.cse.phase
+    name: synonyms
+    options: |
+      - inherit: bioqa.keyterm.kb.umls
+
+  - inherit: internal.cse.phase
+    name: synonyms
+    options: |
+      - inherit: bioqa.keyterm.keyterm-refiner
 
   - inherit: internal.cse.phase
     name: retrieval-strategist

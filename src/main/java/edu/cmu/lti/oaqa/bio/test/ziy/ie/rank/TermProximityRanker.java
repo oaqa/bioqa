@@ -110,9 +110,9 @@ public class TermProximityRanker extends ContentAwarePassageUpdater {
       if (combineOriginalScores) {
         // System.out.println(passage + "\t" + passage.getScore() + "\t" + score + "\t"
         // + (originalWeight * passage.getScore() + (1.0 - originalWeight) * score));
-        passage.setScore(originalWeight * passage.getScore() + (1.0 - originalWeight) * score);
+        passage.setProbablity((float) (originalWeight * passage.getProbability() + (1.0 - originalWeight) * score));
       } else {
-        passage.setScore(score);
+        passage.setProbablity((float) score);
       }
     }
     return passages;

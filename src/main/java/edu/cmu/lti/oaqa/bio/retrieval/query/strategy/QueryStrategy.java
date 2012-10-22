@@ -161,6 +161,11 @@ public class QueryStrategy {
     return this.queryContainer;
   }
 
+  public List<BioKeyterm> getRefinedKeyterms(){
+    this.formQueryContainer();
+    return this.keyTerms;
+  }
+  
   /**
    * Forms a query container which has all the necessary information for a query, and deletes
    * duplicated content.
@@ -202,6 +207,11 @@ public class QueryStrategy {
           QueryComponent temp = SpecialTermProcess(keytermText);
           temp.setConcept(false);
           this.queryContainer.add(temp);
+          
+          // add information to keyterm
+          keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
+          keyterm.setProbablity(Float.valueOf(temp.getWeight()));
+          
           continue;
         }
 
@@ -263,11 +273,21 @@ public class QueryStrategy {
 
         if (checker.isConceptTerm(keytermText)) {
           temp.setConcept(true);
+
         } else {
           temp.setConcept(false);
         }
 
         this.queryContainer.add(temp);
+         
+        keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
+        
+        if(temp.isConcept()) {
+          keyterm.setProbablity(1);
+        }
+        else
+          keyterm.setProbablity(Float.valueOf(temp.getWeight()));
+        
       }
     }
 
@@ -297,6 +317,11 @@ public class QueryStrategy {
           QueryComponent temp = SpecialTermProcess(keytermText);
           temp.setConcept(false);
           this.queryContainer.add(temp);
+          
+          // add information to keyterm
+          keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
+          keyterm.setProbablity(Float.valueOf(temp.getWeight()));
+       
           continue;
         }
 
@@ -310,6 +335,10 @@ public class QueryStrategy {
             KeytermInQuery temp = new KeytermInQuery(keytermText, this.verbTermWeight);
             QueryComponent temp2 = new QueryComponent(temp, false);
             this.queryContainer.add(temp2);
+            
+            keyterm.addExternalResource("", "", temp2.getSynonyms(), "RefinedSynonyms");
+            keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
+            
             continue;
           }
         }
@@ -378,6 +407,13 @@ public class QueryStrategy {
         }
 
         this.queryContainer.add(temp);
+        
+        keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
+        if(temp.isConcept()) 
+          keyterm.setProbablity(1);
+        else
+          keyterm.setProbablity(Float.valueOf(temp.getWeight()));
+        
       }
     }
   }

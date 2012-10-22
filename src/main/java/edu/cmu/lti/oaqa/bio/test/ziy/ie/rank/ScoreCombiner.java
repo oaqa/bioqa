@@ -128,15 +128,15 @@ public class ScoreCombiner extends AbstractPassageUpdater {
     Map<String, Double> id2score = new HashMap<String, Double>();
     List<Double> docScores = new ArrayList<Double>();
     for (RetrievalResult document : documents) {
-      id2score.put(document.getDocID(), document.getScore());
-      docScores.add(document.getScore());
+      id2score.put(document.getDocID(), (double) document.getProbability());
+      docScores.add((double) document.getProbability());
     }
     Map<Double, Double> docScoreMap = transform(docScores);
-    double minDocScore = docScoreMap.get(documents.get(documents.size() - 1).getScore());
+    double minDocScore = docScoreMap.get(documents.get(documents.size() - 1).getProbability());
     // transform passage scores
     List<Double> passageScores = new ArrayList<Double>();
     for (PassageCandidate passage : passages) {
-      passageScores.add(passage.getScore());
+      passageScores.add((double) passage.getProbability());
     }
     Map<Double, Double> passageScoreMap = transform(passageScores);
     // combine scores
@@ -147,8 +147,8 @@ public class ScoreCombiner extends AbstractPassageUpdater {
       // passageScoreMap.get(passage.getScore())
       // + "\t"
       // + (passageScoreMap.get(passage.getScore()) * (1 - docWeight) + docScore * docWeight));
-      passage.setScore(passageScoreMap.get(passage.getScore()) * (1 - docWeight) + docScore
-              * docWeight);
+      passage.setProbablity((float) (passageScoreMap.get(passage.getProbability()) * (1 - docWeight) + docScore
+              * docWeight));
     }
     return passages;
   }

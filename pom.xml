@@ -289,5 +289,20 @@
     	<artifactId>stanford-corenlp</artifactId>
     	<version>1.3.3</version>
     </dependency>
+    <dependency>
+    	<groupId>edu.cmu.lti.oaqa.bio.annotate</groupId>
+    	<artifactId>mesh-wrapper</artifactId>
+    	<version>1.1.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>edu.cmu.lti.oaqa.bio.annotate</groupId>
+    	<artifactId>umls-wrapper</artifactId>
+    	<version>1.1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>edu.cmu.lti.oaqa.bio.annotate</groupId>
+    	<artifactId>umls-retriever</artifactId>
+    	<version>1.0.3</version>
+    </dependency>
 	</dependencies>
 </project>

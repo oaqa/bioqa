@@ -13,7 +13,7 @@ public class RandomScoreAssigner extends AbstractPassageUpdater {
   protected List<PassageCandidate> updatePassages(String question, List<Keyterm> keyterms,
           List<RetrievalResult> documents, List<PassageCandidate> passages) {
     for (PassageCandidate passage : passages) {
-      passage.setScore(Math.random());
+      passage.setProbablity((float) Math.random());
     }
     return passages;
   }
