@@ -1,4 +1,4 @@
-package edu.cmu.lti.oaqa.bio.test.ziy.keyterm.io;
+package edu.cmu.lti.oaqa.bio.test.ziy.keyterm;
 
 import java.io.ObjectInputStream;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 public class KeytermRestorer extends AbstractKeytermUpdater {
 
-  private Map<String, BioKeyterm> text2keyterm = new HashMap<String, BioKeyterm>();
+  private Map<String, Keyterm> text2keyterm = new HashMap<String, Keyterm>();
 
   @SuppressWarnings("unchecked")
   @Override
@@ -23,8 +23,9 @@ public class KeytermRestorer extends AbstractKeytermUpdater {
     super.initialize(aContext);
     String keytermFilePath = (String) aContext.getConfigParameterValue("KeytermFilePath");
     try {
+      System.out.println(getClass().getResource(keytermFilePath));
       ObjectInputStream oos = new ObjectInputStream(getClass().getResourceAsStream(keytermFilePath));
-      text2keyterm.putAll((Map<String, BioKeyterm>) oos.readObject());
+      text2keyterm.putAll((Map<String, Keyterm>) oos.readObject());
       oos.close();
     } catch (Exception e) {
       e.printStackTrace();
@@ -35,10 +36,12 @@ public class KeytermRestorer extends AbstractKeytermUpdater {
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {
-      BioKeyterm backup = text2keyterm.get(keyterm.getText());
+      BioKeyterm backup = (BioKeyterm) text2keyterm.get(keyterm.getText());
       for (String source : backup.getAllResourceSources()) {
-        ((BioKeyterm)keyterm).addExternalResource(backup.getConceptBySource(source),
+        BioKeyterm temp = (BioKeyterm) keyterm;
+        temp.addExternalResource(backup.getConceptBySource(source),
                 backup.getCategoryBySource(source), backup.getSynonymsBySource(source), source);
+        keyterm = temp;
       }
     }
     return keyterms;

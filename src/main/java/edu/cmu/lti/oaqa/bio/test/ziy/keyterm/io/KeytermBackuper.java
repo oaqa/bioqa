@@ -13,6 +13,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
+import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 
@@ -20,7 +21,7 @@ public class KeytermBackuper extends AbstractKeytermUpdater {
 
   private File keytermDir;
 
-  private Map<String, Keyterm> text2keyterm = new HashMap<String, Keyterm>();
+  private Map<String, BioKeyterm> text2keyterm = new HashMap<String, BioKeyterm>();
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -40,7 +41,7 @@ public class KeytermBackuper extends AbstractKeytermUpdater {
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {
-      text2keyterm.put(keyterm.getText(), keyterm);
+      text2keyterm.put(keyterm.getText(), (BioKeyterm)keyterm);
     }
     return keyterms;
   }
