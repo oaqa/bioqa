@@ -23,7 +23,6 @@ public class KeytermRestorer extends AbstractKeytermUpdater {
     super.initialize(aContext);
     String keytermFilePath = (String) aContext.getConfigParameterValue("KeytermFilePath");
     try {
-      System.out.println(getClass().getResource(keytermFilePath));
       ObjectInputStream oos = new ObjectInputStream(getClass().getResourceAsStream(keytermFilePath));
       text2keyterm.putAll((Map<String, Keyterm>) oos.readObject());
       oos.close();
