@@ -4,8 +4,8 @@ import java.util.List;
 
 import edu.cmu.lti.oaqa.bio.annotate.graph.ConceptBundle;
 import edu.cmu.lti.oaqa.bio.annotate.umls.GraphQueryEngine;
-import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
+import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 

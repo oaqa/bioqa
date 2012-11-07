@@ -3,8 +3,8 @@ package edu.cmu.lti.oaqa.bio.test.ziy.keyterm.pos;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
+import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 public abstract class AbstractPosTagger extends AbstractKeytermUpdater {

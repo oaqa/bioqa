@@ -2,20 +2,20 @@ package edu.cmu.lti.oaqa.bio.test.ziy.keyterm.kb;
 
 import java.util.List;
 
-import edu.cmu.lti.oaqa.bio.entrezgene_wrapper.EntrezGeneWrapper;
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
+import edu.cmu.lti.oaqa.bio.mesh_wrapper.MeshWrapper;
 import edu.cmu.lti.oaqa.bio.resource_warpper.Entity;
 import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
-public class EntrezGeneSynonymLookupper extends AbstractKeytermUpdater {
+public class ResourceWrapperSynonymLookupper extends AbstractKeytermUpdater {
 
-  private EntrezGeneWrapper lookupper = new EntrezGeneWrapper();
+  private MeshWrapper lookupper = new MeshWrapper();
 
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {
-      for (Entity entity : lookupper.getEntities(keyterm.getText(), true)) {  
+      for (Entity entity : lookupper.getEntities(keyterm.getText())) {
         ((BioKeyterm)keyterm).addExternalResource(entity.getDefinition(), entity.getName(), entity.getSynonyms(),
                 entity.getSource());
       }
@@ -24,7 +24,7 @@ public class EntrezGeneSynonymLookupper extends AbstractKeytermUpdater {
   }
 
   public static void main(String[] args) {
-    EntrezGeneSynonymLookupper lookupper = new EntrezGeneSynonymLookupper();
+    ResourceWrapperSynonymLookupper lookupper = new ResourceWrapperSynonymLookupper();
     List<Keyterm> keyterms = lookupper.updateKeyterms(null, Vocabulary.keyterms);
     for (Keyterm keyterm : keyterms) {
       for (String source : ((BioKeyterm)keyterm).getAllResourceSources()) {
@@ -35,5 +35,5 @@ public class EntrezGeneSynonymLookupper extends AbstractKeytermUpdater {
       }
     }
   }
-
+  
 }

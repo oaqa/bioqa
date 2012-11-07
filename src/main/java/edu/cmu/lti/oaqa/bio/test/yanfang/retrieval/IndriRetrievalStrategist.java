@@ -72,6 +72,20 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
   @Override
   protected List<RetrievalResult> retrieveDocuments(String query) {
 
+    query = "#filreq( #band (  #syn( Pes #od1( CAPOS) #od1( Rocker-bottom foot) #od1( Reppal PES100) #od1( Krauss Herman Holmes syndrome) #od1( Reppal PES-100) #od1( Rockerbottom foot))" +
+    		"" +
+    		")" +
+    		"" +
+    		"" +
+    		"#weight(  0.6 #od2(cell growth) " +
+    		"0.6 #syn( growth #od1( postnatal development) #od1( Endo-GF) #od1( EndoGF) #od1( Humatrope) #od1( Zomacton) #od1( r-hGH m) #od1( rhGH m) #od1( Somatotropin Human) #od1( Omnitrope) #od1( CryoTropin) #od1( Norditropin) #od1( Maxomat) #od1( Norditropin Simplexx) #od1( Genotropin) #od1( Somatropin Human) #od1( development) #od1( ECDGF) #od1( Saizen) #od1( Umatrope) #od1( Serostim) #od1( Nutropin) #od1( Genotonorm) #od1( Somatropin)) 0.6 #syn( cell #od1( dmTAF1) #od1( TAF250) #od1( TFIID) #od1( dTAF II 250) #od1( TAF II 250 230) #od1( cel) #od1( l 3 84Ab) #od1( dmTAF II 230) #od1( dTAF250) #od1( p230) #od1( BG DS0000413) #od1( EfW1) #od1( SR3-5) #od1( SR35) #od1( CG17603) #od1( zgc 112377) #od1( TFIID TAF250) #od1( Taf1p) #od1( DmelCG17603) #od1( d230) #od1( T-Cell Leukemia-Lymphoma Human) #od1( TCell LeukemiaLymphoma Human) #od1( T-Cell Leukemia-Lymphomas Adult) #od1( TCell LeukemiaLymphomas Adult) #od1( Adult T-Cell Leukemia-Lymphoma) #od1( Adult TCell LeukemiaLymphoma) #od1( Leukemia-Lymphomas HTLV-Associated) #od1( LeukemiaLymphomas HTLVAssociated) #od1( HTLV Associated Leukemia Lymphoma) #od1( NKG2-E Receptor) #od1( NKG2E Receptor) #od1( T-Cell Leukemias Adult) #od1( TCell Leukemias Adult) #od1( HTLV-I-Associated T-Cell Leukemia-Lymphomas) #od1( HTLVIAssociated TCell LeukemiaLymphomas) #od1( Adult T-Cell Leukemia) #od1( Adult TCell Leukemia) #od1( NKG2A Receptor) #od1( Human T Lymphotropic Virus-Associated Leukemia-Lymphoma) #od1( Human T Lymphotropic VirusAssociated LeukemiaLymphoma) #od1( Human T-Cell Leukemia-Lymphomas) #od1( Human TCell LeukemiaLymphomas) #od1( Receptor NKG2A) #od1( Receptor NKG2B) #od1( Receptor NKG2C) #od1( Receptor NKG2E) #od1( Leukemias Adult T-Cell) #od1( Leukemias Adult TCell) #od1( Leukemia-Lymphomas HTLV-I-Associated T-Cell) #od1( LeukemiaLymphomas HTLVIAssociated TCell) #od1( NKG2-C Receptor) #od1( NKG2C Receptor) #od1( Receptor NKG2-F) #od1( Receptor NKG2F) #od1( Human T Lymphotropic Virus Associated Leukemia Lymphoma) #od1( NKG2 F Receptor) #od1( NKG2B Receptor) #od1( ATLL) #od1( Leukemia-Lymphomas Human T-Cell) #od1( LeukemiaLymphomas Human TCell) #od1( Leukemia-Lymphomas Adult T-Cell) #od1( LeukemiaLymphomas Adult TCell) #od1( T-Cell Leukemia-Lymphomas HTLV-I-Associated) #od1( TCell LeukemiaLymphomas HTLVIAssociated) #od1( Leukemia-Lymphoma T-Cell Acute HTLV-I-Associated) #od1( LeukemiaLymphoma TCell Acute HTLVIAssociated) #od1(  carboxyl ester lipase like)) 0.2 affect " +
+    		"" +
+    		"0.6 #syn( Pes #od1( CAPOS) #od1( Rocker-bottom foot) #od1( Reppal PES100) #od1( Krauss Herman Holmes syndrome) #od1( Reppal PES-100) #od1( Rockerbottom foot)) " +
+    		"" +
+    		"" +
+    		"0.2 mutations ) )";
+    
+    
     ArrayList<RetrievalResult> result = new ArrayList<RetrievalResult>();
 
     // set smoothing parameters for Indri here

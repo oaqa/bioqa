@@ -261,15 +261,18 @@ public class QueryStrategy {
         String newKeytermText = keytermText;
 
         // for apostrophe (e.g. "'s") situation
-        if (!apostropheRemoved.isEmpty())
-          newKeytermText = keytermText.replace(apostropheRemoved + "s", apostropheRemoved);
-        KeytermInQuery phraseKeyterm = new KeytermInQuery(newKeytermText, this.conceptTermWeight);
+       // if (!apostropheRemoved.isEmpty())
+         // newKeytermText = keytermText.replace(apostropheRemoved + "s", apostropheRemoved);
+        
+        KeytermInQuery phraseKeyterm = new KeytermInQuery(keytermText, this.conceptTermWeight);
         QueryComponent temp = new QueryComponent(phraseKeyterm,
                 this.cleaner.removeDuplicatedSynonyms(keytermText, resources));
 
         // for apostrophe (e.g. "'s") situation
         if (!apostropheRemoved.isEmpty()) {
+          newKeytermText = keytermText.replace(apostropheRemoved + "s", apostropheRemoved);
           temp.replaceStringKeepingOriginalInSynonyms(apostropheRemoved + "s", apostropheRemoved);
+          temp.addSynonyms(newKeytermText);
         }
 
         if (checker.isConceptTerm(keytermText)) {
@@ -409,6 +412,8 @@ public class QueryStrategy {
         }
 
         this.queryContainer.add(temp);
+        
+        //temp.addSynonyms("TGF-beta");
         
         keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
         if(temp.isConcept()) 
