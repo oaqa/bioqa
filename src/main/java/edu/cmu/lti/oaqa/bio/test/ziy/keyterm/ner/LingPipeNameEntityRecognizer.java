@@ -15,8 +15,8 @@ import com.aliasi.chunk.Chunker;
 import com.aliasi.chunk.Chunking;
 import com.aliasi.util.Streams;
 
-import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
+import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 public class LingPipeNameEntityRecognizer extends AbstractKeytermUpdater {

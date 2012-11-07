@@ -2,36 +2,29 @@ package edu.cmu.lti.oaqa.bio.test.ziy.keyterm.kb;
 
 import java.util.List;
 
-import edu.cmu.lti.oaqa.bio.annotate.graph.ConceptBundle;
-import edu.cmu.lti.oaqa.bio.annotate.umls.GraphQueryEngine;
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
+import edu.cmu.lti.oaqa.bio.mesh_wrapper.MeshWrapper;
+import edu.cmu.lti.oaqa.bio.resource_warpper.Entity;
 import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
+public class ResourceWrapperSynonymLookupper extends AbstractKeytermUpdater {
 
-public class UmlsGraphSynonymLookupper extends AbstractKeytermUpdater {
-
-  private GraphQueryEngine lookupper = new GraphQueryEngine();
+  private MeshWrapper lookupper = new MeshWrapper();
 
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {
-      ConceptBundle synonyms = lookupper.search(keyterm.getText());
-      if (synonyms == null) {
-        continue;
-      }
-      for (String synonym : synonyms.getSynonyms()) {
-        ((BioKeyterm)keyterm).addSynonym(synonym, "UMLS-GRAPH");
-      }
-      for (String definition : synonyms.getDefinitions()) {
-        ((BioKeyterm)keyterm).addConcept(definition, "UMLS-GRAPH");
+      for (Entity entity : lookupper.getEntities(keyterm.getText())) {
+        ((BioKeyterm)keyterm).addExternalResource(entity.getDefinition(), entity.getName(), entity.getSynonyms(),
+                entity.getSource());
       }
     }
     return keyterms;
   }
 
   public static void main(String[] args) {
-    UmlsGraphSynonymLookupper lookupper = new UmlsGraphSynonymLookupper();
+    ResourceWrapperSynonymLookupper lookupper = new ResourceWrapperSynonymLookupper();
     List<Keyterm> keyterms = lookupper.updateKeyterms(null, Vocabulary.keyterms);
     for (Keyterm keyterm : keyterms) {
       for (String source : ((BioKeyterm)keyterm).getAllResourceSources()) {
@@ -42,5 +35,5 @@ public class UmlsGraphSynonymLookupper extends AbstractKeytermUpdater {
       }
     }
   }
-
+  
 }

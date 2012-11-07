@@ -14,10 +14,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import util.SimilarityUtils;
 
-import edu.cmu.lti.oaqa.bio.core.ie.AbstractPassageUpdater;
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.bio.framework.retrieval.DocumentRetrieverWrapper;
 import edu.cmu.lti.oaqa.bio.test.ziy.keyterm.pos.LingPipeHmmPosTagger;
+import edu.cmu.lti.oaqa.cse.basephase.ie.AbstractPassageUpdater;
 import edu.cmu.lti.oaqa.framework.UimaContextHelper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 

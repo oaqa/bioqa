@@ -2,16 +2,17 @@ package edu.cmu.lti.oaqa.bio.test.ziy.keyterm.kb;
 
 import java.util.List;
 
-import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.bio.mesh_wrapper.MeshWrapper;
 import edu.cmu.lti.oaqa.bio.resource_warpper.Entity;
+import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 public class MeshSynonymLookupper extends AbstractKeytermUpdater {
 
   private MeshWrapper lookupper = new MeshWrapper();
-
+  
+  
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {

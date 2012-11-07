@@ -3,11 +3,11 @@ package edu.cmu.lti.oaqa.bio.test.ziy.keyterm.kb;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.bio.test.ziy.framework.SqlUtils;
 import edu.cmu.lti.oaqa.bio.umls_wrapper.TermRelationship;
 import edu.cmu.lti.oaqa.bio.umls_wrapper.UmlsTermsDAO;
+import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 public class UmlsSynonymLookupper extends AbstractKeytermUpdater {

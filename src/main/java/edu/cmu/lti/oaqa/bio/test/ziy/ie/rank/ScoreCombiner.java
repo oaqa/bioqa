@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import edu.cmu.lti.oaqa.bio.core.ie.AbstractPassageUpdater;
+import edu.cmu.lti.oaqa.cse.basephase.ie.AbstractPassageUpdater;
 import edu.cmu.lti.oaqa.framework.UimaContextHelper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.PassageCandidate;

@@ -58,7 +58,7 @@ public class CleanTerms {
 
     List<String> newList = new ArrayList<String>();
 
-    if (this.removeIndriSpeCha(synsList.toString()).isEmpty())
+    if (CleanTerms.removeIndriSpeCha(synsList.toString()).isEmpty())
       return null;
 
     // add the original term to the HashMap
@@ -69,11 +69,13 @@ public class CleanTerms {
 
     for (String s : synsList) {
 
+      //System.out.println("*****  " + s);
+      
       boolean filter = false;
       String queryString;
       StringBuilder syns = new StringBuilder();
       String[] sList;
-      s = this.removeIndriSpeCha(s);
+      s = CleanTerms.removeIndriSpeCha(s);
 
       if (s.length() <= 2)
         continue;
@@ -92,10 +94,11 @@ public class CleanTerms {
 
         if (checker.isAllNumeric(s1.replaceAll("-", "")))
           continue;
+        else if (checker.hasNumeric(s1)) 
+          s1 = s1.toLowerCase();    //stemming will remove all the numbers following the alphabeta, which is not we want
         else
           s1 = this.getStemmedTerm(s1.toLowerCase());
-
-        // remove the synonyms which contains the original term
+   // remove the synonyms which contains the original term
         if (s1.equals(stemmedOriginal)) {
           filter = true;
           break;
@@ -107,6 +110,8 @@ public class CleanTerms {
       if (filter)
         continue;
 
+      //System.out.println("****   " + syns);
+      
       // with and withough hyphen are synonyms
       if (newS.contains("-"))
         queryString = "#syn(" + "#od1(" + newS + ")" + " #od1(" + newS.replaceAll("-", "") + ")"
@@ -118,6 +123,7 @@ public class CleanTerms {
         hm.put(syns.toString(), queryString);
 
         newList.add(newS);
+        
         if (newS.contains("-"))
           newList.add(newS.replaceAll("-", ""));
       }

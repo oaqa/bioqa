@@ -19,7 +19,7 @@ public class CheckTerms {
    * @param term the key term word
    * @return <code>true</code> if it is key word, otherwise, <code>false</code>
    */
-  public boolean hasNumeric(String term) {
+  public static boolean hasNumeric(String term) {
     for (int i = 0; i < term.length(); i++) {
       if (Character.isDigit(term.charAt(i)))
         return true;
@@ -34,7 +34,7 @@ public class CheckTerms {
    * @return <code>true</code> if the term is combined with all numbers, otherwise,
    *         <code>false</code>
    */
-  public boolean isAllNumeric(String term) {
+  public static boolean isAllNumeric(String term) {
     for (int i = 0; i < term.length(); i++) {
       if (!Character.isDigit(term.charAt(i)))
         return false;
@@ -45,7 +45,7 @@ public class CheckTerms {
   /**
    * Checks if the term only has upper case or numerical characters
    */
-  public boolean isOnlyUpperCaseOrNumerical(String term) {
+  public static boolean isOnlyUpperCaseOrNumerical(String term) {
     for (int i = 0; i < term.length(); i++) {
       if (!Character.isUpperCase(term.charAt(i)) && !Character.isDigit(term.charAt(i)))
         return false;
@@ -56,7 +56,7 @@ public class CheckTerms {
   /**
    * Checks if the term is acronym
    */
-  public boolean isAcronym(String term) {
+  public static boolean isAcronym(String term) {
     return isOnlyUpperCaseOrNumerical(term);
   }
 
@@ -66,7 +66,7 @@ public class CheckTerms {
    * @param word the word wanted to be checked
    * @return <code>true</code> if it is the stop word; <code>false</code> if it is not the stop word
    */
-  public boolean isStopwords(String word) {
+  public static boolean isStopwords(String word) {
     ArrayList<String> stopwordList = new ArrayList<String>();
     String stopwords = "about again all almost also although always among an and another "
             + "any are as at be because been before being between both but by can could did do does done "
@@ -93,7 +93,7 @@ public class CheckTerms {
    * @param term the key term word
    * @return <code>true</code> when it is concept terms; <code>false</code> otherwise
    */
-  public boolean isConceptTerm(String term) {
+  public static boolean isConceptTerm(String term) {
 
     // if the term is the list of notFit, they should not be thought as protein/gene
     String[] notFit = { "PROTEINS", "GENES", "PATHWAYS", "BIOLOGICAL", "SUBSTANCES", "TUMOR",
@@ -116,11 +116,11 @@ public class CheckTerms {
     return false;
   }
 
-  public boolean isProtein(String term) {
+  public static boolean isProtein(String term) {
     return isConceptTerm(term);
   }
 
-  public boolean isGene(String term) {
+  public static boolean isGene(String term) {
     return isConceptTerm(term);
   }
 }

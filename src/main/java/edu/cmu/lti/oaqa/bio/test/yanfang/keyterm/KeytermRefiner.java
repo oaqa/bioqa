@@ -6,11 +6,11 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import edu.cmu.lti.oaqa.bio.core.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.bio.retrieval.query.strategy.QueryStrategy;
 import edu.cmu.lti.oaqa.bio.retrieval.query.structure.QueryComponent;
 import edu.cmu.lti.oaqa.bio.retrieval.query.structure.QueryComponentContainer;
+import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.UimaContextHelper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
@@ -64,7 +64,6 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
             false);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
 
