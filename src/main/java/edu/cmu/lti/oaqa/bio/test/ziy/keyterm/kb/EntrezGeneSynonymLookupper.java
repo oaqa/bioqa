@@ -1,5 +1,6 @@
 package edu.cmu.lti.oaqa.bio.test.ziy.keyterm.kb;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.cmu.lti.oaqa.bio.entrezgene_wrapper.EntrezGeneWrapper;

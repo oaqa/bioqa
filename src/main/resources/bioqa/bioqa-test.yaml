@@ -39,10 +39,10 @@ pipeline:
    # options: |
       #- inherit: bioqa.keyterm.restore
 
-  #- inherit: internal.cse.phase
-   # name: synonyms
-    #options: |
-     # - inherit: bioqa.keyterm.kb.mesh
+  - inherit: internal.cse.phase
+    name: synonyms
+    options: |
+      - inherit: bioqa.keyterm.kb.mesh
 
   #- inherit: internal.cse.phase
    # name: synonyms

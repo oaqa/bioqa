@@ -19,8 +19,6 @@ import edu.cmu.lti.oaqa.bio.retrieval.tools.CheckTerms;
 
 public class BioNameLexicalVariants {
 
-  CheckTerms checker = new CheckTerms();
-
   private static final Pattern VALID_PATTERN = Pattern.compile("[0-9]+|[A-Za-z]+");
 
   /**
@@ -32,7 +30,7 @@ public class BioNameLexicalVariants {
    */
   public List<String> getLexicalVariants(String term) {
 
-    boolean isAlphanumeric = checker.hasNumeric(term);
+    boolean isAlphanumeric = CheckTerms.hasNumeric(term);
     boolean isHyphened = term.contains("-");
     ArrayList<String> variants = new ArrayList<String>();
 
@@ -51,12 +49,12 @@ public class BioNameLexicalVariants {
         // Adds "p" if the segmented part is a protein or gene name. This is a
         // rule of thumb. For example, "Sec6" is the same as "Sec6p" in some
         // situations.
-        if (checker.isProtein(segmentedPart) || checker.isGene(segmentedPart)) {
+        if (CheckTerms.isProtein(segmentedPart) || CheckTerms.isGene(segmentedPart)) {
           variants.add(segmentedPart.concat("p"));
         }
 
         // Concept term: protein, gene, disease and other biological concept
-        if (checker.isConceptTerm(segmentedPart)) {
+        if (CheckTerms.isConceptTerm(segmentedPart)) {
           variants.add(segmentedPart);
         }
 
@@ -96,7 +94,7 @@ public class BioNameLexicalVariants {
   public List<String> getAlphanumbericalVariants(String term) {
 
     // When the term does not have any numberic
-    if (!checker.hasNumeric(term))
+    if (!CheckTerms.hasNumeric(term))
       return null;
 
     List<List<String>> rawVariants = new ArrayList<List<String>>();
@@ -145,6 +143,7 @@ public class BioNameLexicalVariants {
 
       // Temp is to store the results from last run and combination will store
       // all the latest combinations.
+      @SuppressWarnings("unchecked")
       ArrayList<String> temp = (ArrayList<String>) combinations.clone();
       combinations.clear();
 
@@ -181,7 +180,7 @@ public class BioNameLexicalVariants {
         "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIV", "XX" };
     int number;
 
-    if (checker.isAllNumeric(n) && (number = Integer.parseInt(n)) <= romanNumerical.length + 1) {
+    if (CheckTerms.isAllNumeric(n) && (number = Integer.parseInt(n)) <= romanNumerical.length + 1) {
       return romanNumerical[number - 1];
     } else
       return null;
