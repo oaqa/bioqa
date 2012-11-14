@@ -17,6 +17,8 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
  */
 public class AddAbbreviationAndLongForm extends AbstractKeytermUpdater {
 
+  //
+  
     @Override
     protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
         ExtractAbbrev extracAbb = new ExtractAbbrev();
