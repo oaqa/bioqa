@@ -21,8 +21,8 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
  * <li>adding probability (a.k.a. score) for each keyterm</li>
  * </ul>
  * 
- * From the probability, you can decide whether you should use the keyterm or not. Which resources to
- * use is specified in the yaml file.
+ * From the probability, you can decide whether you should use the keyterm or not. Which resources
+ * to use is specified in the yaml file.
  * 
  * @author yanfang (yanfang@cmu.edu)
  */
@@ -44,6 +44,14 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
 
   private boolean usePosTagger;
 
+  private String conceptWeight;
+
+  private String regularWeight;
+
+  private String verbWeight;
+
+  private String geneWeight;
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
@@ -62,6 +70,14 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
             "LexicalVariants", false);
     this.usePosTagger = UimaContextHelper.getConfigParameterBooleanValue(aContext, "PosTagger",
             false);
+    this.conceptWeight = UimaContextHelper.getConfigParameterStringValue(aContext,
+            "concept-term-weight", "0.6");
+    this.regularWeight = UimaContextHelper.getConfigParameterStringValue(aContext,
+            "regular-term-weight", "0.4");
+    this.verbWeight = UimaContextHelper.getConfigParameterStringValue(aContext, "verb-term-weight",
+            "0.2");
+    this.geneWeight = UimaContextHelper.getConfigParameterStringValue(aContext, "gene-term-weight",
+            "0.3");
   }
 
   @Override
@@ -85,46 +101,13 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
     refiner.hasUMLSAcronym(useUMLSAcronym);
     refiner.hasEntrezAcronym(useENTREZAcronym);
     refiner.hasMESHAcronym(useMESHAcronym);
+    refiner.setConceptTermWeight(this.conceptWeight);
+    refiner.setRegularTermWeight(this.regularWeight);
+    refiner.setVerbTermWeight(this.verbWeight);
+    refiner.setGeneTermWeight(this.geneWeight);
 
-    //QueryComponentContainer qc = refiner.getAllQueryComponents();
-
-    
-    /*
-    for (BioKeyterm keyterm : bioKeyterms) {
-      
-     // System.out.println(keyterm.getText());
-      
-      for (QueryComponent q : qc.getQueryComponent()) {
-        
-        
-        // TODO take care of the phrases
-        
-        // only change the terms that will be used for query.
-        if (q.getKeyterm().getText().toLowerCase().equals(keyterm.getText().toLowerCase())) {
-          // TODO test if this is correct or not. Because this may be replaced by simple weight
-          // Though the probablity is 1, the weight actually should be 0.6, not 1.
-          System.out.println(q.getKeyterm().getText());
-          
-          if (q.isConcept())
-            keyterm.setProbablity(1);
-          else
-            keyterm.setProbablity(Float.valueOf(q.getWeight()));
-          // add as a kind of the external resource. The synonyms here should be the correct one.
-          keyterm.addExternalResource("", "", q.getSynonyms(), "RefinedSynonyms");
-          break;
-        }
-      }
-      result.add(keyterm);
-    }
-    */
-    
-    //keyterms = (List<Keyterm>) (List<?>) refiner.getRefinedKeyterms();
-    
-    for(BioKeyterm bioK : refiner.getRefinedKeyterms()) {
+    for (BioKeyterm bioK : refiner.getRefinedKeyterms()) {
       result.add(bioK);
-      //System.out.println(bioK.getText());
-      //System.out.println(bioK.getProbability());
-      //System.out.println(bioK.getSynonymsBySource("RefinedSynonyms"));
     }
     return result;
   }

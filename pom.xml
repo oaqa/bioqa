@@ -255,19 +255,9 @@
 			<version>1.1.1</version>
 		</dependency>
     <dependency>
-      <groupId>edu.cmu.lti.oaqa.bio.core</groupId>
-      <artifactId>baseqa</artifactId>
-      <version>1.7.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
     	<groupId>edu.cmu.lti.oaqa.framework.impl</groupId>
     	<artifactId>jdbc-providers</artifactId>
     	<version>2.2.0</version>
-    </dependency>
-    <dependency>
-    	<groupId>edu.cmu.lti.oaqa.bio.model</groupId>
-    	<artifactId>bio-model</artifactId>
-    	<version>1.0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>com.aliasi</groupId>
@@ -296,13 +286,23 @@
     </dependency>
     <dependency>
     	<groupId>edu.cmu.lti.oaqa.bio.annotate</groupId>
-    	<artifactId>umls-wrapper</artifactId>
-    	<version>1.1.1</version>
+    	<artifactId>umls-retriever</artifactId>
+    	<version>1.0.3</version>
+    </dependency>
+    <dependency>
+    	<groupId>edu.cmu.lti.oaqa.bio.model</groupId>
+    	<artifactId>bio-model</artifactId>
+    	<version>1.0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>edu.cmu.lti.oaqa.bio.annotate</groupId>
-    	<artifactId>umls-retriever</artifactId>
-    	<version>1.0.3</version>
+    	<artifactId>umls-wrapper</artifactId>
+    	<version>1.1.2</version>
+    </dependency>
+    <dependency>
+    	<groupId>edu.cmu.lti.oaqa.bio.core</groupId>
+    	<artifactId>baseqa</artifactId>
+    	<version>1.8.1-SNAPSHOT</version>
     </dependency>
 	</dependencies>
 </project>

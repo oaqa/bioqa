@@ -22,7 +22,9 @@ public class KeytermRestorer extends AbstractKeytermUpdater {
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     String keytermFilePath = (String) aContext.getConfigParameterValue("KeytermFilePath");
+    System.out.println(keytermFilePath);
     try {
+      
       ObjectInputStream oos = new ObjectInputStream(getClass().getResourceAsStream(keytermFilePath));
       text2keyterm.putAll((Map<String, BioKeyterm>) oos.readObject());
       oos.close();

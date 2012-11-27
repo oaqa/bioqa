@@ -11,7 +11,11 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 public class UmlsGraphSynonymLookupper extends AbstractKeytermUpdater {
 
-  private GraphQueryEngine lookupper = new GraphQueryEngine();
+  /**
+ * @uml.property  name="lookupper"
+ * @uml.associationEnd  multiplicity="(1 1)"
+ */
+private GraphQueryEngine lookupper = new GraphQueryEngine();
 
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
@@ -34,7 +38,7 @@ public class UmlsGraphSynonymLookupper extends AbstractKeytermUpdater {
     UmlsGraphSynonymLookupper lookupper = new UmlsGraphSynonymLookupper();
     List<Keyterm> keyterms = lookupper.updateKeyterms(null, Vocabulary.keyterms);
     for (Keyterm keyterm : keyterms) {
-      for (String source : ((BioKeyterm)keyterm).getAllResourceSources()) {
+      for (String source : ((BioKeyterm) keyterm).getAllResourceSources()) {
         System.out.println("Keyterm > " + keyterm.getText());
         System.out.println("Concept [" + source + "] > " + ((BioKeyterm)keyterm).getConceptBySource(source));
         System.out.println("Category[" + source + "] > " + ((BioKeyterm)keyterm).getCategoryBySource(source));

@@ -28,7 +28,7 @@ public class BioNameLexicalVariants {
    * @return a String list of all the lexical variants. <code>null</code> if the
    *         term does not have any lexical variants.
    */
-  public List<String> getLexicalVariants(String term) {
+  public static List<String> getLexicalVariants(String term) {
 
     boolean isAlphanumeric = CheckTerms.hasNumeric(term);
     boolean isHyphened = term.contains("-");
@@ -91,7 +91,7 @@ public class BioNameLexicalVariants {
    * @return a String list of all the lexical variants. <code>null</code> if the
    *         term does not have nay numeric.
    */
-  public List<String> getAlphanumbericalVariants(String term) {
+  public static List<String> getAlphanumbericalVariants(String term) {
 
     // When the term does not have any numberic
     if (!CheckTerms.hasNumeric(term))
@@ -135,7 +135,7 @@ public class BioNameLexicalVariants {
    * @param inputList This list contains the lists that will be combined.
    * @return a list of all the possible combinations
    */
-  public ArrayList<String> getAllCombinations(List<List<String>> inputList) {
+  public static ArrayList<String> getAllCombinations(List<List<String>> inputList) {
 
     ArrayList<String> combinations = new ArrayList<String>();
 
@@ -174,7 +174,7 @@ public class BioNameLexicalVariants {
    * @return Roman numerical.
    *         <code>null<code> if the number if not an integer between 1 and 20.
    */
-  public String getRomanNumericals(String n) {
+  public static String getRomanNumericals(String n) {
 
     String[] romanNumerical = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI",
         "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIV", "XX" };
@@ -188,10 +188,9 @@ public class BioNameLexicalVariants {
 
   // test case
   public static void main(String arg[]) {
-    BioNameLexicalVariants lv = new BioNameLexicalVariants();
-    System.out.println(lv.getAlphanumbericalVariants("su7").toString());
-    System.out.println(lv.getLexicalVariants("Sec6-mutated").toString());
-    System.out.println(lv.getLexicalVariants("Sec6-mutated").size());
+    System.out.println(BioNameLexicalVariants.getAlphanumbericalVariants("su7").toString());
+    System.out.println(BioNameLexicalVariants.getLexicalVariants("Sec6-mutated").toString());
+    System.out.println(BioNameLexicalVariants.getLexicalVariants("Sec6-mutated").size());
   }
 
 }

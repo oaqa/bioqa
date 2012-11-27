@@ -1,5 +1,5 @@
 class: edu.cmu.lti.oaqa.bio.test.yanfang.ie.IndriLegalSpanPassageExtractor
-hit-list-size: 2    #please check it every time you want to run this in test qa~~
+hit-list-size: 1000    #please check it every time you want to run this in test qa~~
 server: peace.isri.cs.cmu.edu
 port: 21237
 gzip: true
@@ -8,18 +8,6 @@ cross-opts:
   smoothing: [dirichlet]  #all algorithoms: dirichlet two-stage jelinek-mercer
   smoothing-mu: [2500] 
   smoothing-lambda: [0.4] 
-  concept-term-weight: [0.6]
-  regular-term-weight: [0.4]
-  verb-term-weight: [0.2]
-  gene-term-weight: [0.3]
-  MESH: [true]
-  ENTREZ: [true]
-  UMLS: [false]
-  LexicalVariants: [true]
-  PosTagger: [true]
-  MESH-Acronym: [false]
-  ENTREZ-Acronym: [false]
-  UMLS-Acronym: [true]
 
 persistence-provider: |
   inherit: internal.log-persistence-provider

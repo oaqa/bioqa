@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.bio.test.ziy.framework.SqlUtils;
+import edu.cmu.lti.oaqa.bio.umls_wrapper.Term;
 import edu.cmu.lti.oaqa.bio.umls_wrapper.TermRelationship;
 import edu.cmu.lti.oaqa.bio.umls_wrapper.UmlsTermsDAO;
 import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
@@ -20,10 +21,15 @@ public class UmlsSynonymLookupper extends AbstractKeytermUpdater {
       try {
         // TODO: Umls Wrapper should handle the escape of invalid sql queries
         ArrayList<TermRelationship> synonyms = lookupper.getTermSynonyms(SqlUtils.escape(keyterm
-                .getText()));
+                .getText()), false);
+       // ArrayList<TermRelationship> synonyms = lookupper.getProteinGeneDiseaseSynonyms(SqlUtils.escape(keyterm
+         //       .getText()), false);
         for (TermRelationship relation : synonyms) {
-          ((BioKeyterm)keyterm).addConcept(relation.getFromTermDefinition(), relation.getSource());
-          ((BioKeyterm)keyterm).addSynonym(relation.getFromTerm(), relation.getSource());
+          ((BioKeyterm)keyterm).addConcept(relation.getToTermDefinition(), relation.getSource());
+          ((BioKeyterm)keyterm).addSynonym(relation.getToTerm(), relation.getSource());
+          
+          //System.out.println(keyterm.getText() + " " + relation.getFromTerm());
+          
         }
       } catch (Exception e) {
         e.printStackTrace();

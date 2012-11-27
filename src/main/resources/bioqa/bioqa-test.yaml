@@ -26,38 +26,50 @@ pipeline:
   - inherit: internal.cse.phase
     name: name-entity-recognizer
     options: |
-      #- inherit: testqa-yanfang.keyterm.lingpipe-abbreviation
-      - inherit: bioqa.keyterm.lingpipe
+      - inherit: bioqa.keyterm.lingpipe-abbreviation
+      #- inherit: bioqa.keyterm.lingpipe
 
   #- inherit: internal.cse.phase
    # name: name-entity-recognizer
     #options: |
-     # - inherit: bioqa.keyterm.syn-lexical-variants
-
- # - inherit: internal.cse.phase
-  #  name: restore
-   # options: |
-      #- inherit: bioqa.keyterm.restore
+     # - inherit: bioqa.keyterm.syn-abbreviation-longform
 
   - inherit: internal.cse.phase
-    name: synonyms
+    name: name-entity-recognizer
     options: |
-      - inherit: bioqa.keyterm.kb.mesh
+      - inherit: bioqa.keyterm.syn-lexical-variants
+
+  - inherit: internal.cse.phase
+    name: restore
+    options: |
+      - inherit: bioqa.keyterm.restore
+      #- inherit: bioqa.keyterm.restore_before
+
+
+  #- inherit: internal.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.mesh
 
   #- inherit: internal.cse.phase
    # name: synonyms
     #options: |
      # - inherit: bioqa.keyterm.kb.entrezgene
 
-  #- inherit: internal.cse.phase
-   # name: synonyms
-    #options: |
-    #  - inherit: bioqa.keyterm.kb.umls
- 
   - inherit: internal.cse.phase
-    name: store
+    name: synonyms
     options: |
-      - inherit: bioqa.keyterm.restore
+      - inherit: bioqa.keyterm.kb.umls
+ 
+  #- inherit: internal.cse.phase
+   # name: store
+    #options: |
+     # - inherit: bioqa.keyterm.restore
+
+  #- inherit: internal.cse.phase
+   # name: store
+    #options: |
+     # - inherit: bioqa.keyterm.io.backup
 
   - inherit: internal.cse.phase
     name: synonyms
@@ -69,20 +81,44 @@ pipeline:
     options: | 
       - inherit: bioqa.retrieval.BasicIndriRetrieval
 
-  #- inherit: internal.cse.phase
-   # name: passage-extractor
-    #options: | 
-     # - inherit: bioqa.ie.IndriLegalSpan
+  - inherit: internal.cse.phase
+    name: passage-extractor
+    options: | 
+      - inherit: bioqa.ie.IndriLegalSpan
 
-  #- inherit: internal.cse.phase 
+  #- inherit: internal.cse.phase
    # name: retrieval-strategist
     #options: |
-     # - inherit: default.retrieval.default
+     # - inherit: bioqa.retrieval.io.restore
       
   #- inherit: internal.cse.phase 
    # name: passage-extractor
     #options: |
      # - inherit: default.ie.default
+
+  - inherit: internal.cse.phase 
+    name: passage-span
+    options: |
+      - inherit: bioqa.ie.span.important-sentence@peace
+      - inherit: base.noop
+
+  - inherit: internal.cse.phase 
+    name: passage-rank
+    options: |
+      - inherit: bioqa.ie.rank.proximity@peace
+      - inherit: base.noop
+      
+  - inherit: internal.cse.phase 
+    name: score-combine
+    options: |
+      - inherit: bioqa.ie.rank.combine
+      - inherit: base.noop
+
+  - inherit: internal.cse.phase 
+    name: passage-overlap
+    options: |
+      - inherit: bioqa.ie.overlap.filter
+      - inherit: base.noop
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer

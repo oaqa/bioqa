@@ -1,0 +1,9 @@
+class: edu.cmu.lti.oaqa.bio.test.ziy.ie.overlap.OverlappingPassageFilter
+limit: 1000
+FilterMode: MERGE_OVERLAP
+cross-opts:
+#  slack: [0, 1, 3, 10]
+  slack: [1]
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider

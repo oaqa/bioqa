@@ -26,12 +26,10 @@ public class AddAbbreviationAndLongForm extends AbstractKeytermUpdater {
         if (extracAbb.abbreviateExtractor(question) != null) {
             abbreviationAndLongForm = extracAbb.abbreviateExtractor(question);
             for (Keyterm keyterm : keyterms) {
-                BioKeyterm bk = (BioKeyterm) keyterm;
                 if (abbreviationAndLongForm.containsKey(keyterm.getText())) {
-                    bk.addSynonym(abbreviationAndLongForm.get(keyterm.getText()),
+                    ((BioKeyterm)keyterm).addSynonym(abbreviationAndLongForm.get(keyterm.getText()),
                                     "AbbreviationAndLongForm");
                 }
-                keyterm = bk;
             }
         }
         return keyterms;

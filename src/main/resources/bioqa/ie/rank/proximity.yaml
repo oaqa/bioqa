@@ -1,0 +1,12 @@
+class: edu.cmu.lti.oaqa.bio.test.ziy.ie.rank.TermProximityRanker
+Prefix: file:/Users/yanfang/Documents/CMU/TREC2006/
+cross-opts:
+  C1: [0.0001] # a constant which controls the overall magnitude of R (currently in terms of the number of characters, default is 100 from [Lawrence:98])
+  C2: [100] # the maximum distance between query terms which is considered useful (currently in terms of the number of characters, default is 5000 from [Lawrence:98])
+  C3: [0.00001] # the importance of term frequency (currently in terms of the number of characters, default is 10 * c1 from [Lawrence:98])
+  ConsiderSynonyms: [true] # false is the default value in [Tari:06] and [Bergler:06]
+  CombineOriginalScores: [true] # false is the default value in [Tari:06] and [Bergler:06]
+  OriginalWeight: [0.5]
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider
