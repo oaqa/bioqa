@@ -20,14 +20,13 @@ public class AddLexicalVariants extends AbstractKeytermUpdater {
 
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
-    BioNameLexicalVariants lv = new BioNameLexicalVariants();
-
+    
     for (Keyterm keyterm : keyterms) {
       BioKeyterm bk = (BioKeyterm) keyterm;
       // work for the single term
       if (!keyterm.getText().contains(" ")) {
         List<String> syns;
-        if ((syns = lv.getLexicalVariants(keyterm.getText())) != null) {
+        if ((syns = BioNameLexicalVariants.getLexicalVariants(keyterm.getText())) != null) {
           bk.addExternalResource("", "", syns, "LexicalVariants");
         }
         keyterm = bk;

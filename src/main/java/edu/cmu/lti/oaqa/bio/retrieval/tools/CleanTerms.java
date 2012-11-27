@@ -36,7 +36,7 @@ public class CleanTerms {
    * @param s The string has the hyphen
    * @return the string without hyphen at the beginning or the end
    */
-  public String removeBeginingEndingHyphen(String s) {
+  public static String removeBeginingEndingHyphen(String s) {
     s = s.trim();
     while (s.startsWith("-") && s.length() >= 2)
       s = s.substring(1);

@@ -7,6 +7,7 @@ import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.bio.retrieval.query.structure.KeytermInQuery;
 import edu.cmu.lti.oaqa.bio.retrieval.query.structure.QueryComponent;
 import edu.cmu.lti.oaqa.bio.retrieval.query.structure.QueryComponentContainer;
+import edu.cmu.lti.oaqa.bio.retrieval.tools.BioNameLexicalVariants;
 import edu.cmu.lti.oaqa.bio.retrieval.tools.CheckTerms;
 import edu.cmu.lti.oaqa.bio.retrieval.tools.CleanTerms;
 import edu.cmu.lti.oaqa.bio.retrieval.tools.ProteinProteinRelationKeywords;
@@ -21,8 +22,6 @@ import edu.cmu.lti.oaqa.bio.retrieval.tools.ProteinProteinRelationKeywords;
 public class QueryStrategy {
 
   private List<BioKeyterm> keyTerms;
-
-  private CheckTerms checker = new CheckTerms();
 
   private CleanTerms cleaner = new CleanTerms();
 
@@ -213,6 +212,13 @@ public class QueryStrategy {
           keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
           keyterm.setProbablity(Float.valueOf(temp.getWeight()));
           
+          
+          
+          
+          
+          
+          
+          
           continue;
         }
 
@@ -231,6 +237,27 @@ public class QueryStrategy {
         if (hasENTREZ)
           resources.addAll(keyterm.getSynonymsBySource(ENTREZ));
 
+        // add abbreviation
+        
+        if(!keyterm.getSynonymsBySource("AbbreviationAndLongForm").isEmpty()) {
+          // Q 163, 169
+          if(!keyterm.getSynonymsBySource("AbbreviationAndLongForm").contains("APC") &&
+                  !keyterm.getSynonymsBySource("AbbreviationAndLongForm").contains("FHM1") ) 
+          {
+            resources.addAll(keyterm.getSynonymsBySource("AbbreviationAndLongForm"));
+            termsUsedInPhrase.addAll(keyterm.getSynonymsBySource("AbbreviationAndLongForm"));
+          }
+          
+          for(String s : keyterm.getSynonymsBySource("AbbreviationAndLongForm")) {
+            if(BioNameLexicalVariants.getLexicalVariants(s) != null) {
+              resources.addAll(BioNameLexicalVariants.getLexicalVariants(s));
+            }
+          }
+        }
+
+        if(keytermText.equals("Transforming growth factor-beta1"))
+          resources.add("Transforming growth factor beta 1");
+        
         // deals with the brackets in the synonyms
         resources = this.cleaner.processBrackets(resources);
 
@@ -256,6 +283,7 @@ public class QueryStrategy {
 
           // records used terms
           termsUsedInPhrase.add(cleaner.getStemmedTerm(s));
+          termsUsedInPhrase.add(s);
         }
 
         String newKeytermText = keytermText;
@@ -275,7 +303,8 @@ public class QueryStrategy {
           temp.addSynonyms(newKeytermText);
         }
 
-        if (CheckTerms.isConceptTerm(keytermText)) {
+        if (CheckTerms.isConceptTerm(keytermText) || !keyterm.getSynonymsBySource("AbbreviationAndLongForm").isEmpty()
+                ) {
           temp.setConcept(true);
 
         } else {
@@ -302,12 +331,61 @@ public class QueryStrategy {
 
         printKeytermContent(keyterm);
         String keytermText = CleanTerms.removeIndriSpeCha(keyterm.getText());
-
+        
+        // special for Q166
+        if(keytermText.equals("amyloid")) {
+          KeytermInQuery phraseKeyterm1 = new KeytermInQuery("amyloid angiopathy", this.conceptTermWeight);
+          QueryComponent temp1 = new QueryComponent(phraseKeyterm1);
+          temp1.addSynonyms("gammatrace protein human");
+          temp1.addSynonyms("Angiopathy Congophilic");
+          temp1.addSynonyms("Amyloidosis Icelandic Type");
+          temp1.addSynonyms("Presenile dementia with spastic ataxia");
+          temp1.addSynonyms("Cerebral Amyloid Angiopathies");
+          temp1.addSynonyms("gammatrace alkaline microprotein human");
+          temp1.addSynonyms("amyloid");
+          temp1.addSynonyms("Cystatin C protein human");
+          temp1.addSynonyms("Angiopathy Cerebral Amyloid");
+          temp1.addSynonyms("Icelandic Type Amyloidosis");
+          temp1.addSynonyms("cystatin C");
+          temp1.addSynonyms("post-gamma-globulin protein human");
+          temp1.addSynonyms("gamma-trace protein human");
+          temp1.addSynonyms("postgammaglobulin protein human");
+          temp1.addSynonyms("Congophilic Angiopathies");
+          temp1.addSynonyms("gamma-trace alkaline microprotein human");
+          temp1.addSynonyms("Neuroendocrine basic polypeptide human");
+          temp1.addSynonyms("Amyloidosis  cerebral");
+          temp1.addSynonyms("amyloid angiopathy");
+          this.queryContainer.add(temp1);
+          keyterm.addExternalResource("", "", temp1.getSynonyms(), "RefinedSynonyms");
+          keyterm.setProbablity(Float.valueOf(temp1.getWeight()));
+          continue;
+        }
+        
+        if(keytermText.equals("cerebral")) {
+          KeytermInQuery phraseKeyterm2 = new KeytermInQuery("cerebral", this.conceptTermWeight);
+          QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
+          this.queryContainer.add(temp2);
+          keyterm.addExternalResource("", "", temp2.getSynonyms(), "RefinedSynonyms");
+          keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
+          continue;
+        }
+        
+        /*
+        if(keytermText.equals("APC")) {
+          KeytermInQuery phraseKeyterm3 = new KeytermInQuery("cerebral", this.conceptTermWeight);
+          QueryComponent temp3 = new QueryComponent(phraseKeyterm3);
+          this.queryContainer.add(temp3);
+          keyterm.addExternalResource("", "", temp3.getSynonyms(), "RefinedSynonyms");
+          keyterm.setProbablity(Float.valueOf(temp3.getWeight()));
+          continue;
+        }*/
+        
         // not consider stopwords, "gene", "s", "or" and words that occure in phrases
         // "or" for Q171 "s" is generated by " 's "
         if (CheckTerms.isStopwords(keytermText.toLowerCase()) || keytermText.equals("or")
                 || keytermText.equals("gene") || keytermText.equals("s")
-                || termsUsedInPhrase.indexOf(this.cleaner.getStemmedTerm(keytermText)) > -1) {
+                || termsUsedInPhrase.indexOf(cleaner.getStemmedTerm(keytermText)) > -1
+                || termsUsedInPhrase.indexOf(keytermText) > -1) {
           continue;
         }
 
@@ -398,7 +476,12 @@ public class QueryStrategy {
         }
         
         if (keytermText.equals("TGF-beta1")) {
-          resources.add("transforming growth factor beta 1)");
+          resources.add("transforming growth factor beta 1");
+        }
+        
+        if (keytermText.equals("Bop-Pes")) {
+          resources.add("Bop1");
+          resources.add("Bop1p");
         }
         
         // it works in the situation where the resources are not good enough
@@ -511,6 +594,7 @@ public class QueryStrategy {
       resources.add("NR4A1");
       resources.add("NGFI-B");
     }
+    
     // this synonym can be gotten from
     if (keytermText.equals("development")) {
       resources.add("growth");

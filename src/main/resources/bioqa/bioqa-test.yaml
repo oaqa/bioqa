@@ -8,8 +8,8 @@ persistence-provider:
 collection-reader:
   inherit: bioqa.db.collection-reader
   dataset: BIO-COMBINED
-  sequence-start: 160
-  sequence-end: 187
+  sequence-start: 176
+  sequence-end: 176
 #  sequence-end: 160
   
 pipeline:
@@ -26,23 +26,30 @@ pipeline:
   - inherit: internal.cse.phase
     name: name-entity-recognizer
     options: |
-      #- inherit: testqa-yanfang.keyterm.lingpipe-abbreviation
-      - inherit: bioqa.keyterm.lingpipe
+      - inherit: bioqa.keyterm.lingpipe-abbreviation
+      #- inherit: bioqa.keyterm.lingpipe
+
+  #- inherit: internal.cse.phase
+   # name: name-entity-recognizer
+    #options: |
+     # - inherit: bioqa.keyterm.syn-abbreviation-longform
 
   #- inherit: internal.cse.phase
    # name: name-entity-recognizer
     #options: |
      # - inherit: bioqa.keyterm.syn-lexical-variants
 
- # - inherit: internal.cse.phase
-  #  name: restore
-   # options: |
-      #- inherit: bioqa.keyterm.restore
-
   - inherit: internal.cse.phase
-    name: synonyms
+    name: restore
     options: |
-      - inherit: bioqa.keyterm.kb.mesh
+      - inherit: bioqa.keyterm.restore
+      #- inherit: bioqa.keyterm.restore_before
+
+
+  #- inherit: internal.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.mesh
 
   #- inherit: internal.cse.phase
    # name: synonyms
@@ -52,12 +59,17 @@ pipeline:
   #- inherit: internal.cse.phase
    # name: synonyms
     #options: |
-    #  - inherit: bioqa.keyterm.kb.umls
+     # - inherit: bioqa.keyterm.kb.umls
  
-  - inherit: internal.cse.phase
-    name: store
-    options: |
-      - inherit: bioqa.keyterm.restore
+  #- inherit: internal.cse.phase
+   # name: store
+    #options: |
+     # - inherit: bioqa.keyterm.restore
+
+  #- inherit: internal.cse.phase
+   # name: store
+    #options: |
+     # - inherit: bioqa.keyterm.io.backup
 
   - inherit: internal.cse.phase
     name: synonyms
