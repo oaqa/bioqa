@@ -8,8 +8,8 @@ persistence-provider:
 collection-reader:
   inherit: bioqa.db.collection-reader
   dataset: BIO-COMBINED
-  sequence-start: 176
-  sequence-end: 176
+  sequence-start: 160
+  sequence-end: 187
 #  sequence-end: 160
   
 pipeline:
@@ -56,10 +56,10 @@ pipeline:
     #options: |
      # - inherit: bioqa.keyterm.kb.entrezgene
 
-  #- inherit: internal.cse.phase
-   # name: synonyms
-    #options: |
-     # - inherit: bioqa.keyterm.kb.umls
+  - inherit: internal.cse.phase
+    name: synonyms
+    options: |
+      - inherit: bioqa.keyterm.kb.umls
  
   #- inherit: internal.cse.phase
    # name: store

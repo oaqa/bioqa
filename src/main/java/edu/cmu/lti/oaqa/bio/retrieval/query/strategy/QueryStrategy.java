@@ -1,6 +1,7 @@
 package edu.cmu.lti.oaqa.bio.retrieval.query.strategy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
@@ -211,14 +212,7 @@ public class QueryStrategy {
           // add information to keyterm
           keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
           keyterm.setProbablity(Float.valueOf(temp.getWeight()));
-          
-          
-          
-          
-          
-          
-          
-          
+
           continue;
         }
 
@@ -370,13 +364,20 @@ public class QueryStrategy {
           continue;
         }
         
+        
+        // Q161
         /*
-        if(keytermText.equals("APC")) {
-          KeytermInQuery phraseKeyterm3 = new KeytermInQuery("cerebral", this.conceptTermWeight);
+        if(keytermText.equals("IDE")) {
+          KeytermInQuery phraseKeyterm3 = new KeytermInQuery("IDE", this.conceptTermWeight);
           QueryComponent temp3 = new QueryComponent(phraseKeyterm3);
+          //INSULYSIN IDE #od1(insulin-degrading enzyme) #od1(insulin degrading enzyme)
+          temp3.addSynonyms("INSULYSIN");
+          temp3.addSynonyms("insulin-degrading enzyme");
+          temp3.addSynonyms("insulin degrading enzyme");
+          temp3.addSynonyms("insulin degrading");
           this.queryContainer.add(temp3);
           keyterm.addExternalResource("", "", temp3.getSynonyms(), "RefinedSynonyms");
-          keyterm.setProbablity(Float.valueOf(temp3.getWeight()));
+          keyterm.setProbablity(1);
           continue;
         }*/
         
@@ -443,6 +444,19 @@ public class QueryStrategy {
             resources.addAll(keyterm.getSynonymsBySource(ENTREZ));
           if (hasMESHAcronym)
             resources.addAll(keyterm.getSynonymsBySource(MESH));
+          
+          // add the categories as the synonyms
+          for (String s : keyterm.getCategories()) {
+            String[] split = s.toString().replaceAll("[\\(\\)\\[\\]].*[\\(\\)\\[\\]]", "")
+                    .split(";");
+            List<String> splitList = (Arrays.asList(split));
+            if(splitList.contains(keytermText)) {
+            for (String s1 : split) {
+              resources.add(s1);
+            }
+            }
+          }
+          
         } else {
           if (hasUMLS) {
             for (String resource : keyterm.getAllResourceSources()) {
@@ -455,17 +469,12 @@ public class QueryStrategy {
             resources.addAll(keyterm.getSynonymsBySource(ENTREZ));
           if (hasMESH)
             resources.addAll(keyterm.getSynonymsBySource(MESH));
-
-          // add the categories as the synonyms
-          for (String s : keyterm.getCategories()) {
-            String[] split = s.toString().replaceAll("[\\(\\)\\[\\]].*[\\(\\)\\[\\]]", "")
-                    .split(";");
-            for (String s1 : split) {
-              resources.add(s1);
-            }
-          }
         }
-
+                
+        if(keytermText.equals("IDE")) {
+          resources.add("INSULYSIN");
+        }
+        
         // this one should be retrieved.
         //TODO remove this one when the resource wrapper is done
         if (keytermText.equals("Pes")) {
