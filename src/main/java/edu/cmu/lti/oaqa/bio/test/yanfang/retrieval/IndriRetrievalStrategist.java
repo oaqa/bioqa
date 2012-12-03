@@ -52,21 +52,6 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
     this.backupQuery = QueryGenerator.generateIndriQuery(keyterms,"",false);
 
     String s2 = QueryGenerator.generateIndriQuery(keyterms,"",true);
- 
-    /*
-    s2 = "#filreq( #band (  #syn( COP2 #od1(COP-II) #od1(COP-2) #od1(COPII) #od1(COP2) #od1(COP 2) " +
-    		"#od1(COP II))  #syn(CFTR #od1(cystic fibrosis transmembrane conductance regulator)) )" +
-    		"#weight(  0.6 #syn( COP2 #od1(COP-II) #od1(COP-2) #od1(COPII) #od1(COP2) #od1(COP 2) #od1(COP II)) " +
-    		"0.2 contribute 0.6 #syn(CFTR #od1(cystic fibrosis transmembrane conductance regulator)) 0.6 #syn( export #od1( Nuclear Import) #od1( Peptides NES) " +
-    		"#od1( Import Nuclear) #od1( Chromosome Segregation 1 Like Protein) #od1( Transport Nuclear) " +
-    		"#od1( CAPTS gene product) #od1( Nuclear Transport) #od1( Transport Nucleo-cytoplasmic) " +
-    		"#od1( PHAX protein human) #od1( Nucleo cytoplasmic Transport) #od1( NES Peptides) " +
-    		"#od1( CSE1L Protein) #od1( RNUXA protein human) #od1( Transport Nucleocytoplasmic)) " +
-    		"0.6 #syn( #od2(endoplasmic reticulum) #od1( Reticulum Endoplasmic) #od1( Ergastoplasm) " +
-    		"#od1( endoplasmic) #od1( ERAD Pathways) #od1( Pathway ERAD) " +
-    		"#od1( ReticulumAssociated Degradation Endoplasmic) #od1( Reticulum Stress Endoplasmic) " +
-    		"#od1( Reticulum-Associated Degradation Endoplasmic)) ) )";
-    */
     
     System.out.println("Query~~~:" + s2);
     
