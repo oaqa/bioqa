@@ -1,5 +1,5 @@
 class: edu.cmu.lti.oaqa.bio.test.yanfang.ie.IndriLegalSpanPassageExtractor
-hit-list-size: 2    #please check it every time you want to run this in test qa~~
+hit-list-size: 1000    #please check it every time you want to run this in test qa~~
 server: peace.isri.cs.cmu.edu
 port: 21237
 gzip: true
