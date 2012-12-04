@@ -26,79 +26,82 @@ public class ScoreCombiner extends AbstractPassageUpdater {
 
   private TransformMode mode;
 
-  private Map<Double, Double> transform(List<Double> scores) {
-    Map<Double, Double> ret = new HashMap<Double, Double>();
-    double maxScore = Collections.max(scores);
+  private Map<Float, Float> transform(List<Float> scores) {
+    Map<Float, Float> ret = new HashMap<Float, Float>();
+    
+    System.out.println("================== " + scores);
+    
+    float maxScore = Collections.max(scores);
     switch (mode) {
       case exponential:
-        for (double score : scores) {
+        for (float score : scores) {
           if (!ret.containsKey(score)) {
-            ret.put(score, Math.exp(score));
+            ret.put(score, (float) Math.exp(score));
           }
         }
         break;
       case logarithmic:
-        for (double score : scores) {
+        for (float score : scores) {
           if (!ret.containsKey(score)) {
-            ret.put(score, safeLog(score));
+            ret.put(score, (float) safeLog(score));
           }
         }
         break;
       case normalized:
-        for (double score : scores) {
+        for (float score : scores) {
           if (!ret.containsKey(score)) {
-            ret.put(score, score / maxScore);
+            ret.put(score, (float) score / maxScore);
           }
         }
         break;
       case exponential_of_normalized:
-        for (double score : scores) {
+        for (float score : scores) {
           if (!ret.containsKey(score)) {
-            ret.put(score, Math.exp(score / maxScore));
+            ret.put(score, (float) Math.exp(score / maxScore));
           }
         }
         break;
       case normalized_of_exponential:
-        for (double score : scores) {
+        for (float score : scores) {
           if (!ret.containsKey(score)) {
-            ret.put(score, Math.exp(score));
+            ret.put(score, (float) Math.exp(score));
           }
         }
-        double maxExpScore = Collections.max(ret.values());
-        for (double score : ret.keySet()) {
-          ret.put(score, ret.get(score) / maxExpScore);
+        float maxExpScore = Collections.max(ret.values());
+        for (float score : ret.keySet()) {
+          ret.put(score, (float) ret.get(score) / maxExpScore);
         }
         break;
       case logarithmic_of_normalized:
-        for (double score : scores) {
+        for (float score : scores) {
           if (!ret.containsKey(score)) {
-            ret.put(score, safeLog(score / maxScore));
+            ret.put(score, (float) safeLog(score / maxScore));
           }
         }
         break;
       case normalized_of_logarithmic:
-        for (double score : scores) {
+        for (float score : scores) {
           if (!ret.containsKey(score)) {
-            ret.put(score, safeLog(score));
+            ret.put(score, (float) safeLog(score));
           }
         }
-        double maxLogScore = Collections.max(ret.values());
-        for (double score : ret.keySet()) {
-          ret.put(score, ret.get(score) / maxLogScore);
+        float maxLogScore = Collections.max(ret.values());
+        for (float score : ret.keySet()) {
+          ret.put(score, (float) ret.get(score) / maxLogScore);
         }
         break;
       case reciprocal_of_rank:
         int i = 1;
-        for (double score : scores) {
+        for (float score : scores) {
           if (!ret.containsKey(score)) {
-            ret.put(score, 1.0 / i);
+            ret.put(score, (float) 1.0 / i);
           }
           i++;
         }
         break;
       case no_transform:
       default:
-        for (double score : scores) {
+        for (float score : scores) {
           ret.put(score, score);
         }
         break;
@@ -125,20 +128,26 @@ public class ScoreCombiner extends AbstractPassageUpdater {
       return passages;
     }
     // transform document scores
-    Map<String, Double> id2score = new HashMap<String, Double>();
-    List<Double> docScores = new ArrayList<Double>();
+    Map<String, Float> id2score = new HashMap<String, Float>();
+    List<Float> docScores = new ArrayList<Float>();
     for (RetrievalResult document : documents) {
-      id2score.put(document.getDocID(), (double) document.getProbability());
-      docScores.add((double) document.getProbability());
+      id2score.put(document.getDocID(), document.getProbability());
+      docScores.add(document.getProbability());
     }
-    Map<Double, Double> docScoreMap = transform(docScores);
+    Map<Float, Float> docScoreMap = transform(docScores);
+    
+    System.out.println(documents.get(documents.size() - 1));
+    System.out.println(documents.get(documents.size() - 1).getProbability());
+    
+    System.out.println(docScoreMap);
+    
     double minDocScore = docScoreMap.get(documents.get(documents.size() - 1).getProbability());
     // transform passage scores
-    List<Double> passageScores = new ArrayList<Double>();
+    List<Float> passageScores = new ArrayList<Float>();
     for (PassageCandidate passage : passages) {
-      passageScores.add((double) passage.getProbability());
+      passageScores.add((float) passage.getProbability());
     }
-    Map<Double, Double> passageScoreMap = transform(passageScores);
+    Map<Float, Float> passageScoreMap = transform(passageScores);
     // combine scores
     for (PassageCandidate passage : passages) {
       String id = passage.getDocID();
