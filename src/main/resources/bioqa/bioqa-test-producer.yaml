@@ -3,14 +3,16 @@ configuration:
   author: yanfang
 
 persistence-provider:
-  inherit: bioqa.db.cse-persistence-provider  
+  inherit: bioqa.db.cse-persistence-provider
+  
+async-configuration:
+  inherit: bioqa.async.cse-broker 
 
 collection-reader:
-  inherit: bioqa.db.collection-reader
+  inherit: bioqa.db.collection-reader-producer
   dataset: BIO-COMBINED
   sequence-start: 160
   sequence-end: 187
-#  sequence-end: 160
   
 pipeline:
   - inherit: internal.cse.phase  
@@ -72,7 +74,7 @@ pipeline:
      # - inherit: bioqa.keyterm.io.backup
 
   - inherit: internal.cse.phase
-    name: keyterm-refiner
+    name: synonyms
     options: |
       - inherit: bioqa.keyterm.keyterm-refiner
 
