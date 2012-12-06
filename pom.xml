@@ -157,20 +157,13 @@
               <executions>
                 <execution>
                   <goals>
-                    <goal>exec</goal>
+                    <goal>java</goal>
                   </goals>
                 </execution>
               </executions>
               <configuration>
-                <executable>java</executable>
+                <mainClass>edu.cmu.lti.oaqa.ecd.driver.ECDDriver</mainClass>
                 <arguments>
-                  <argument>-Xmx2500m</argument>
-                  <argument>-Djava.library.path=${project.build.directory}/lib/</argument>
-                  <argument>-classpath</argument>
-                  <!-- automatically creates the classpath using all project dependencies, 
-                       also adding the project build directory -->
-                  <classpath />
-                  <argument>edu.cmu.lti.oaqa.ecd.driver.ECDDriver</argument>
                   <argument>bioqa.bioqa-test</argument>
                 </arguments>
               </configuration>
@@ -262,6 +255,9 @@
               </configuration>
             </plugin>
           </plugins>
+		<filters>
+			<filter>${project.build.directory}/classpath.properties</filter>
+		</filters>
 		<pluginManagement>
 			<plugins>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
