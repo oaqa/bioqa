@@ -60,14 +60,14 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
             "MaxNumPassageInParagraph", 5);
     // 0.5 is the default value in [Tari:06] (Sentences that have at least half of the keywords in
     // the article)
-    importantSentSimThreshold = UimaContextHelper.getConfigParameterDoubleValue(c,
-            "ImportantSentSimThreshold", 0.5);
+    importantSentSimThreshold = UimaContextHelper.getConfigParameterFloatValue(c,
+            "ImportantSentSimThreshold", 0.5F);
     importantSentSim = (Similarity) UimaContextHelper.getConfigParameterClassInstance(c,
             "ImportantSentSim", "similarity.ModifiedOverlapCoefficient");
     // 1 is the default value in [Tari:06] (Neighboring sentences of the important sentences with at
     // least one keyword are merged to form a passage.)
-    neighborSentSimThreshold = UimaContextHelper.getConfigParameterDoubleValue(c,
-            "NeighborSentSimThreshold", 1);
+    neighborSentSimThreshold = UimaContextHelper.getConfigParameterFloatValue(c,
+            "NeighborSentSimThreshold", 1F);
     neighborSentSim = (Similarity) UimaContextHelper.getConfigParameterClassInstance(c,
             "NeighborSentSim", "similarity.MatchingCoefficient");
   }
@@ -90,6 +90,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     for (PassageCandidate passage : passages) {
       for (PassageCandidate newPassage : extractImportantSentences(keytermCount, passage,
               synonym2keyterm)) {
+        testAliveness();
         if (!newPassages.contains(newPassage)) {
           newPassages.add(newPassage);
         }
@@ -122,6 +123,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     List<Double> sims = new ArrayList<Double>();
     /* int importantNum = 0, neighborNum = 0; */
     for (TextSpan sentence : sentences) {
+      testAliveness();
       // List<String> originalTokens = LingPipeHmmPosTagger.tokenize(article.getSpanText(sentence));
       List<String> originalTokens = tokenize(article.getSpanText(sentence),
               keytermCount == null ? null : keytermCount.keySet(), synonym2keyterm == null ? null
@@ -161,6 +163,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     List<PassageCandidate> newPassages = new ArrayList<PassageCandidate>();
     List<TextSpan> passageStack = new ArrayList<TextSpan>();
     for (int i = 0; i < types.size(); i++) {
+      testAliveness();
       if (types.get(i) != SentenceType.important) {
         continue;
       }

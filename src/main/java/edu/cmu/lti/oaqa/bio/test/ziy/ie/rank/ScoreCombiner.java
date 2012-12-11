@@ -116,7 +116,7 @@ public class ScoreCombiner extends AbstractPassageUpdater {
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    docWeight = UimaContextHelper.getConfigParameterDoubleValue(aContext, "DocWeight", 0.5);
+    docWeight = UimaContextHelper.getConfigParameterFloatValue(aContext, "DocWeight", 0.5F);
     mode = TransformMode.valueOf(UimaContextHelper.getConfigParameterStringValue(aContext,
             "TransformMode", "no_transform"));
   }

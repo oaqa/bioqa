@@ -34,9 +34,9 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
 
-    this.smoothing = (String) aContext.getConfigParameterValue("smoothing");
-    this.smoothingMu = (String) aContext.getConfigParameterValue("smoothing-mu");
-    this.smoothingLambda = (String) aContext.getConfigParameterValue("smoothing-lambda");
+    this.smoothing = aContext.getConfigParameterValue("smoothing").toString();
+    this.smoothingMu = aContext.getConfigParameterValue("smoothing-mu").toString();
+    this.smoothingLambda = aContext.getConfigParameterValue("smoothing-lambda").toString();
   }
 
   @Override
@@ -81,6 +81,7 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
 
       for (int i = 0; i < ids.length; i++) {
 
+        testAliveness();
         if (i % batchSize == 0) {
           ScoredExtentResult[] subSers = Arrays.copyOfRange(sers, i,
                   Math.min(i + batchSize, ids.length));
@@ -107,6 +108,7 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
         String[] ids2 = wrapper.getQueryEnvironment().documentMetadata(sers, "docno");
         texts = null;
         for (int i = 0; i < ids2.length; i++) {
+          testAliveness();
           if (i % batchSize == 0) {
             ScoredExtentResult[] subSers = Arrays.copyOfRange(sers, i,
                     Math.min(i + batchSize, ids2.length));
