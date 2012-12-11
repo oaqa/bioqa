@@ -74,7 +74,7 @@ pipeline:
      # - inherit: bioqa.keyterm.io.backup
 
   - inherit: internal.cse.phase
-    name: synonyms
+    name: keyterm-refiner
     options: |
       - inherit: bioqa.keyterm.keyterm-refiner
 

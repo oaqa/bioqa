@@ -40,9 +40,9 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
     
     // Gets values from the yaml files
     this.hitListSize = (Integer) aContext.getConfigParameterValue("hit-list-size");
-    this.smoothing = (String) aContext.getConfigParameterValue("smoothing");
-    this.smoothingMu = (String) aContext.getConfigParameterValue("smoothing-mu");
-    this.smoothingLambda = (String) aContext.getConfigParameterValue("smoothing-lambda");
+    this.smoothing = aContext.getConfigParameterValue("smoothing").toString();
+    this.smoothingMu = aContext.getConfigParameterValue("smoothing-mu").toString();
+    this.smoothingLambda = aContext.getConfigParameterValue("smoothing-lambda").toString();
 
   }
 

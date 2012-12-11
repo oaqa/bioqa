@@ -34,9 +34,9 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
 
-    this.smoothing = (String) aContext.getConfigParameterValue("smoothing");
-    this.smoothingMu = (String) aContext.getConfigParameterValue("smoothing-mu");
-    this.smoothingLambda = (String) aContext.getConfigParameterValue("smoothing-lambda");
+    this.smoothing = aContext.getConfigParameterValue("smoothing").toString();
+    this.smoothingMu = aContext.getConfigParameterValue("smoothing-mu").toString();
+    this.smoothingLambda = aContext.getConfigParameterValue("smoothing-lambda").toString();
   }
 
   @Override
