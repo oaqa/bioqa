@@ -60,14 +60,14 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
             "MaxNumPassageInParagraph", 5);
     // 0.5 is the default value in [Tari:06] (Sentences that have at least half of the keywords in
     // the article)
-    importantSentSimThreshold = UimaContextHelper.getConfigParameterDoubleValue(c,
-            "ImportantSentSimThreshold", 0.5);
+    importantSentSimThreshold = UimaContextHelper.getConfigParameterFloatValue(c,
+            "ImportantSentSimThreshold", 0.5F);
     importantSentSim = (Similarity) UimaContextHelper.getConfigParameterClassInstance(c,
             "ImportantSentSim", "similarity.ModifiedOverlapCoefficient");
     // 1 is the default value in [Tari:06] (Neighboring sentences of the important sentences with at
     // least one keyword are merged to form a passage.)
-    neighborSentSimThreshold = UimaContextHelper.getConfigParameterDoubleValue(c,
-            "NeighborSentSimThreshold", 1);
+    neighborSentSimThreshold = UimaContextHelper.getConfigParameterFloatValue(c,
+            "NeighborSentSimThreshold", 1F);
     neighborSentSim = (Similarity) UimaContextHelper.getConfigParameterClassInstance(c,
             "NeighborSentSim", "similarity.MatchingCoefficient");
   }

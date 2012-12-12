@@ -57,20 +57,20 @@ public class TermProximityRanker extends ContentAwarePassageUpdater {
     super.initialize(c);
     // a constant which controls the overall magnitude of R (currently in terms of the number of
     // characters, default is 100 from [Lawrence:98])
-    c1 = UimaContextHelper.getConfigParameterDoubleValue(c, "C1", 100);
+    c1 = UimaContextHelper.getConfigParameterFloatValue(c, "C1", 100);
     // the maximum distance between query terms which is considered useful
     // (currently in terms of the number of characters, default is 5000 from [Lawrence:98])
-    c2 = UimaContextHelper.getConfigParameterDoubleValue(c, "C2", 5000);
+    c2 = UimaContextHelper.getConfigParameterFloatValue(c, "C2", 5000);
     // the importance of term frequency (currently in terms of the number of
     // characters, default is 10 * 100 from [Lawrence:98])
-    c3 = UimaContextHelper.getConfigParameterDoubleValue(c, "C3", 1000);
+    c3 = UimaContextHelper.getConfigParameterFloatValue(c, "C3", 1000);
     // false is the default value in [Tari:06] and [Bergler:06]
     considerSynonyms = UimaContextHelper.getConfigParameterBooleanValue(c, "ConsiderSynonyms",
             false);
     // false is the default value in [Tari:06] and [Bergler:06]
     combineOriginalScores = UimaContextHelper.getConfigParameterBooleanValue(c,
             "CombineOriginalScores", false);
-    originalWeight = UimaContextHelper.getConfigParameterDoubleValue(c, "OriginalWeight", 0.5);
+    originalWeight = UimaContextHelper.getConfigParameterFloatValue(c, "OriginalWeight", 0.5F);
   }
 
   @Override

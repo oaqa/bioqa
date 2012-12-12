@@ -70,14 +70,14 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
             "LexicalVariants", false);
     this.usePosTagger = UimaContextHelper.getConfigParameterBooleanValue(aContext, "PosTagger",
             false);
-    this.conceptWeight = UimaContextHelper.getConfigParameterStringValue(aContext,
-            "concept-term-weight", "0.6");
-    this.regularWeight = UimaContextHelper.getConfigParameterStringValue(aContext,
-            "regular-term-weight", "0.4");
-    this.verbWeight = UimaContextHelper.getConfigParameterStringValue(aContext, "verb-term-weight",
-            "0.2");
-    this.geneWeight = UimaContextHelper.getConfigParameterStringValue(aContext, "gene-term-weight",
-            "0.3");
+    this.conceptWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext,
+            "concept-term-weight", 0.6F));
+    this.regularWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext,
+            "regular-term-weight", 0.4F));
+    this.verbWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext, "verb-term-weight",
+            0.2F));
+    this.geneWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext, "gene-term-weight",
+            0.3F));
   }
 
   @Override

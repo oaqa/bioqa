@@ -1,5 +1,5 @@
 class: edu.cmu.lti.oaqa.bio.framework.collection.DBCollectionReaderProducer
-url: jdbc:mysql://seit1.lti.cs.cmu.edu:3308/oaevaluation
+url: "jdbc:mysql://seit1.lti.cs.cmu.edu:3308/oaevaluation?autoReconnect=true"
 username: oaqacse
 password: corm767.cups
 decorators: |
