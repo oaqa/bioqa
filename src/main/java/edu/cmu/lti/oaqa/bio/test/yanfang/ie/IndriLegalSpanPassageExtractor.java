@@ -81,6 +81,7 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
 
       for (int i = 0; i < ids.length; i++) {
 
+        testAliveness();
         if (i % batchSize == 0) {
           ScoredExtentResult[] subSers = Arrays.copyOfRange(sers, i,
                   Math.min(i + batchSize, ids.length));
@@ -107,6 +108,7 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
         String[] ids2 = wrapper.getQueryEnvironment().documentMetadata(sers, "docno");
         texts = null;
         for (int i = 0; i < ids2.length; i++) {
+          testAliveness();
           if (i % batchSize == 0) {
             ScoredExtentResult[] subSers = Arrays.copyOfRange(sers, i,
                     Math.min(i + batchSize, ids2.length));

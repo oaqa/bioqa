@@ -90,6 +90,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     for (PassageCandidate passage : passages) {
       for (PassageCandidate newPassage : extractImportantSentences(keytermCount, passage,
               synonym2keyterm)) {
+        testAliveness();
         if (!newPassages.contains(newPassage)) {
           newPassages.add(newPassage);
         }
@@ -201,7 +202,6 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     Collections.sort(newPassages, Collections.reverseOrder());
     newPassages = newPassages.subList(0, Math.min(newPassages.size(), maxNumPassageInParagragh));
     for (PassageCandidate newPassage : newPassages) {
-      testAliveness();
       newPassage.setProbablity(passage.getProbability());
     }
     return newPassages;
