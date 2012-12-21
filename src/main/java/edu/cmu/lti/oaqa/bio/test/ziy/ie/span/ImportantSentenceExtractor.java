@@ -122,6 +122,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     List<Double> sims = new ArrayList<Double>();
     /* int importantNum = 0, neighborNum = 0; */
     for (TextSpan sentence : sentences) {
+      testAliveness();
       // List<String> originalTokens = LingPipeHmmPosTagger.tokenize(article.getSpanText(sentence));
       List<String> originalTokens = tokenize(article.getSpanText(sentence),
               keytermCount == null ? null : keytermCount.keySet(), synonym2keyterm == null ? null
@@ -161,6 +162,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     List<PassageCandidate> newPassages = new ArrayList<PassageCandidate>();
     List<TextSpan> passageStack = new ArrayList<TextSpan>();
     for (int i = 0; i < types.size(); i++) {
+      testAliveness();
       if (types.get(i) != SentenceType.important) {
         continue;
       }
@@ -199,6 +201,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     Collections.sort(newPassages, Collections.reverseOrder());
     newPassages = newPassages.subList(0, Math.min(newPassages.size(), maxNumPassageInParagragh));
     for (PassageCandidate newPassage : newPassages) {
+      testAliveness();
       newPassage.setProbablity(passage.getProbability());
     }
     return newPassages;

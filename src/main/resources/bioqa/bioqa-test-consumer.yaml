@@ -87,13 +87,13 @@ pipeline:
 
   - inherit: internal.cse.phase
     name: retrieval-strategist
-    option-timeout: 5
+    option-timeout: 3
     options: | 
       - inherit: bioqa.retrieval.BasicIndriRetrieval
 
   - inherit: internal.cse.phase
     name: passage-extractor
-    option-timeout: 10
+    option-timeout: 5
     options: | 
       - inherit: bioqa.ie.IndriLegalSpan
 
@@ -109,28 +109,28 @@ pipeline:
 
   - inherit: internal.cse.phase 
     name: passage-span
-    option-timeout: 5
+    option-timeout: 3
     options: |
       - inherit: bioqa.ie.span.important-sentence@peace
       - inherit: base.noop
 
-  - inherit: internal.cse.phase 
-    name: passage-rank
-    option-timeout: 5
-    options: |
-      - inherit: bioqa.ie.rank.proximity@peace
-      - inherit: base.noop
+#  - inherit: internal.cse.phase 
+#    name: passage-rank
+#    option-timeout: 3
+#    options: |
+#      - inherit: bioqa.ie.rank.proximity@peace
+#      - inherit: base.noop
       
   - inherit: internal.cse.phase 
     name: score-combine
-    option-timeout: 5
+    option-timeout: 3
     options: |
       - inherit: bioqa.ie.rank.combine
       - inherit: base.noop
 
   - inherit: internal.cse.phase 
     name: passage-overlap
-    option-timeout: 5
+    option-timeout: 3
     options: |
       - inherit: bioqa.ie.overlap.filter
       - inherit: base.noop
