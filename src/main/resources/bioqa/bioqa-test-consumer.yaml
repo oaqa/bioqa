@@ -93,7 +93,7 @@ pipeline:
 
   - inherit: internal.cse.phase
     name: passage-extractor
-    option-timeout: 5
+    option-timeout: 8
     options: | 
       - inherit: bioqa.ie.IndriLegalSpan
 
@@ -107,12 +107,12 @@ pipeline:
     #options: |
      # - inherit: default.ie.default
 
-  - inherit: internal.cse.phase 
-    name: passage-span
-    option-timeout: 3
-    options: |
-      - inherit: bioqa.ie.span.important-sentence@peace
-      - inherit: base.noop
+#  - inherit: internal.cse.phase 
+#    name: passage-span
+#    option-timeout: 3
+#    options: |
+#      - inherit: bioqa.ie.span.important-sentence@peace
+#      - inherit: base.noop
 
 #  - inherit: internal.cse.phase 
 #    name: passage-rank
