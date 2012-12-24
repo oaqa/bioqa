@@ -98,17 +98,17 @@ pipeline:
     #options: |
      # - inherit: default.ie.default
 
-  - inherit: internal.cse.phase 
-    name: passage-span
-    options: |
-      - inherit: bioqa.ie.span.important-sentence@peace
-      - inherit: base.noop
+#  - inherit: internal.cse.phase 
+#    name: passage-span
+#    options: |
+#      - inherit: bioqa.ie.span.important-sentence@peace
+#      - inherit: base.noop
 
-  - inherit: internal.cse.phase 
-    name: passage-rank
-    options: |
-      - inherit: bioqa.ie.rank.proximity@peace
-      - inherit: base.noop
+#  - inherit: internal.cse.phase 
+#    name: passage-rank
+#    options: |
+#      - inherit: bioqa.ie.rank.proximity@peace
+#      - inherit: base.noop
       
   - inherit: internal.cse.phase 
     name: score-combine
