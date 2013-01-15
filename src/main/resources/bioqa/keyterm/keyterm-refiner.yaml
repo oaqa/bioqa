@@ -1,18 +1,18 @@
 class: edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.KeytermRefiner
 
 cross-opts:
-  MESH: [true, false]
-  ENTREZ: [true, false]
-  UMLS: [false, true]
-  LexicalVariants: [true, false]
-  PosTagger: [true, false]
-  MESH-Acronym: [false, true]
-  ENTREZ-Acronym: [false, true]
-  UMLS-Acronym: [true, false]
-  concept-term-weight: [0.6, 0.4]
-  regular-term-weight: [0.4, 0.2, 0.8]
-  verb-term-weight: [0.2, 0.1, 0.4]
-  gene-term-weight: [0.3, 0.4, 0.2]
+  MESH: [true]
+  ENTREZ: [true]
+  UMLS: [false]
+  LexicalVariants: [true]
+  PosTagger: [true]
+  MESH-Acronym: [false]
+  ENTREZ-Acronym: [false]
+  UMLS-Acronym: [true]
+  concept-term-weight: [0.6]
+  regular-term-weight: [0.4]
+  verb-term-weight: [0.2]
+  gene-term-weight: [0.3]
 
 
 persistence-provider: |
