@@ -40,7 +40,9 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
   protected static Map<String, Double> getLowerCasedKeytermCount(List<Keyterm> keyterms) {
     List<String> keytermStrs = new ArrayList<String>();
     for (Keyterm keyterm : keyterms) {
-      keytermStrs.add(keyterm.getText().toLowerCase());
+      //only consider the keyterms whose weights >= 0.4
+      if(keyterm.getProbability() >= 0.4)
+        keytermStrs.add(keyterm.getText().toLowerCase());
     }
     return SimilarityUtils.countWord(keytermStrs.toArray(new String[0]));
   }
@@ -72,10 +74,14 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
   protected static Map<String, String> getLowerCasedSynonymKeytermMapping(List<Keyterm> keyterms) {
     Map<String, String> synonym2keyterm = new HashMap<String, String>();
     for (Keyterm keyterm : keyterms) {
+      //only consider keyterms whose weights >= 0.4
+      if(keyterm.getProbability() >= 0.4) {
       String text = keyterm.getText();
       BioKeyterm biokeyterm = (BioKeyterm) keyterm;
-      for (String synonym : biokeyterm.getSynonyms()) {
+      //use refined synonyms
+      for (String synonym : biokeyterm.getSynonymsBySource("RefinedSynonyms")) {
         synonym2keyterm.put(synonym.toLowerCase(), text);
+      }
       }
     }
     return synonym2keyterm;
