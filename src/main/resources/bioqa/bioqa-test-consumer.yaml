@@ -107,19 +107,19 @@ pipeline:
     #options: |
      # - inherit: default.ie.default
 
-#  - inherit: internal.cse.phase 
-#    name: passage-span
-#    option-timeout: 3
-#    options: |
-#      - inherit: bioqa.ie.span.important-sentence@peace
-#      - inherit: base.noop
+  - inherit: internal.cse.phase 
+    name: passage-span
+    option-timeout: 3
+    options: |
+      - inherit: bioqa.ie.span.important-sentence@peace
+      - inherit: base.noop
 
-#  - inherit: internal.cse.phase 
-#    name: passage-rank
-#    option-timeout: 3
-#    options: |
-#      - inherit: bioqa.ie.rank.proximity@peace
-#      - inherit: base.noop
+  - inherit: internal.cse.phase 
+    name: passage-rank
+    option-timeout: 3
+    options: |
+      - inherit: bioqa.ie.rank.proximity@peace
+      - inherit: base.noop
       
   - inherit: internal.cse.phase 
     name: score-combine

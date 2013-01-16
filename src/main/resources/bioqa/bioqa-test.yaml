@@ -9,8 +9,8 @@ collection-reader:
   inherit: bioqa.db.collection-reader
   dataset: BIO-COMBINED
   sequence-start: 160
-  sequence-end: 187
-#  sequence-end: 160
+#  sequence-end: 187
+  sequence-end: 160
   
 pipeline:
   - inherit: internal.cse.phase  
