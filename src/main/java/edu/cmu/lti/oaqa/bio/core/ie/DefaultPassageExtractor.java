@@ -58,7 +58,7 @@ public class DefaultPassageExtractor extends AbstractPassageExtractor {
    * @uml.property name="wrapper"
    * @uml.associationEnd
    */
-  protected IndriWrapper wrapper;
+  protected static IndriWrapper wrapper;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -80,8 +80,10 @@ public class DefaultPassageExtractor extends AbstractPassageExtractor {
             .getConfigParameterValue("PassageSpan"));
     String serverUrl = (String) aContext.getConfigParameterValue("server");
     Integer serverPort = (Integer) aContext.getConfigParameterValue("port");
-    try {
-      this.wrapper = new IndriWrapper(serverUrl, serverPort);
+    try { 
+      if (wrapper == null) {
+       wrapper = new IndriWrapper(serverUrl, serverPort);
+      }
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
     }

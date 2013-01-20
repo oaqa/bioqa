@@ -29,7 +29,7 @@ public class DefaultRetrievalStrategist extends AbstractRetrievalStrategist {
    * @uml.property name="wrapper"
    * @uml.associationEnd
    */
-  protected IndriWrapper wrapper;
+  protected static IndriWrapper wrapper;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -43,7 +43,9 @@ public class DefaultRetrievalStrategist extends AbstractRetrievalStrategist {
     String serverUrl = (String) aContext.getConfigParameterValue("server");
     Integer serverPort = (Integer) aContext.getConfigParameterValue("port");
     try {
-      this.wrapper = new IndriWrapper(serverUrl, serverPort);
+      if (wrapper == null) {
+        wrapper = new IndriWrapper(serverUrl, serverPort);
+      }
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
     }
