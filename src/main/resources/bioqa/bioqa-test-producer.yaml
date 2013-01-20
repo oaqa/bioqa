@@ -102,25 +102,25 @@ pipeline:
     name: passage-span
     options: |
       - inherit: bioqa.ie.span.important-sentence@peace
-      - inherit: base.noop
+#      - inherit: base.noop
 
   - inherit: internal.cse.phase 
     name: passage-rank
     options: |
       - inherit: bioqa.ie.rank.proximity@peace
-      - inherit: base.noop
+#      - inherit: base.noop
       
   - inherit: internal.cse.phase 
     name: score-combine
     options: |
       - inherit: bioqa.ie.rank.combine
-      - inherit: base.noop
+#      - inherit: base.noop
 
   - inherit: internal.cse.phase 
     name: passage-overlap
     options: |
       - inherit: bioqa.ie.overlap.filter
-      - inherit: base.noop
+#      - inherit: base.noop
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer
