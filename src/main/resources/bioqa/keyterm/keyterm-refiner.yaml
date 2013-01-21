@@ -4,7 +4,7 @@ cross-opts:
   MESH: [true, false]
   ENTREZ: [true, false]
   UMLS: [false, true]
-  LexicalVariants: [true, false]
+  LexicalVariants: [true]
   PosTagger: [true]
   MESH-Acronym: [false]
   ENTREZ-Acronym: [false]
