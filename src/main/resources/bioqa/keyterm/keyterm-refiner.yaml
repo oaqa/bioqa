@@ -9,8 +9,8 @@ cross-opts:
   MESH-Acronym: [false]
   ENTREZ-Acronym: [false]
   UMLS-Acronym: [true]
-  concept-term-weight: [0.9]
-  regular-term-weight: [0.1]
+  concept-term-weight: [0.9, 1.0, 0.8]
+  regular-term-weight: [0.1, 0.2, 0.3]
   verb-term-weight: [0.4]
   gene-term-weight: [0.4]
 
