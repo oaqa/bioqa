@@ -127,7 +127,7 @@ pipeline:
         - inherit: bioqa.ie.rank.proximity@peace
         - inherit: bioqa.ie.rank.combine-tune
         - inherit: bioqa.ie.overlap.filter
-     # POST-PROCESSING
+      # POST-PROCESSING
       - pipeline:
         - inherit: bioqa.keyterm.keyterm-refiner
         - inherit: bioqa.retrieval.BasicIndriRetrieval
