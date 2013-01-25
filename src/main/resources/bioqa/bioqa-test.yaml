@@ -64,6 +64,78 @@ pipeline:
         - inherit: bioqa.ie.rank.proximity@peace
         - inherit: bioqa.ie.rank.combine
         - inherit: bioqa.ie.overlap.filter
+      # ACRONYM-EXPANSION
+      - pipeline:
+        - inherit: bioqa.keyterm.keyterm-refiner-acronym-expansion
+        - inherit: bioqa.retrieval.BasicIndriRetrieval
+        - inherit: bioqa.ie.IndriLegalSpan
+        - inherit: bioqa.ie.span.important-sentence@peace
+        - inherit: bioqa.ie.rank.proximity@peace
+        - inherit: bioqa.ie.rank.combine
+        - inherit: bioqa.ie.overlap.filter
+      # LEXICAL-VARIANTS
+      - pipeline:
+        - inherit: bioqa.keyterm.keyterm-refiner-lv
+        - inherit: bioqa.retrieval.BasicIndriRetrieval
+        - inherit: bioqa.ie.IndriLegalSpan
+        - inherit: bioqa.ie.span.important-sentence@peace
+        - inherit: bioqa.ie.rank.proximity@peace
+        - inherit: bioqa.ie.rank.combine
+        - inherit: bioqa.ie.overlap.filter
+      # SMOOTHING-METHODS
+      - pipeline:
+        - inherit: bioqa.keyterm.keyterm-refiner
+        - inherit: bioqa.retrieval.BasicIndriRetrieval
+        - inherit: bioqa.ie.IndriLegalSpan-d
+        - inherit: bioqa.ie.span.important-sentence@peace
+        - inherit: bioqa.ie.rank.proximity@peace
+        - inherit: bioqa.ie.rank.combine
+        - inherit: bioqa.ie.overlap.filter
+      # POS-TAG-WEIGHTING
+      - pipeline:
+        - inherit: bioqa.keyterm.keyterm-refiner-POSw
+        - inherit: bioqa.retrieval.BasicIndriRetrieval
+        - inherit: bioqa.ie.IndriLegalSpan
+        - inherit: bioqa.ie.span.important-sentence@peace
+        - inherit: bioqa.ie.rank.proximity@peace
+        - inherit: bioqa.ie.rank.combine
+        - inherit: bioqa.ie.overlap.filter
+      # IMPORTANT-SENTENCE-EXTRACTION
+      - pipeline:
+        - inherit: bioqa.keyterm.keyterm-refiner
+        - inherit: bioqa.retrieval.BasicIndriRetrieval
+        - inherit: bioqa.ie.IndriLegalSpan
+        - inherit: bioqa.ie.span.important-sentence-tune@peace
+        - inherit: bioqa.ie.rank.proximity@peace
+        - inherit: bioqa.ie.rank.combine
+        - inherit: bioqa.ie.overlap.filter
+      # TERM-PROXIMITY-RANKER
+      - pipeline:
+        - inherit: bioqa.keyterm.keyterm-refiner
+        - inherit: bioqa.retrieval.BasicIndriRetrieval
+        - inherit: bioqa.ie.IndriLegalSpan
+        - inherit: bioqa.ie.span.important-sentence@peace
+        - inherit: bioqa.ie.rank.proximity-tune@peace
+        - inherit: bioqa.ie.rank.combine
+        - inherit: bioqa.ie.overlap.filter
+      # DOCUMENT-PASSAGE-COMBINER
+      - pipeline:
+        - inherit: bioqa.keyterm.keyterm-refiner
+        - inherit: bioqa.retrieval.BasicIndriRetrieval
+        - inherit: bioqa.ie.IndriLegalSpan
+        - inherit: bioqa.ie.span.important-sentence@peace
+        - inherit: bioqa.ie.rank.proximity@peace
+        - inherit: bioqa.ie.rank.combine-tune
+        - inherit: bioqa.ie.overlap.filter
+     # POST-PROCESSING
+      - pipeline:
+        - inherit: bioqa.keyterm.keyterm-refiner
+        - inherit: bioqa.retrieval.BasicIndriRetrieval
+        - inherit: bioqa.ie.IndriLegalSpan
+        - inherit: bioqa.ie.span.important-sentence@peace
+        - inherit: bioqa.ie.rank.proximity@peace
+        - inherit: bioqa.ie.rank.combine
+        - inherit: bioqa.ie.overlap.filter-tune
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer
