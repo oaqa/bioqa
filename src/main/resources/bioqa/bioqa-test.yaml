@@ -55,8 +55,8 @@ pipeline:
         - inherit: bioqa.ie.rank.proximity@peace
         - inherit: bioqa.ie.rank.combine
         - inherit: bioqa.ie.overlap.filter
-     # SYNONYM-EXPANSION
-     - pipeline:
+      # SYNONYM-EXPANSION
+      - pipeline:
         - inherit: bioqa.keyterm.keyterm-refiner-synonym-expansion
         - inherit: bioqa.retrieval.BasicIndriRetrieval
         - inherit: bioqa.ie.IndriLegalSpan
