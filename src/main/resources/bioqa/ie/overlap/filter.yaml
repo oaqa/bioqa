@@ -1,9 +1,9 @@
 class: edu.cmu.lti.oaqa.bio.test.ziy.ie.overlap.OverlappingPassageFilter
 limit: 1000
 cross-opts:
-  FilterMode: [FILTER_IDENTICAL]
+#  FilterMode: [FILTER_IDENTICAL]
 #  FilterMode: [FILTER_OVERLAP]
-  #FilterMode: [FILTER_OVERLAP, FILTER_IDENTICAL]
+  FilterMode: [FILTER_OVERLAP, FILTER_IDENTICAL]
 
 persistence-provider: |
   inherit: internal.log-persistence-provider
