@@ -22,26 +22,26 @@ pipeline:
       - inherit: default.keyterm.default
 
   - inherit: internal.cse.phase 
-    name: pos-tagger
     option-timeout: 2
+    name: pos-tagger
     options: |
       - inherit: bioqa.keyterm.lingpipe-hmm
 
   - inherit: internal.cse.phase
-    name: name-entity-recognizer
     option-timeout: 2
+    name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.lingpipe-abbreviation
 
   - inherit: internal.cse.phase
-    name: name-entity-recognizer
     option-timeout: 2
+    name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.syn-lexical-variants
 
   - inherit: internal.cse.phase
-    name: restore
     option-timeout: 2
+    name: restore
     options: |
       - inherit: bioqa.keyterm.restore
 
@@ -52,100 +52,49 @@ pipeline:
       - inherit: bioqa.keyterm.kb.umls
       
   - inherit: internal.cse.phase
-    name: experiment2-comparation
-    option-timeout: 120
+    option-timeout: 2
+    name: keyterm-refiner
     lazy-load-options: true
     options: |
-      # BEST-PERFORMANCE
-      - pipeline:
-        - inherit: bioqa.keyterm.keyterm-refiner
-        - inherit: bioqa.retrieval.BasicIndriRetrieval
-        - inherit: bioqa.ie.IndriLegalSpan
-        - inherit: bioqa.ie.span.important-sentence@peace
-        - inherit: bioqa.ie.rank.proximity@peace
-        - inherit: bioqa.ie.rank.combine
-        - inherit: bioqa.ie.overlap.filter
-      # SYNONYM-EXPANSION
-      - pipeline:
-        - inherit: bioqa.keyterm.keyterm-refiner-synonym-expansion
-        - inherit: bioqa.retrieval.BasicIndriRetrieval
-        - inherit: bioqa.ie.IndriLegalSpan
-        - inherit: bioqa.ie.span.important-sentence@peace
-        - inherit: bioqa.ie.rank.proximity@peace
-        - inherit: bioqa.ie.rank.combine
-        - inherit: bioqa.ie.overlap.filter
-      # ACRONYM-EXPANSION
-      - pipeline:
-        - inherit: bioqa.keyterm.keyterm-refiner-acronym-expansion
-        - inherit: bioqa.retrieval.BasicIndriRetrieval
-        - inherit: bioqa.ie.IndriLegalSpan
-        - inherit: bioqa.ie.span.important-sentence@peace
-        - inherit: bioqa.ie.rank.proximity@peace
-        - inherit: bioqa.ie.rank.combine
-        - inherit: bioqa.ie.overlap.filter
-      # LEXICAL-VARIANTS
-      - pipeline:
-        - inherit: bioqa.keyterm.keyterm-refiner-lv
-        - inherit: bioqa.retrieval.BasicIndriRetrieval
-        - inherit: bioqa.ie.IndriLegalSpan
-        - inherit: bioqa.ie.span.important-sentence@peace
-        - inherit: bioqa.ie.rank.proximity@peace
-        - inherit: bioqa.ie.rank.combine
-        - inherit: bioqa.ie.overlap.filter
-      # SMOOTHING-METHODS
-      - pipeline:
-        - inherit: bioqa.keyterm.keyterm-refiner
-        - inherit: bioqa.retrieval.BasicIndriRetrieval
-        - inherit: bioqa.ie.IndriLegalSpan-d
-        - inherit: bioqa.ie.span.important-sentence@peace
-        - inherit: bioqa.ie.rank.proximity@peace
-        - inherit: bioqa.ie.rank.combine
-        - inherit: bioqa.ie.overlap.filter
-      # POS-TAG-WEIGHTING
-      - pipeline:
-        - inherit: bioqa.keyterm.keyterm-refiner-POSw
-        - inherit: bioqa.retrieval.BasicIndriRetrieval
-        - inherit: bioqa.ie.IndriLegalSpan
-        - inherit: bioqa.ie.span.important-sentence@peace
-        - inherit: bioqa.ie.rank.proximity@peace
-        - inherit: bioqa.ie.rank.combine
-        - inherit: bioqa.ie.overlap.filter
-      # IMPORTANT-SENTENCE-EXTRACTION
-      - pipeline:
-        - inherit: bioqa.keyterm.keyterm-refiner
-        - inherit: bioqa.retrieval.BasicIndriRetrieval
-        - inherit: bioqa.ie.IndriLegalSpan
-        - inherit: bioqa.ie.span.important-sentence-tune@peace
-        - inherit: bioqa.ie.rank.proximity@peace
-        - inherit: bioqa.ie.rank.combine
-        - inherit: bioqa.ie.overlap.filter
-      # TERM-PROXIMITY-RANKER
-      - pipeline:
-        - inherit: bioqa.keyterm.keyterm-refiner
-        - inherit: bioqa.retrieval.BasicIndriRetrieval
-        - inherit: bioqa.ie.IndriLegalSpan
-        - inherit: bioqa.ie.span.important-sentence@peace
-        - inherit: bioqa.ie.rank.proximity-tune@peace
-        - inherit: bioqa.ie.rank.combine
-        - inherit: bioqa.ie.overlap.filter
-      # DOCUMENT-PASSAGE-COMBINER
-      - pipeline:
-        - inherit: bioqa.keyterm.keyterm-refiner
-        - inherit: bioqa.retrieval.BasicIndriRetrieval
-        - inherit: bioqa.ie.IndriLegalSpan
-        - inherit: bioqa.ie.span.important-sentence@peace
-        - inherit: bioqa.ie.rank.proximity@peace
-        - inherit: bioqa.ie.rank.combine-tune
-        - inherit: bioqa.ie.overlap.filter
-      # POST-PROCESSING
-      - pipeline:
-        - inherit: bioqa.keyterm.keyterm-refiner
-        - inherit: bioqa.retrieval.BasicIndriRetrieval
-        - inherit: bioqa.ie.IndriLegalSpan
-        - inherit: bioqa.ie.span.important-sentence@peace
-        - inherit: bioqa.ie.rank.proximity@peace
-        - inherit: bioqa.ie.rank.combine
-        - inherit: bioqa.ie.overlap.filter-tune
+      - inherit: bioqa.keyterm.keyterm-refiner
+
+  - inherit: internal.cse.phase
+    name: retrieval-strategist
+    option-timeout: 8
+    options: | 
+      - inherit: bioqa.retrieval.BasicIndriRetrieval
+
+  - inherit: internal.cse.phase
+    name: passage-extractor
+    option-timeout: 8
+    options: | 
+      - inherit: bioqa.ie.IndriLegalSpan
+
+  - inherit: internal.cse.phase 
+    name: passage-span
+    option-timeout: 5
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.span.important-sentence@peace
+
+  - inherit: internal.cse.phase 
+    name: passage-rank
+    option-timeout: 5
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.rank.proximity@peace
+      
+  - inherit: internal.cse.phase 
+    name: score-combine
+    option-timeout: 5
+    options: |
+      - inherit: bioqa.ie.rank.combine
+
+  - inherit: internal.cse.phase 
+    name: passage-overlap
+    option-timeout: 5
+    options: |
+      - inherit: bioqa.ie.overlap.filter
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer
