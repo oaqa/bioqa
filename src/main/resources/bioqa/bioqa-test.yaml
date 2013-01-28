@@ -73,6 +73,7 @@ pipeline:
 
   - inherit: internal.cse.phase
     name: keyterm-refiner
+    lazy-load-options: true
     options: |
       - inherit: bioqa.keyterm.keyterm-refiner
 
@@ -98,12 +99,14 @@ pipeline:
 
   - inherit: internal.cse.phase 
     name: passage-span
+    lazy-load-options: true
     options: |
       - inherit: bioqa.ie.span.important-sentence@peace
       #- inherit: base.noop
 
   - inherit: internal.cse.phase 
     name: passage-rank
+    lazy-load-options: true
     options: |
       - inherit: bioqa.ie.rank.proximity@peace
       #- inherit: base.noop
