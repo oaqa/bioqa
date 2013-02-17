@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.framework.eval.gs.KeytermGoldStandardFilePersistenceProvider
+DataSet: TRECGEN06
+PathPattern: classpath:/gs/trecgen06.keyterm
+LineSyntax: (\d+)\|(\d+) (\d+)\|(.*)
