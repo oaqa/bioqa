@@ -127,26 +127,10 @@ pipeline:
 #    name: passage-overlap
 #    options: |
 #      - inherit: bioqa.ie.overlap.filter
-#      #- inherit: base.noop
-
-#  - inherit: jdbc.eval.retrieval-aggregator-consumer      
-#  - inherit: helloqa.eval.passage-map-aggregator-consumer      
+#      #- inherit: base.noop     
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer
-
-    
-#post-process: 
-
-#  - inherit: jdbc.eval.retrieval-evaluator-consumer
-#  - inherit: report.csv-report-generator
-#    builders: |
-#      - inherit: jdbc.report.f-measure-report-component
-          
-#  - inherit: helloqa.eval.passage-map-evaluator-consumer
-#  - inherit: report.csv-report-generator
-#    builders: |
-#      - inherit: helloqa.report.map-report-component
 
 post-process: 
   - inherit: internal.eval.cse-retrieval-evaluator-consumer
