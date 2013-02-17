@@ -103,30 +103,30 @@ pipeline:
     #options: |
      # - inherit: default.ie.default
 
-#  - inherit: jdbc.sqlite.cse.phase 
-#    name: passage-span
-#    lazy-load-options: true
-#    options: |
-#      - inherit: bioqa.ie.span.important-sentence@peace
-#      #- inherit: base.noop
+  - inherit: jdbc.sqlite.cse.phase 
+    name: passage-span
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.span.important-sentence
+      #- inherit: base.noop
 
-#  - inherit: jdbc.sqlite.cse.phase 
-#    name: passage-rank
-#    lazy-load-options: true
-#    options: |
-#      - inherit: bioqa.ie.rank.proximity@peace
-#      #- inherit: base.noop
+  - inherit: jdbc.sqlite.cse.phase 
+    name: passage-rank
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.rank.proximity
+      #- inherit: base.noop
       
-#  - inherit: jdbc.sqlite.cse.phase 
-#    name: score-combine
-#    options: |
-#      - inherit: bioqa.ie.rank.combine
+  - inherit: jdbc.sqlite.cse.phase 
+    name: score-combine
+    options: |
+      - inherit: bioqa.ie.rank.combine
 #      #- inherit: base.noop
 
-#  - inherit: jdbc.sqlite.cse.phase 
-#    name: passage-overlap
-#    options: |
-#      - inherit: bioqa.ie.overlap.filter
+  - inherit: jdbc.sqlite.cse.phase 
+    name: passage-overlap
+    options: |
+      - inherit: bioqa.ie.overlap.filter
 #      #- inherit: base.noop     
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
