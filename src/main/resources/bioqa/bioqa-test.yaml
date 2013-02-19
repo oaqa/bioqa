@@ -127,7 +127,13 @@ pipeline:
     name: passage-overlap
     options: |
       - inherit: bioqa.ie.overlap.filter
-#      #- inherit: base.noop     
+#      #- inherit: base.noop   
+
+  - inherit: jdbc.sqlite.cse.phase
+    name: ranking-model
+    options: |
+      - inherit: bioqa.ranking-model.trainSVM
+  
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer

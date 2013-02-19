@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bio.test.yanfang.ie.TrainingSVM
+Prefix: file:/Users/yanfang/Documents/CMU/TREC2006/
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider
