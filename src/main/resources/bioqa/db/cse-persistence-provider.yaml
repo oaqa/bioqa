@@ -1,4 +1,7 @@
 inherit: jdbc.db.experiment-persistence-provider
-url: "jdbc:mysql://seit1.lti.cs.cmu.edu:3308/oaevaluation?autoReconnect=true"
-username: oaqacse
-password: corm767.cups
+#url: "jdbc:mysql://seit1.lti.cs.cmu.edu:3308/oaevaluation?autoReconnect=true"
+url: "jdbc:mysql://peace.isri.cs.cmu.edu:12321/oaevaluation?autoReconnect=true"
+#username: oaqacse
+#password: corm767.cups
+username: root
+password: s3p1apa55w0rd

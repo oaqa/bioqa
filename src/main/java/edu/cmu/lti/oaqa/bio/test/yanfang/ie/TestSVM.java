@@ -28,7 +28,7 @@ public class TestSVM extends AbstractPassageUpdater {
   @Override
   public void initialize(UimaContext c) throws ResourceInitializationException {
     super.initialize(c);
-    limit = UimaContextHelper.getConfigParameterIntValue(c, "limit", 10);
+    limit = UimaContextHelper.getConfigParameterIntValue(c, "limit", 0);
     boolean zipped = UimaContextHelper.getConfigParameterBooleanValue(c, "Zipped", true);
     try {
       retriever = new DocumentRetrieverWrapper((String) c.getConfigParameterValue("Prefix"),
@@ -44,37 +44,13 @@ public class TestSVM extends AbstractPassageUpdater {
     
     HashMap<Integer, List<String>> features = new HashMap<Integer, List<String>>();
     List<String> labels = new ArrayList<String>();
-    int count = 0;
+
+    features = TrainingSVM.extractFeatures(passages, keyterms, limit, retriever);
+        
+    System.out.println("features in test" + features);
     
-    for(PassageCandidate passage : passages) {
-      
-      // extract features: ranking score, ranking, keyterm counts,
-      //passage.getProbability()
-      Article article = retriever.getDocument(passage.getDocID());
-      // sanity check
-      if (passage.getStart() > article.getText().length() - 1) {
-        passage.setStart(article.getText().length() - 1);
-      }
-      if (passage.getEnd() > article.getText().length()) {
-        passage.setEnd(article.getText().length());
-      }
-      // get all sentences from the retrieved paragraph
-      TextSpan origSpan = new TextSpan(passage.getStart(), passage.getEnd());
-      String psg = article.getSpanText(origSpan);
-      // keyterm counts
-      String keytermCount = Integer.toString(TrainingSVM.getKeytermCount(psg, keyterms));
-      String ranking = Integer.toString(passage.getRank());
-      String score = Double.toString(passage.getProbability());
-      
-      features.put(count, new ArrayList<String>());
-      features.get(count).add(keytermCount); 
-      features.get(count).add(ranking); 
-      features.get(count).add(score);
-      
-      labels.add(Integer.toString(count));
-      
-      count++;
-    }
+    for (int i = 0; i < passages.size(); i++) 
+      labels.add(Integer.toString(i));    
     
     // write the features and labels into the SVMlib format file
     TrainingSVM.outputAsSVMLibFormat(features, labels, "SVMtest");
@@ -87,11 +63,10 @@ public class TestSVM extends AbstractPassageUpdater {
       e.printStackTrace();
     } 
     
-    // read predict results
+    // read predicted results
     BufferedReader br = null;
     List<String> predict_results = new ArrayList<String>();
     try {
- 
       String sCurrentLine;
       br = new BufferedReader(new FileReader("SVMoutput"));
       while ((sCurrentLine = br.readLine()) != null) {
@@ -104,10 +79,17 @@ public class TestSVM extends AbstractPassageUpdater {
        
     // recalculate the score based on predicted results
     for (int i = 0; i<Math.min(predict_results.size(), passages.size()); i++) {
-      passages.get(i).setProbablity(passages.get(i).getProbability() +  Float.parseFloat(predict_results.get(i)));
-    }
+      
+      //if(Float.parseFloat(predict_results.get(i)) == 1) {
+        passages.get(i).setProbablity(Float.parseFloat(predict_results.get(i)));
+      //}
+      //passages.get(i).setProbablity(passages.get(i).getProbability() +  Float.parseFloat(predict_results.get(i)));
+      
+//      System.out.println(">>>>>" + Float.parseFloat(predict_results.get(i)));
+  //    System.out.println(">>>>>" + passages.get(i).getProbability());
     
-    System.out.println(">>>>>" + passages.size());
+    }
+
     
     return passages;
   }
