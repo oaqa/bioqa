@@ -34,19 +34,19 @@ public class PassageResultRestore extends AbstractPassageUpdater {
     } catch (Exception e) {
       e.printStackTrace();
       throw new ResourceInitializationException(e);
-    }
+    }    
   }
 
   @Override
   protected List<PassageCandidate> updatePassages(String question, List<Keyterm> keyterms,
           List<RetrievalResult> documents, List<PassageCandidate> passages) {
-    // TODO Auto-generated method stub
+    // TODO Auto-generated method stub   
     passages = new ArrayList<PassageCandidate>();
-    Map<PassageCandidate, Float> temp = question2passages.get(question);
+    Map<PassageCandidate, Float> temp = question2passages.get(question);    
     Iterator it = temp.entrySet().iterator();
     while(it.hasNext()) {
       Map.Entry<PassageCandidate, Float> pairs = (Map.Entry<PassageCandidate, Float>) it.next();
-      pairs.getKey().setProbablity(pairs.getValue());      
+      pairs.getKey().setProbablity(pairs.getValue());   
       passages.add(pairs.getKey());
     }
   

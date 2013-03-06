@@ -46,9 +46,6 @@ public class PassageResultBackup extends AbstractPassageUpdater {
           List<RetrievalResult> documents, List<PassageCandidate> passages) {
     Map<PassageCandidate, Float> temp = new HashMap<PassageCandidate, Float>();
     for (PassageCandidate passage : passages) {
-      System.out.println(passage.getDocID());
-      System.out.println(passage.getStart());
-      System.out.println(passage.getProbability());
       temp.put(passage, passage.getProbability());
     }
  
