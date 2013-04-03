@@ -1,5 +1,7 @@
 package edu.cmu.lti.oaqa.bio.test.yanfang.ie;
 import libsvm.*;
+
+import java.awt.image.Kernel;
 import java.io.*;
 import java.util.*;
 
@@ -92,6 +94,10 @@ class svm_predict {
 			else
 			{
 				v = svm.svm_predict(model,x);
+				
+				//svm.svm_predict_values(model, x, dec_values)
+				//Kernel.class
+				
 				output.writeBytes(v+"\n");
 			}
 

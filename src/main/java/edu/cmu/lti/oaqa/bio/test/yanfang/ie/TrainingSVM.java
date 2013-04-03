@@ -9,15 +9,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.lucene.analysis.CharArrayMap.EntrySet;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.oaqa.model.Passage;
 
+import similarity.Similarity;
+
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.bio.framework.retrieval.DocumentRetrieverWrapper;
 import edu.cmu.lti.oaqa.bio.retrieval.tools.CleanTerms;
+import edu.cmu.lti.oaqa.bio.test.eric.passagescore.CompositeKeytermWindowScorer;
+import edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.LingPipeAndAbbreviation;
+import edu.cmu.lti.oaqa.bio.test.ziy.ie.ContentAwarePassageUpdater;
 import edu.cmu.lti.oaqa.bio.test.ziy.ie.span.LingPipeSentenceChunker;
 import edu.cmu.lti.oaqa.bio.test.ziy.keyterm.pos.LingPipeHmmPosTagger;
 import edu.cmu.lti.oaqa.ecd.log.AbstractLoggedComponent;
@@ -40,6 +46,8 @@ public class TrainingSVM extends AbstractLoggedComponent {
 
   protected DocumentRetrieverWrapper retriever;
 
+  private CompositeKeytermWindowScorer scorer;
+
   @Override
   public void initialize(UimaContext c) throws ResourceInitializationException {
     super.initialize(c);
@@ -51,6 +59,7 @@ public class TrainingSVM extends AbstractLoggedComponent {
     } catch (NullPointerException e) {
       retriever = new DocumentRetrieverWrapper(zipped, true);
     }
+
   }
 
   @Override
@@ -66,6 +75,10 @@ public class TrainingSVM extends AbstractLoggedComponent {
       // get the question
       String questionText = ((InputElement) BaseJCasHelper.getAnnotation(jcas, InputElement.type))
               .getQuestion();
+      // String qID = ((InputElement) BaseJCasHelper.getAnnotation(jcas,
+      // InputElement.type)).getSequenceId();
+      // System.out.println("*********" + qID);
+
       // get keyterms
       KeytermList keytermList = new KeytermList(jcas);
       List<Keyterm> keyterms = keytermList.getKeyterms();
@@ -85,40 +98,77 @@ public class TrainingSVM extends AbstractLoggedComponent {
       // relevant as long as it have overlap with the gs
       // this should be gotten from the DB, instead of comparing the results and golden standard
       @SuppressWarnings("unchecked")
-      List<PassageCandidate> passage_for_features = (List<PassageCandidate>) ((ArrayList) passages)
+      List<PassageCandidate> passage_for_features = (List<PassageCandidate>) ((ArrayList<PassageCandidate>) passages)
               .clone();
 
-      for (PassageCandidate passage : passages) {
+      // File file = new File("qID");
+
+      // FileWriter fw = new FileWriter(file.getAbsoluteFile());
+      // BufferedWriter bw = new BufferedWriter(fw);
+
+      loop: for (PassageCandidate passage : passages) {
+
+        Article article = retriever.getDocument(passage.getDocID());
+        TextSpan origSpan = new TextSpan(passage.getStart(), passage.getEnd());
+        String psg = article.getSpanText(origSpan);
+        // bw.write(psg);
+
+        // bw.newLine();
+
         // get the labels
         String passage_id = passage.getDocID();
         if (!id2gsPassages.containsKey(passage_id)) {
           labels.add("0");
-          continue;
+          // bw.write("============false");
+          // bw.newLine();
+          // bw.newLine();
+          continue loop;
         }
         for (Passage gs_passage_in_same_doc : id2gsPassages.get(passage_id)) {
           if (getOverlapLength(gs_passage_in_same_doc, passage) > 0) {
             labels.add("1");
-            continue;
+            // bw.write("============true");
+            // bw.newLine();
+            // bw.newLine();
+            continue loop;
           }
         }
+
         labels.add("0");
+        // bw.write("============false");
         // features.get(count).add(ranking);
         // features.get(count).add(score);
+
+        // bw.newLine();
+        // bw.newLine();
+
         count++;
         if (count > limit)
           break;
       }
 
-      features = extractFeatures(passage_for_features, keyterms, limit, retriever);
+      // bw.close();
 
+      features = extractFeatures(questionText, passage_for_features, keyterms, limit, retriever,
+              false);
+
+      /*
+       * HashMap<Integer, List<String>> fake_features = new HashMap<Integer, List<String>>();
+       * 
+       * 
+       * int fake_count = 0; for(String s : labels) { fake_features.put(fake_count, new
+       * ArrayList<String>()); fake_features.get(fake_count).add(s); fake_count++; }
+       */
       System.out.println("labels" + labels);
       System.out.println("features" + features);
 
       // write the features and labels into the SVMlib format file
-      outputAsSVMLibFormat(features, labels, "SVMtrain");
+      // the last parameter is to change the one model for all questions (when true) or each
+      // question has its own model (when false)
+      outputAsSVMLibFormat(features, labels, "SVMtrain", false);
 
       // train the model based on SVMlib
-      String[] arguments_for_training = { "-m", "100", "SVMtrain", "SVMmodel" };
+      String[] arguments_for_training = { "-s", "3", "-t", "0", "-b", "1", "SVMtrain", "SVMmodel" };
       svm_train train = new svm_train();
       train.run(arguments_for_training);
 
@@ -152,64 +202,104 @@ public class TrainingSVM extends AbstractLoggedComponent {
     return -Math.min(Math.abs(p1.getBegin() - p2.getEnd()), Math.abs(p1.getEnd() - p2.getStart()));
   }
 
-  public static int getKeytermCount(String psg, List<Keyterm> keyterms, float threshold) {
+  public static int getKeytermCount(String psg, List<Keyterm> keyterms, float threshold,
+          boolean countDuplicates) {
     int result = 0;
+    int result_with_duplicates = 0;
     Map<String, Keyterm> keytermSet = new HashMap<String, Keyterm>();
+    Map<Keyterm, Boolean> markList = new HashMap<Keyterm, Boolean>();
+
     for (Keyterm keyterm : keyterms) {
       if (keyterm.getProbability() < threshold)
         continue;
-      String stemmed = CleanTerms.getStemmedTerm(keyterm.getText());
-      if (!keytermSet.containsKey(stemmed)) {
-        keytermSet.put(CleanTerms.getStemmedTerm(keyterm.getText()), keyterm);
+
+      // mark keyterms
+      if (!markList.containsKey(keyterm)) {
+        markList.put(keyterm, false);
+      }
+
+      // store synonyms as the keys
+      for (String synonym : ((BioKeyterm) keyterm).getSynonymsBySource("RefinedSynonyms")) {
+        if (!keytermSet.containsKey(synonym.toLowerCase())) {
+          synonym = CleanTerms.getStemmedTerm(synonym);
+          keytermSet.put(synonym, keyterm);
+        }
+      }
+
+      // store the text of the keyterm
+      if (!keytermSet.containsKey(keyterm.getText())) {
+        keytermSet.put(keyterm.getText().toLowerCase(), keyterm);
       }
     }
 
     List<TextSpan> sentences = LingPipeSentenceChunker.split(psg);
     for (TextSpan sentence : sentences) {
-      List<String> tokens = LingPipeHmmPosTagger.tokenize(psg.substring(sentence.begin,
+
+      // use chunk
+      List<String> tokens = LingPipeAndAbbreviation.tokenize(psg.substring(sentence.begin,
               sentence.end));
 
+      // divide the sentence with chunk
       for (String token : tokens) {
-        if (keytermSet.containsKey(CleanTerms.getStemmedTerm(token)))
-          result++;
+        token = CleanTerms.getStemmedTerm(token.toLowerCase());
+        // the token is part of the token
+        for (Map.Entry<String, Keyterm> entry : keytermSet.entrySet()) {
+          if (entry.getKey().contains(token) && token.length() > 4) {
+            if (markList.containsKey(entry.getValue())) {
+              result_with_duplicates++;
+              // check if this one has been founded once
+              if (!markList.get(entry.getValue())) {
+                markList.put(entry.getValue(), true);
+                result++;
+              }
+            }
+          }
+        }
+
+        // keyterm and token are the same
+        if (keytermSet.containsKey(token)) {
+          if (markList.containsKey(keytermSet.get(token))) {
+            result_with_duplicates++;
+            // check if this one has been founded once
+            if (!markList.get(keytermSet.get(token))) {
+              markList.put(keytermSet.get(token), true);
+              result++;
+            }
+          }
+        }
       }
-    }
 
-    return result;
-  }
-
-  public static int getKeytermCountUseString(String psg, List<String> keyterms) {
-    int result = 0;
-    Map<String, Integer> keytermSet = new HashMap<String, Integer>();
-    for (String keyterm : keyterms) {
-      if (!keytermSet.containsKey(keyterm)) {
-        keytermSet.put(keyterm, 1);
-      }
-    }
-
-    List<TextSpan> sentences = LingPipeSentenceChunker.split(psg);
-    for (TextSpan sentence : sentences) {
-      List<String> tokens = LingPipeHmmPosTagger.tokenize(psg.substring(sentence.begin,
+      // use Pos tagger
+      List<String> tokens2 = LingPipeHmmPosTagger.tokenize(psg.substring(sentence.begin,
               sentence.end));
 
-      for (String token : tokens) {
-        if (keytermSet.containsKey(token))
-          result++;
+      // divide the psg with pos tagger
+      for (String token : tokens2) {
+        token = CleanTerms.getStemmedTerm(token.toLowerCase());
+        if (keytermSet.containsKey(token)) {
+          if (markList.containsKey(keytermSet.get(token))) {
+            // check if this one has been founded once
+            if (!markList.get(keytermSet.get(token))) {
+              markList.put(keytermSet.get(token), true);
+              result++;
+            }
+          }
+        }
       }
-    }
 
-    return result;
+    }
+    return countDuplicates ? result_with_duplicates : result;
   }
 
   public static void outputAsSVMLibFormat(HashMap<Integer, List<String>> features,
-          List<String> labels, String fileName) {
+          List<String> labels, String fileName, boolean append) {
     try {
       File file = new File(fileName);
       if (!file.exists()) {
         file.createNewFile();
       }
 
-      FileWriter fw = new FileWriter(file.getAbsoluteFile());
+      FileWriter fw = new FileWriter(file.getAbsoluteFile(), append);
       BufferedWriter bw = new BufferedWriter(fw);
 
       String content = "";
@@ -230,7 +320,7 @@ public class TrainingSVM extends AbstractLoggedComponent {
   }
 
   public static List<String> getKeytermsAndSynonyms(List<Keyterm> keyterms, float threshold) {
-    
+
     List<String> result = new ArrayList<String>();
     for (Keyterm k : keyterms) {
       if (k.getProbability() >= threshold) {
@@ -241,12 +331,180 @@ public class TrainingSVM extends AbstractLoggedComponent {
     return result;
   }
 
-  public static HashMap<Integer, List<String>> extractFeatures(List<PassageCandidate> passages,
-          List<Keyterm> keyterms, int limit, DocumentRetrieverWrapper retriever) {
+  public static int totalKeytermsinPassge(String psg) {
+    int count = 0;
+
+    List<TextSpan> sentences = LingPipeSentenceChunker.split(psg);
+    for (TextSpan sentence : sentences) {
+
+      // use chunk
+      List<String> tokens = LingPipeAndAbbreviation.tokenize(psg.substring(sentence.begin,
+              sentence.end));
+      count += tokens.size();
+    }
+    return count;
+  }
+
+  public static int windowInfor(String psg, List<Keyterm> keyterms, float threshold, String infor) {
+    int begin = Integer.MIN_VALUE;
+    int end = Integer.MIN_VALUE;
+    int termCount = 0;
+    Map<String, Keyterm> keytermSet = new HashMap<String, Keyterm>();
+
+    for (Keyterm keyterm : keyterms) {
+      if (keyterm.getProbability() < threshold)
+        continue;
+
+      // store synonyms as the keys
+      for (String synonym : ((BioKeyterm) keyterm).getSynonymsBySource("RefinedSynonyms")) {
+        if (!keytermSet.containsKey(synonym.toLowerCase())) {
+          synonym = CleanTerms.getStemmedTerm(synonym);
+          keytermSet.put(synonym, keyterm);
+        }
+      }
+      // store the text of the keyterm
+      if (!keytermSet.containsKey(keyterm.getText())) {
+        keytermSet.put(keyterm.getText().toLowerCase(), keyterm);
+      }
+    }
+
+    List<TextSpan> sentences = LingPipeSentenceChunker.split(psg);
+    for (TextSpan sentence : sentences) {
+
+      String s = psg.substring(sentence.begin, sentence.end);
+      
+      // use chunk
+      List<String> tokens = LingPipeAndAbbreviation.tokenize(s);
+
+      // divide the sentence with chunk
+      for (String token : tokens) {
+        token = CleanTerms.getStemmedTerm(token.toLowerCase());
+        // the token is part of the token
+        for (Map.Entry<String, Keyterm> entry : keytermSet.entrySet()) {
+          if (entry.getKey().contains(token) && token.length() > 4) {
+            begin = begin == Integer.MIN_VALUE ? s.indexOf(token) : begin;
+            end = end < s.indexOf(token) ? s.indexOf(token) : end;
+          }
+
+          // keyterm and token are the same
+          if (keytermSet.containsKey(token)) {
+            begin = begin == Integer.MIN_VALUE ? s.indexOf(token) : begin;
+            end = end < s.indexOf(token) ? s.indexOf(token) : end;
+          }
+        }
+      }
+      // use Pos tagger
+      List<String> tokens2 = LingPipeHmmPosTagger.tokenize(s);
+
+      // divide the psg with pos tagger
+      for (String token : tokens2) {
+        termCount++;
+        token = CleanTerms.getStemmedTerm(token.toLowerCase());
+        if (keytermSet.containsKey(token)) {
+          begin = begin == Integer.MIN_VALUE ? s.indexOf(token) : begin;
+          end = end < s.indexOf(token) ? s.indexOf(token) : end;
+        }
+      }
+    }
+
+    if (begin == Integer.MIN_VALUE)
+      begin = 0;
+    if (end == Integer.MIN_VALUE)
+      end = 0;
+
+    if (infor.equals("begin"))
+      return begin;
+    if (infor.equals("end"))
+      return end;
+    if (infor.equals("size"))
+      return end - begin + 1;
+    if (infor.equals("termCount"))
+      return termCount;
+    return 0;
+  }
+
+  public static int keytermCountInQuestion(List<Keyterm> keyterms, float threshold) {
+    int result = 0;
+    
+    for (Keyterm k : keyterms) {
+      if(k.getProbability() >= threshold)
+        result++;
+    }
+    
+    return result;
+  }
+  
+  public static HashMap<Integer, List<String>> extractFeatures(String question,
+          List<PassageCandidate> passages, List<Keyterm> keyterms, int limit,
+          DocumentRetrieverWrapper retriever, boolean print) {
     HashMap<Integer, List<String>> features = new HashMap<Integer, List<String>>();
     int count = 0;
     limit = limit == 0 ? passages.size() : limit;
+
+    // get the global information for each question
+    ArrayList<PassageCandidate> passages2 = (ArrayList<PassageCandidate>) ((ArrayList) passages).clone();
+    int sumLength = 0;
+    int sumKeytermsInPsg = 0;
+    int sumImportantKeytermsInPsg = 0;
+    int sumImportantKeytermsInPsgWithDuplicates = 0;
+    HashMap<Integer, Double> standardizedLength = new HashMap<Integer, Double>();
+    HashMap<Integer, Double> standardizedKeytermsInPsg = new HashMap<Integer, Double>();
+    HashMap<Integer, Double> standardizedImportantKeytermsInPsg = new HashMap<Integer, Double>();
+    HashMap<Integer, Double> standardizedImportantKeytermsInPsgWithDuplicates = new HashMap<Integer, Double>();
     
+    for (PassageCandidate passage2 : passages) {
+   // extract features: ranking score, ranking, keyterm counts,
+      // passage.getProbability()
+      Article article = retriever.getDocument(passage2.getDocID());
+      // sanity check
+      if (passage2.getStart() > article.getText().length() - 1) {
+        passage2.setStart(article.getText().length() - 1);
+      }
+      if (passage2.getEnd() > article.getText().length()) {
+        passage2.setEnd(article.getText().length());
+      }
+      // get all sentences from the retrieved paragraph
+      TextSpan origSpan = new TextSpan(passage2.getStart(), passage2.getEnd());
+      String psg = article.getSpanText(origSpan);
+      
+      sumLength += psg.length();
+      standardizedLength.put(count, (double)psg.length());
+      
+      int termCountInPsg = windowInfor(psg, keyterms, (float)0.6, "termCount");
+      sumKeytermsInPsg += termCountInPsg;
+      standardizedKeytermsInPsg.put(count, (double)termCountInPsg);
+      
+      int importantKeytermCount = getKeytermCount(psg, keyterms, (float) 0.6, false);
+      sumImportantKeytermsInPsg += importantKeytermCount; 
+      standardizedImportantKeytermsInPsg.put(count, (double)importantKeytermCount);
+      
+      int importantKeytermCountWithDuplicates = getKeytermCount(psg, keyterms, (float) 0.6, true);
+      sumImportantKeytermsInPsgWithDuplicates += importantKeytermCountWithDuplicates;
+      standardizedImportantKeytermsInPsgWithDuplicates.put(count, (double)importantKeytermCountWithDuplicates);
+      
+      count++;
+      if (count > limit)
+        break;
+    }
+    
+    double meanLength = (double)sumLength/limit;
+    double meanTermCountInPsg = (double)sumKeytermsInPsg/limit;
+    double meanImportantKeytermsInPsg = (double)sumImportantKeytermsInPsg/limit;
+    double meanImportantKeytermsInPsgWithDuplicates = (double) sumImportantKeytermsInPsgWithDuplicates/limit;
+    
+    double devLength = 0;
+    double devTermCountInPsg = 0;
+    double devImportantKeytermsInPsg = 0;
+    double devImportantKeytermsInPsgWithDuplicates = 0;
+    
+    for(int i = 0; i< count; i++) {
+      if (standardizedLength.containsKey(i))
+        devLength += Math.pow((standardizedLength.get(i) - meanLength), 2);      
+    }
+    
+    devLength = Math.sqrt(devLength/limit);
+    
+    count = 0;
     for (PassageCandidate passage : passages) {
       // extract features: ranking score, ranking, keyterm counts,
       // passage.getProbability()
@@ -261,31 +519,54 @@ public class TrainingSVM extends AbstractLoggedComponent {
       // get all sentences from the retrieved paragraph
       TextSpan origSpan = new TextSpan(passage.getStart(), passage.getEnd());
       String psg = article.getSpanText(origSpan);
-      // keyterm counts
-      String keyterm_count = Integer.toString(getKeytermCount(psg, keyterms, (float) 0));
-      String ranking = Integer.toString(passage.getRank());
-      String score = Double.toString(passage.getProbability());
-           
-      // keyterm and synonyms count
-      List<String> keyterm_and_synonyms = getKeytermsAndSynonyms(keyterms, (float) 0);
-      String keyterm_synonym_count = Integer.toString(getKeytermCountUseString(psg,
-              keyterm_and_synonyms));
-      String important_keyterm_count = Integer
-              .toString(getKeytermCount(psg, keyterms, (float) 0.6));
-      List<String> important_keyterm_and_synonyms = getKeytermsAndSynonyms(keyterms, (float) 0.6);
-      String important_keyterm_synonym_count = Integer.toString(getKeytermCountUseString(psg,
-              important_keyterm_and_synonyms));
+      int importantKeytermCount = getKeytermCount(psg, keyterms, (float) 0.6, false);
 
+      int importantKeytermCountWithDuplicates = getKeytermCount(psg, keyterms, (float) 0.6, true);
+
+      int windowSize = windowInfor(psg,keyterms, (float)0.6, "size");
+      int windowBegin = windowInfor(psg,keyterms, (float)0.6, "begin");       
+      int keytermCountInQuestion = keytermCountInQuestion(keyterms, (float) 0.4);
+      int termCountInPsg = windowInfor(psg, keyterms, (float)0.6, "termCount");
+      
       features.put(count, new ArrayList<String>());
-      features.get(count).add(keyterm_count);
-      features.get(count).add(keyterm_synonym_count);
-      features.get(count).add(important_keyterm_count);
-      features.get(count).add(important_keyterm_synonym_count);
 
+      features.get(count).add(Integer.toString(importantKeytermCount));
+      features.get(count).add(Double.toString(psg.length() / 100));
+      features.get(count).add(Double.toString((psg.length() - meanLength)/devLength));
+      
+      /*Percent Matches*/
+      features.get(count).add(
+              Double.toString(importantKeytermCountWithDuplicates == 0 ? 0 : importantKeytermCount
+                      / (double) importantKeytermCountWithDuplicates));
+      //features.get(count).add(
+        //      Double.toString(1 - (double)windowSize/psg.length()));
+      // passage offset score
+      
+      //features.get(count).add(Double.toString((psg.length()-windowBegin)/(double)psg.length()));
+      
+      //features.get(count).add(Double.toString((double)importantKeytermCount/keyterms.size()));
+      
+      /*Keyterm Matches Score*/
+      features.get(count).add(Double.toString((double)importantKeytermCount/keytermCountInQuestion));
+      
+      /* keyterm found / passage length(density of keyterms) */
+      features.get(count).add(Double.toString((double) importantKeytermCount/termCountInPsg));
+      
       count++;
       if (count > limit)
         break;
     }
+   
+    /*
+    double meanLength = (double)sumLength/limit;
+    double meanTermCountInPsg = (double)sumKeytermsInPsg/limit;
+    double meanImportantKeytermsInPsg = (double)sumImportantKeytermsInPsg/limit;
+    double meanImportantKeytermsInPsgWithDuplicates = (double) sumImportantKeytermsInPsgWithDuplicates/limit;
+   
+    for(int i = 0; i<count; i++) {
+      features.get
+    }
+    */
 
     return features;
   }

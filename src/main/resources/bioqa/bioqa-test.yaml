@@ -83,10 +83,10 @@ pipeline:
     options: |
       - inherit: bioqa.keyterm.keyterm-refiner
 
-  - inherit: internal.cse.phase
-    name: retrieval-strategist
-    options: | 
-      - inherit: bioqa.retrieval.BasicIndriRetrieval
+  #- inherit: internal.cse.phase
+   # name: retrieval-strategist
+    #options: | 
+     # - inherit: bioqa.retrieval.BasicIndriRetrieval
 
   #- inherit: internal.cse.phase
    # name: passage-extractor
@@ -140,11 +140,6 @@ pipeline:
     name: ranking-model
     options: |
       - inherit: bioqa.ranking-model.trainSVM
-
-  #- inherit: jdbc.sqlite.cse.phase
-   # name: ranking-model
-    #options: |
-     # - inherit: bioqa.ranking-model.trainSVM
 
   - inherit: jdbc.cse.phase
     name: ranking-model

@@ -45,7 +45,7 @@ public class TestSVM extends AbstractPassageUpdater {
     HashMap<Integer, List<String>> features = new HashMap<Integer, List<String>>();
     List<String> labels = new ArrayList<String>();
 
-    features = TrainingSVM.extractFeatures(passages, keyterms, limit, retriever);
+    features = TrainingSVM.extractFeatures(question, passages, keyterms, 0, retriever, false);
         
     System.out.println("features in test" + features);
     
@@ -53,10 +53,10 @@ public class TestSVM extends AbstractPassageUpdater {
       labels.add(Integer.toString(i));    
     
     // write the features and labels into the SVMlib format file
-    TrainingSVM.outputAsSVMLibFormat(features, labels, "SVMtest");
+    TrainingSVM.outputAsSVMLibFormat(features, labels, "SVMtest", false);
     
     // predict 
-    String[] arguments_for_prediction = {"-b", "0", "SVMtest", "SVMmodel", "SVMoutput"};
+    String[] arguments_for_prediction = {"-b", "1", "SVMtest", "SVMmodel", "SVMoutput"};
     try {
       svm_predict.run(arguments_for_prediction);
     } catch (IOException e) {
@@ -81,7 +81,7 @@ public class TestSVM extends AbstractPassageUpdater {
     for (int i = 0; i<Math.min(predict_results.size(), passages.size()); i++) {
       
       //if(Float.parseFloat(predict_results.get(i)) == 1) {
-        passages.get(i).setProbablity(Float.parseFloat(predict_results.get(i)));
+        passages.get(i).setProbablity(passages.get(i).getProbability()+ Float.parseFloat(predict_results.get(i)));
       //}
       //passages.get(i).setProbablity(passages.get(i).getProbability() +  Float.parseFloat(predict_results.get(i)));
       

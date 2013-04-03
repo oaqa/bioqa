@@ -24,6 +24,8 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
  * From the probability, you can decide whether you should use the keyterm or not. Which resources
  * to use is specified in the yaml file.
  * 
+ * New keyterm synonsym called "RefinedSynonyms"
+ * 
  * @author yanfang (yanfang@cmu.edu)
  */
 public class KeytermRefiner extends AbstractKeytermUpdater {
