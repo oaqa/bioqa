@@ -165,7 +165,8 @@ public class TrainingSVM extends AbstractLoggedComponent {
       // write the features and labels into the SVMlib format file
       // the last parameter is to change the one model for all questions (when true) or each
       // question has its own model (when false)
-      outputAsSVMLibFormat(features, labels, "SVMtrain", false);
+      //outputAsSVMLibFormat(features, labels, "SVMtrain", false);
+      outputAsSVMLibFormat(features, labels, "SVMtrain", true);
 
       // train the model based on SVMlib
       String[] arguments_for_training = { "-s", "3", "-t", "0", "-b", "1", "SVMtrain", "SVMmodel" };
@@ -447,10 +448,12 @@ public class TrainingSVM extends AbstractLoggedComponent {
     int sumKeytermsInPsg = 0;
     int sumImportantKeytermsInPsg = 0;
     int sumImportantKeytermsInPsgWithDuplicates = 0;
+    int sumRegularKeyterms = 0;
     HashMap<Integer, Double> standardizedLength = new HashMap<Integer, Double>();
     HashMap<Integer, Double> standardizedKeytermsInPsg = new HashMap<Integer, Double>();
     HashMap<Integer, Double> standardizedImportantKeytermsInPsg = new HashMap<Integer, Double>();
     HashMap<Integer, Double> standardizedImportantKeytermsInPsgWithDuplicates = new HashMap<Integer, Double>();
+    HashMap<Integer, Double> standardizedRegularKeyterms = new HashMap<Integer, Double>();
     
     for (PassageCandidate passage2 : passages) {
    // extract features: ranking score, ranking, keyterm counts,
@@ -482,6 +485,10 @@ public class TrainingSVM extends AbstractLoggedComponent {
       sumImportantKeytermsInPsgWithDuplicates += importantKeytermCountWithDuplicates;
       standardizedImportantKeytermsInPsgWithDuplicates.put(count, (double)importantKeytermCountWithDuplicates);
       
+      int regularKeytermCount = getKeytermCount(psg, keyterms, (float) 0.1, false);
+      sumRegularKeyterms += regularKeytermCount;
+      standardizedRegularKeyterms.put(count, (double)regularKeytermCount);
+      
       count++;
       if (count > limit)
         break;
@@ -491,18 +498,40 @@ public class TrainingSVM extends AbstractLoggedComponent {
     double meanTermCountInPsg = (double)sumKeytermsInPsg/limit;
     double meanImportantKeytermsInPsg = (double)sumImportantKeytermsInPsg/limit;
     double meanImportantKeytermsInPsgWithDuplicates = (double) sumImportantKeytermsInPsgWithDuplicates/limit;
+    double meanRegularKeyterms = (double)sumRegularKeyterms/limit;
     
     double devLength = 0;
     double devTermCountInPsg = 0;
     double devImportantKeytermsInPsg = 0;
     double devImportantKeytermsInPsgWithDuplicates = 0;
+    double devRegularKeyterms = 0;
+    double largestLength = 10;  // set as the minimun length
     
     for(int i = 0; i< count; i++) {
-      if (standardizedLength.containsKey(i))
-        devLength += Math.pow((standardizedLength.get(i) - meanLength), 2);      
+      if (standardizedLength.containsKey(i))  {
+        largestLength = largestLength > standardizedLength.get(i) ? largestLength : standardizedLength.get(i);
+        devLength += Math.pow((standardizedLength.get(i) - meanLength), 2);   
+      }
+        
+      if (standardizedKeytermsInPsg.containsKey(i))
+        devTermCountInPsg += Math.pow((standardizedKeytermsInPsg.get(i) - meanTermCountInPsg), 2);      
+  
+      if (standardizedImportantKeytermsInPsg.containsKey(i))
+        devImportantKeytermsInPsg += Math.pow((standardizedImportantKeytermsInPsg.get(i) - meanImportantKeytermsInPsg), 2);      
+  
+      if (standardizedImportantKeytermsInPsgWithDuplicates.containsKey(i))
+        devImportantKeytermsInPsgWithDuplicates += Math.pow((standardizedImportantKeytermsInPsgWithDuplicates.get(i) - meanImportantKeytermsInPsgWithDuplicates), 2);      
+      
+      if (standardizedRegularKeyterms.containsKey(i))
+        devRegularKeyterms += Math.pow((standardizedRegularKeyterms.get(i) - meanRegularKeyterms), 2);      
+  
     }
     
     devLength = Math.sqrt(devLength/limit);
+    devTermCountInPsg = Math.sqrt(devTermCountInPsg/limit);
+    devImportantKeytermsInPsg = Math.sqrt(devImportantKeytermsInPsg/limit);
+    devImportantKeytermsInPsgWithDuplicates = Math.sqrt(devImportantKeytermsInPsgWithDuplicates/limit);
+    devRegularKeyterms = Math.sqrt(devRegularKeyterms/limit);
     
     count = 0;
     for (PassageCandidate passage : passages) {
@@ -523,6 +552,8 @@ public class TrainingSVM extends AbstractLoggedComponent {
 
       int importantKeytermCountWithDuplicates = getKeytermCount(psg, keyterms, (float) 0.6, true);
 
+      int regularKeytermCount = getKeytermCount(psg, keyterms, (float) 0.1, false);
+      
       int windowSize = windowInfor(psg,keyterms, (float)0.6, "size");
       int windowBegin = windowInfor(psg,keyterms, (float)0.6, "begin");       
       int keytermCountInQuestion = keytermCountInQuestion(keyterms, (float) 0.4);
@@ -531,8 +562,18 @@ public class TrainingSVM extends AbstractLoggedComponent {
       features.put(count, new ArrayList<String>());
 
       features.get(count).add(Integer.toString(importantKeytermCount));
-      features.get(count).add(Double.toString(psg.length() / 100));
+      features.get(count).add(Double.toString(psg.length()/100));
       features.get(count).add(Double.toString((psg.length() - meanLength)/devLength));
+      //features.get(count).add(Integer.toString(importantKeytermCountWithDuplicates));
+      features.get(count).add(Integer.toString(regularKeytermCount));
+     
+      //features.get(count).add(Double.toString((termCountInPsg - meanTermCountInPsg)/devTermCountInPsg));
+      
+      features.get(count).add(Double.toString((importantKeytermCount - meanImportantKeytermsInPsg)/devImportantKeytermsInPsg));
+      
+      features.get(count).add(Double.toString((importantKeytermCountWithDuplicates - meanImportantKeytermsInPsgWithDuplicates)/devImportantKeytermsInPsgWithDuplicates));
+      
+      features.get(count).add(Double.toString((regularKeytermCount - meanRegularKeyterms)/devRegularKeyterms));
       
       /*Percent Matches*/
       features.get(count).add(
