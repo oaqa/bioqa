@@ -319,12 +319,35 @@ public class QueryStrategy {
     }
 
     // PART II: single term -- a term which only has one word
-    for (BioKeyterm keyterm : this.keyTerms) {
+    loop: for (BioKeyterm keyterm : this.keyTerms) {
 
       if (keyterm.getTokenType() == ORIGINAL_KEY_TERMS) {
 
         printKeytermContent(keyterm);
         String keytermText = CleanTerms.removeIndriSpeCha(keyterm.getText());
+
+        // REMOVE THE FOLLOWING WORDS FROM QUESTIONS  (for TREC 2007)
+        String[] notFit = { "PROTEINS", "GENES", "PATHWAYS", "BIOLOGICAL", "SUBSTANCES", "TUMOR",
+                "TYPES", "DRUGS", "OR", "SYMPTOMS", "SIGNS", "MOLECULAR", "FUNCTIONS", "DISEASES",
+                "ANTIBODIES", "TOXICITIES", "CELL", "TISSUE", "MUTATIONS", "GENE", "ROLE" };
+
+            // ignore frequency words
+            for (String s : notFit) {
+              if (keytermText.equals(s)) {
+                KeytermInQuery phraseKeyterm2 = new KeytermInQuery(s, this.regularTermWeight);
+                QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
+                this.queryContainer.add(temp2);
+                
+                keyterm.addExternalResource("", "", new ArrayList<String>(), "RefinedSynonyms");
+                keyterm.setProbablity((float)0.2);
+                continue loop;
+              }                
+            }
+
+        
+        
+        
+        
         
         // special for Q166
         if(keytermText.equals("amyloid")) {

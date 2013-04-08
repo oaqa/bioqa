@@ -1,14 +1,14 @@
 class: edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.KeytermRefiner
 
 cross-opts:
-  MESH: [true]
-  ENTREZ: [true]
-  UMLS: [false]
-  LexicalVariants: [true]
-  PosTagger: [true]
-  MESH-Acronym: [false]
-  ENTREZ-Acronym: [false]
-  UMLS-Acronym: [true]
+  MESH: [true, false]  # true
+  ENTREZ: [true, false]  # true
+  UMLS: [false, true]  # false
+  LexicalVariants: [true, false]  #true
+  PosTagger: [true, false]  # true
+  MESH-Acronym: [false, true]  # false
+  ENTREZ-Acronym: [false, true]  # false
+  UMLS-Acronym: [true, false]  # true
   concept-term-weight: [0.8]
   regular-term-weight: [0.3]
   verb-term-weight: [0.4]

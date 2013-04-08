@@ -85,8 +85,11 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
 
       for (int i = 0; i < docnos.length; i++) {
       
+        //docnos[i] = "14688025";
         RetrievalResult r = new RetrievalResult(docnos[i], (float)Math.exp(sers[i].score), query);
         result.add(r);
+        
+        //System.out.println(docnos[i]);
       }
 
       /*

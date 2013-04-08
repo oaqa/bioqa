@@ -16,7 +16,7 @@ public class EntrezGeneSynonymLookupper extends AbstractKeytermUpdater {
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {
-      for (Entity entity : lookupper.getEntities(keyterm.getText(), true)) {         
+      for (Entity entity : lookupper.getEntities(keyterm.getText())) {         
       //for (Entity entity : lookupper.getEntities(keyterm.getText(), true)) {  
         ((BioKeyterm) keyterm).addExternalResource(entity.getDefinition(), entity.getName(), entity.getSynonyms(), entity.getSource());
       }
