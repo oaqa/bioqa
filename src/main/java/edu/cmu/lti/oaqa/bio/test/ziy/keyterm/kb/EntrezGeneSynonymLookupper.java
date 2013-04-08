@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.cmu.lti.oaqa.bio.entrezgene_wrapper.EntrezGeneWrapper;
-import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
-import edu.cmu.lti.oaqa.bio.resource_warpper.Entity;
+import edu.cmu.lti.oaqa.bio.resource_wrapper.Entity;
 import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
+import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 
 public class EntrezGeneSynonymLookupper extends AbstractKeytermUpdater {
 
@@ -16,9 +16,9 @@ public class EntrezGeneSynonymLookupper extends AbstractKeytermUpdater {
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {
-      for (Entity entity : lookupper.getEntities(keyterm.getText(), true)) {  
-        ((BioKeyterm)keyterm).addExternalResource(entity.getDefinition(), entity.getName(), entity.getSynonyms(),
-                entity.getSource());
+      for (Entity entity : lookupper.getEntities(keyterm.getText(), true)) {         
+      //for (Entity entity : lookupper.getEntities(keyterm.getText(), true)) {  
+        ((BioKeyterm) keyterm).addExternalResource(entity.getDefinition(), entity.getName(), entity.getSynonyms(), entity.getSource());
       }
     }
     return keyterms;

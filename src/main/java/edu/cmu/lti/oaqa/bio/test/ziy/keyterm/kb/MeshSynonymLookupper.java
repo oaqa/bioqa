@@ -4,7 +4,8 @@ import java.util.List;
 
 import edu.cmu.lti.oaqa.bio.framework.data.BioKeyterm;
 import edu.cmu.lti.oaqa.bio.mesh_wrapper.MeshWrapper;
-import edu.cmu.lti.oaqa.bio.resource_warpper.Entity;
+import edu.cmu.lti.oaqa.bio.resource_wrapper.Entity;
+
 import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermUpdater;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
@@ -16,7 +17,8 @@ public class MeshSynonymLookupper extends AbstractKeytermUpdater {
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {
-      for (Entity entity : lookupper.getEntities(keyterm.getText())) {
+      for (Entity entity : lookupper.getEntities(keyterm.getText())) {        
+      //for (Entity entity : lookupper.getEntities(keyterm.getText())) {
         ((BioKeyterm)keyterm).addExternalResource(entity.getDefinition(), entity.getName(), entity.getSynonyms(),
                 entity.getSource());
       }
