@@ -48,7 +48,7 @@ pipeline:
   #- inherit: internal.cse.phase
    # name: restore
     #options: |
-     # - inherit: bioqa.keyterm.restore
+     # - inherit: bioqa.keyterm.io.restore-07
       #- inherit: bioqa.keyterm.restore_before
 
 
@@ -67,15 +67,10 @@ pipeline:
     options: |
       - inherit: bioqa.keyterm.kb.umls
  
-  #- inherit: jdbc.sqlite.cse.phase
+  #- inherit: internal.cse.phase
    # name: store
     #options: |
-     # - inherit: bioqa.keyterm.restore
-
-  - inherit: internal.cse.phase
-    name: store
-    options: |
-      - inherit: bioqa.keyterm.io.backup
+     # - inherit: bioqa.keyterm.io.backup
 
   - inherit: internal.cse.phase
     name: keyterm-refiner
@@ -109,7 +104,7 @@ pipeline:
     lazy-load-options: true
     options: |
       - inherit: bioqa.ie.span.important-sentence@peace
-      - inherit: base.noop
+      #- inherit: base.noop
 
   - inherit: jdbc.cse.phase 
     name: passage-rank
