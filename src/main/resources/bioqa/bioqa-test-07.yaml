@@ -45,27 +45,27 @@ pipeline:
     options: |
       - inherit: bioqa.keyterm.syn-lexical-variants
 
-  #- inherit: internal.cse.phase
-   # name: restore
-    #options: |
-     # - inherit: bioqa.keyterm.io.restore-07
+  - inherit: internal.cse.phase
+    name: restore
+    options: |
+      - inherit: bioqa.keyterm.io.restore-07
       #- inherit: bioqa.keyterm.restore_before
 
 
-  - inherit: internal.cse.phase
-    name: synonyms
-    options: |
-      - inherit: bioqa.keyterm.kb.mesh
+  #- inherit: internal.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.mesh
 
-  - inherit: internal.cse.phase
-    name: synonyms
-    options: |
-      - inherit: bioqa.keyterm.kb.entrezgene
+  #- inherit: internal.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.entrezgene
 
-  - inherit: internal.cse.phase
-    name: synonyms
-    options: |
-      - inherit: bioqa.keyterm.kb.umls
+  #- inherit: internal.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.umls
  
   #- inherit: internal.cse.phase
    # name: store
@@ -83,11 +83,11 @@ pipeline:
     options: | 
       - inherit: bioqa.retrieval.BasicIndriRetrieval
 
-  - inherit: internal.cse.phase
-    name: passage-extractor
-    option-timeout: 20
-    options: | 
-      - inherit: bioqa.ie.IndriLegalSpan
+  #- inherit: internal.cse.phase
+   # name: passage-extractor
+    #option-timeout: 20
+    #options: | 
+     # - inherit: bioqa.ie.IndriLegalSpan
 
   #- inherit: jdbc.sqlite.cse.phase
    # name: retrieval-strategist
@@ -99,30 +99,30 @@ pipeline:
     #options: |
      # - inherit: default.ie.default
 
-  - inherit: jdbc.cse.phase 
-    name: passage-span
-    lazy-load-options: true
-    options: |
-      - inherit: bioqa.ie.span.important-sentence@peace
+  #- inherit: jdbc.cse.phase 
+   # name: passage-span
+    #lazy-load-options: true
+    #options: |
+     # - inherit: bioqa.ie.span.important-sentence@peace
       #- inherit: base.noop
 
-  - inherit: jdbc.cse.phase 
-    name: passage-rank
-    lazy-load-options: true
-    options: |
-      - inherit: bioqa.ie.rank.proximity@peace
+  #- inherit: jdbc.cse.phase 
+   # name: passage-rank
+    #lazy-load-options: true
+    #options: |
+     # - inherit: bioqa.ie.rank.proximity@peace
       #- inherit: base.noop
       
-  - inherit: jdbc.cse.phase 
-    name: score-combine
-    options: |
-      - inherit: bioqa.ie.rank.combine
+  #- inherit: jdbc.cse.phase 
+   # name: score-combine
+    #options: |
+     # - inherit: bioqa.ie.rank.combine
 #      #- inherit: base.noop
 
-  - inherit: jdbc.cse.phase 
-    name: passage-overlap
-    options: |
-      - inherit: bioqa.ie.overlap.filter
+  #- inherit: jdbc.cse.phase 
+   # name: passage-overlap
+    #options: |
+     # - inherit: bioqa.ie.overlap.filter
 #      #- inherit: base.noop   
 
   #- inherit: jdbc.cse.phase

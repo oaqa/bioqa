@@ -53,6 +53,8 @@ public class QueryStrategy {
   private String verbTermWeight = "0.2";
 
   private String geneTermWeight = "0.3";
+  
+  private String specialTermWeight = "0.3";
 
   private String mainPart = "";
 
@@ -102,6 +104,10 @@ public class QueryStrategy {
 
   public void setGeneTermWeight(String w) {
     this.geneTermWeight = w;
+  }
+  
+  public void setSpecialTermWeight(String w) {
+    this.specialTermWeight = w;
   }
 
   // set which resources that will be used. (default is true)
@@ -334,21 +340,17 @@ public class QueryStrategy {
             // ignore frequency words
             for (String s : notFit) {
               if (keytermText.equals(s)) {
-                KeytermInQuery phraseKeyterm2 = new KeytermInQuery(s, this.regularTermWeight);
+                  
+                KeytermInQuery phraseKeyterm2 = new KeytermInQuery(s, this.specialTermWeight);
                 QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
                 this.queryContainer.add(temp2);
                 
                 keyterm.addExternalResource("", "", new ArrayList<String>(), "RefinedSynonyms");
-                keyterm.setProbablity((float)0.2);
+                keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
                 continue loop;
               }                
             }
 
-        
-        
-        
-        
-        
         // special for Q166
         if(keytermText.equals("amyloid")) {
           KeytermInQuery phraseKeyterm1 = new KeytermInQuery("amyloid angiopathy", this.conceptTermWeight);
