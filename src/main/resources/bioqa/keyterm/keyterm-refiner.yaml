@@ -5,15 +5,15 @@ cross-opts:
   ENTREZ: [false, true]  # true
   UMLS: [false, true]  # false
   LexicalVariants: [true]  #true
-  PosTagger: [false, true]  # true
+  PosTagger: [true]  # true
   MESH-Acronym: [true]  # false
   ENTREZ-Acronym: [true]  # false
   UMLS-Acronym: [false, true]  # true
   concept-term-weight: [0.8, 0.6, 0.4]
-  regular-term-weight: [0.3, 0.4, 0.2]
-  verb-term-weight: [0.4, 0.2]
-  gene-term-weight: [0.4, 0.2]
-  special-term-weight: [0.1, 0.2, 0.3]
+  regular-term-weight: [0.3, 0.2, 0.1]
+  verb-term-weight: [0.1, 0.3]
+  gene-term-weight: [0.1, 0.3]
+  special-term-weight: [0.2, 0.1, 0.3, 0.5]
 
 
 persistence-provider: |

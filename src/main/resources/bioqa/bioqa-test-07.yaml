@@ -35,11 +35,6 @@ pipeline:
       - inherit: bioqa.keyterm.lingpipe-abbreviation
       #- inherit: bioqa.keyterm.lingpipe
 
-  #- inherit: jdbc.sqlite.cse.phase
-   # name: name-entity-recognizer
-    #options: |
-     # - inherit: bioqa.keyterm.syn-abbreviation-longform
-
   - inherit: internal.cse.phase
     name: name-entity-recognizer
     options: |
