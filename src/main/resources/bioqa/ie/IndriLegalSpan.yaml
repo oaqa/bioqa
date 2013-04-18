@@ -8,7 +8,8 @@ cross-opts:
   #smoothing: [jelinek-mercer]  #all algorithoms: dirichlet two-stage jelinek-mercer
   smoothing: [dirichlet]
   smoothing-mu: [2500] 
-  smoothing-lambda: [0.1] 
+  smoothing-lambda: [0.1]
+  answer-type-weight: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9] 
 
 persistence-provider: |
   inherit: internal.log-persistence-provider

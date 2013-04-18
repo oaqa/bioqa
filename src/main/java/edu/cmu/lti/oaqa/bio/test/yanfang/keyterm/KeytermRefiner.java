@@ -55,6 +55,8 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
   private String geneWeight;
   
   private String specialWeight;
+  
+  private String mustHaveTermWeight;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -84,6 +86,8 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
             0.3F));
     this.specialWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext, "special-term-weight",
             0.3F));
+    this.mustHaveTermWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext, "must-have-term-weight",
+            0.6F));    
   }
 
   @Override
@@ -112,6 +116,7 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
     refiner.setVerbTermWeight(this.verbWeight);
     refiner.setGeneTermWeight(this.geneWeight);
     refiner.setSpecialTermWeight(this.specialWeight);
+    refiner.setMustHaveTermWeight(this.mustHaveTermWeight);
 
     for (BioKeyterm bioK : refiner.getRefinedKeyterms()) {
       result.add(bioK);

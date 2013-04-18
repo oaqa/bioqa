@@ -55,6 +55,8 @@ public class QueryStrategy {
   private String geneTermWeight = "0.3";
   
   private String specialTermWeight = "0.3";
+  
+  private String mustHaveTermWeight = "0.6";
 
   private String mainPart = "";
 
@@ -108,6 +110,10 @@ public class QueryStrategy {
   
   public void setSpecialTermWeight(String w) {
     this.specialTermWeight = w;
+  }
+  
+  public void setMustHaveTermWeight(String w) {
+    this.mustHaveTermWeight = w;
   }
 
   // set which resources that will be used. (default is true)
@@ -184,7 +190,7 @@ public class QueryStrategy {
                                                                  // apostrophe.
 
     // PART I: phrase part -- this part considers all the phrases in this list of BioKeyterm
-    for (BioKeyterm keyterm : this.keyTerms) {
+    loop: for (BioKeyterm keyterm : this.keyTerms) {
 
       if (keyterm.getTokenType() == PHRASE_KEY_TERMS) {
 
@@ -192,6 +198,25 @@ public class QueryStrategy {
         // removes characters that will blow Indri out
         String keytermText = CleanTerms.removeIndriSpeCha(keyterm.getText());
 
+        
+        // REMOVE THE FOLLOWING WORDS FROM QUESTIONS  (for TREC 2007)
+        String[] notFit = {"BIOLOGICAL SUBSTANCES", "MOLECULAR FUNCTIONS", "TUMOR TYPES" };
+
+            // ignore frequency words
+            for (String s : notFit) {
+              if (keytermText.equals(s)) {
+                  
+                KeytermInQuery phraseKeyterm2 = new KeytermInQuery(s, this.specialTermWeight);
+                QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
+                this.queryContainer.add(temp2);
+                
+                keyterm.addExternalResource("", "", new ArrayList<String>(), "RefinedSynonyms");
+                keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
+                
+                continue loop;
+              }                
+            }
+        
         // not consider any single word in this part
         if (!keytermText.trim().contains(" ")) {
           continue;
@@ -336,17 +361,21 @@ public class QueryStrategy {
         String[] notFit = { "PROTEINS", "GENES", "PATHWAYS", "BIOLOGICAL", "SUBSTANCES", "TUMOR",
                 "TYPES", "DRUGS", "OR", "SYMPTOMS", "SIGNS", "MOLECULAR", "FUNCTIONS", "DISEASES",
                 "ANTIBODIES", "TOXICITIES", "CELL", "TISSUE", "MUTATIONS", "GENE", "ROLE" };
+        
+        // "measure" is for Q209, which should be delt with in a different way!
+        
 
             // ignore frequency words
             for (String s : notFit) {
               if (keytermText.equals(s)) {
-                  
+                                  
                 KeytermInQuery phraseKeyterm2 = new KeytermInQuery(s, this.specialTermWeight);
                 QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
                 this.queryContainer.add(temp2);
                 
                 keyterm.addExternalResource("", "", new ArrayList<String>(), "RefinedSynonyms");
                 keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
+                
                 continue loop;
               }                
             }
@@ -545,9 +574,11 @@ public class QueryStrategy {
 
         keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
         
-        if(temp.isConcept()) 
-          keyterm.setProbablity(1);
-        else
+        if(temp.isConcept()) {
+          
+          keyterm.setProbablity(Float.valueOf(1+ Float.valueOf(this.mustHaveTermWeight)));
+        }
+          else
           keyterm.setProbablity(Float.valueOf(temp.getWeight()));
         
       }
@@ -602,7 +633,7 @@ public class QueryStrategy {
     if (!relaKeySyn.isEmpty()) {
       // special case in Q 172 (further investigation)
       if (keytermText.equals("apoptosis")) {
-        KeytermInQuery temp = new KeytermInQuery(keytermText, "0.6");
+        KeytermInQuery temp = new KeytermInQuery(keytermText, this.conceptTermWeight);
         qi.setKeytermInQuery(temp);
       } else {
         KeytermInQuery temp = new KeytermInQuery(keytermText, this.verbTermWeight);
@@ -643,6 +674,41 @@ public class QueryStrategy {
       resources.add("human papillomavirus");
     }
 
+    // For TREC 2007
+    if (keytermText.equals("glycan")) {
+      resources.add("O-glycans");
+      resources.add("N-glycans");
+    }
+    
+    if (keytermText.equals("LITAF")) {
+      resources.add("LPS");
+    }
+    
+    if (keytermText.equals("heterologously")) {
+      resources.add("heterologous");
+    }
+    
+    if (keytermText.equals("NFkappaB")) {
+      resources.add("NF-B");
+    }
+    
+    if (keytermText.equals("Ewing")) {
+      resources.add("Ewings");
+    }
+    
+    if (keytermText.equals("Celegans")) {
+      resources.add("elegans");
+    }
+    
+    if (keytermText.equals("Raf")) {
+      resources.add("BRAF");
+    }
+    
+    if (keytermText.equals("etidronate")) {
+      resources.add("bisphosphonates");
+      resources.add("Didronel");
+    }
+    
     return resources;
 
   }

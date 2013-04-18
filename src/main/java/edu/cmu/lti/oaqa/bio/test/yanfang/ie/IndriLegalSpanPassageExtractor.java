@@ -30,6 +30,8 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
 
   private String backupQuery = "";
   
+  private String answerTypeWeight = "";
+  
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
@@ -37,14 +39,16 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
     this.smoothing = aContext.getConfigParameterValue("smoothing").toString();
     this.smoothingMu = aContext.getConfigParameterValue("smoothing-mu").toString();
     this.smoothingLambda = aContext.getConfigParameterValue("smoothing-lambda").toString();
+    this.answerTypeWeight = aContext.getConfigParameterValue("answer-type-weight").toString();
+    
   }
 
   @Override
   protected String formulateQuery(List<Keyterm> keyterms) {
 
-    this.backupQuery = QueryGenerator.generateIndriQuery(keyterms,"[legalspan]",false);
+    this.backupQuery = QueryGenerator.generateIndriQuery(keyterms,"[legalspan]",false, answerTypeWeight);
 
-    String s2 = QueryGenerator.generateIndriQuery(keyterms,"[legalspan]",true);
+    String s2 = QueryGenerator.generateIndriQuery(keyterms,"[legalspan]",true, answerTypeWeight);
     System.out.println("Query~~~:" + s2);
 
     return s2;

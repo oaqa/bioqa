@@ -82,11 +82,11 @@ pipeline:
     options: | 
       - inherit: bioqa.retrieval.BasicIndriRetrieval
 
-  #- inherit: internal.cse.phase
-   # name: passage-extractor
-    #option-timeout: 8
-    #options: | 
-     # - inherit: bioqa.ie.IndriLegalSpan
+  - inherit: internal.cse.phase
+    name: passage-extractor
+    option-timeout: 8
+    options: | 
+      - inherit: bioqa.ie.IndriLegalSpan
 
   #- inherit: internal.cse.phase 
    # name: passage-span
