@@ -14,7 +14,7 @@ persistence-provider:
 collection-reader:
   inherit: bioqa.db.collection-reader
   dataset: BIO-COMBINED
-  sequence-start: 235
+  sequence-start: 200
   sequence-end: 235
   #sequence-end: 160
   
@@ -78,11 +78,11 @@ pipeline:
     options: | 
       - inherit: bioqa.retrieval.BasicIndriRetrieval
 
-  - inherit: internal.cse.phase
-    name: passage-extractor
-    option-timeout: 20
-    options: | 
-      - inherit: bioqa.ie.IndriLegalSpan
+  #- inherit: internal.cse.phase
+   # name: passage-extractor
+    #option-timeout: 20
+    #options: | 
+    #  - inherit: bioqa.ie.IndriLegalSpan
 
   #- inherit: jdbc.sqlite.cse.phase
    # name: retrieval-strategist

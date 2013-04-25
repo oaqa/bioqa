@@ -82,15 +82,9 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
       // set retrieval rules for Indri
       wrapper.getQueryEnvironment().setScoringRules(rules);
 
-      //query = "#weight(  0.1 GENES 0.3 involved 0.6 melanogenesis 0.3 human 0.3 lung 0.3 cancers ) ";
-
-      //query = "#weight(  0.3 #any:gene_ontology 0.3 altered 0.3 host 0.3 genome 0.3 improve 0.3 solubility 0.4 heterologously 0.3 expressed 0.3 proteins ) ";
+      //query = "#filreq(#band(solubility heterologously)#weight(  0.1 GENES 0.3 altered 0.3 host 0.3 genome 0.3 improve 0.6 #uw10(solubility #any:gene_ontology) 0.6 #uw10(heterologously #any:gene_ontology) 0.3 expressed 0.3 proteins )) ";
       
-      //query = "#filreq( #band ( #uw10(clpQ #syn(#any:gene_ontology #any:protein)) )#weight(  0.1 BIOLOGICAL 0.1 SUBSTANCES 0.3 induce 0.6 #uw10(clpQ #syn(#any:gene_ontology #any:protein)) 0.3 expression ) )";
-      
-      //query = "#filreq( #band (  #syn( NFkappaB #od1( NF-B) #od1( NFB)))#weight(  0.1 GENES 0.3 up 0.6 #uw10(#any:gene_ontology #syn( NFkappaB #od1( NF-B) #od1( NFB))) 0.3 signaling 0.3 pathway) )";
-      
-      //query = "#filreq( #band ( #syn( Celegans #od1( elegans)))#weight(  0.1 GENES 0.3 involved 0.3 axon 0.3 guidance 0.6 #syn( Celegans #od1( elegans))  ) )";
+      //query = "#weight(  0.1 BIOLOGICAL 0.1 SUBSTANCES 0.3 measure 0.3 toxicity 0.3 response 0.6 zoledronic 0.3 acid 0.1 #od2(BIOLOGICAL SUBSTANCES) ) ";
       
       ScoredExtentResult[] sers = wrapper.getQueryEnvironment().runQuery(query, hitListSize);
       String[] docnos = wrapper.getQueryEnvironment().documentMetadata(sers, "docno");

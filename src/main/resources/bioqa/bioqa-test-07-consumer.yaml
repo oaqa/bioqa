@@ -88,31 +88,31 @@ pipeline:
     options: | 
       - inherit: bioqa.ie.IndriLegalSpan
 
-  #- inherit: internal.cse.phase 
-   # name: passage-span
-    #option-timeout: 5
-    #lazy-load-options: true
-    #options: |
-     # - inherit: bioqa.ie.span.important-sentence@peace
+  - inherit: internal.cse.phase 
+    name: passage-span
+    option-timeout: 5
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.span.important-sentence@peace
 
-  #- inherit: internal.cse.phase 
-   # name: passage-rank
-    #option-timeout: 5
-    #lazy-load-options: true
-    #options: |
-     # - inherit: bioqa.ie.rank.proximity@peace
+  - inherit: internal.cse.phase 
+    name: passage-rank
+    option-timeout: 5
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.rank.proximity@peace
       
-  #- inherit: internal.cse.phase 
-   # name: score-combine
-    #option-timeout: 5
-    #options: |
-     # - inherit: bioqa.ie.rank.combine
+  - inherit: internal.cse.phase 
+    name: score-combine
+    option-timeout: 5
+    options: |
+      - inherit: bioqa.ie.rank.combine
 
-  #- inherit: internal.cse.phase 
-   # name: passage-overlap
-    #option-timeout: 5
-    #options: |
-     # - inherit: bioqa.ie.overlap.filter
+  - inherit: internal.cse.phase 
+    name: passage-overlap
+    option-timeout: 5
+    options: |
+      - inherit: bioqa.ie.overlap.filter
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer
