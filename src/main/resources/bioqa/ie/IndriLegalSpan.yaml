@@ -9,7 +9,7 @@ cross-opts:
   smoothing: [dirichlet]
   smoothing-mu: [2500] 
   smoothing-lambda: [0.1]
-  answer-type-weight: [0, 0.2] 
+  answer-type-weight: [0.2] 
 
 persistence-provider: |
   inherit: internal.log-persistence-provider

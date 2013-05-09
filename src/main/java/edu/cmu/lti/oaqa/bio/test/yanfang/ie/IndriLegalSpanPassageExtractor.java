@@ -2,7 +2,6 @@ package edu.cmu.lti.oaqa.bio.test.yanfang.ie;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import lemurproject.indri.ParsedDocument;
@@ -13,7 +12,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import edu.cmu.lti.oaqa.bio.core.ie.DefaultPassageExtractor;
 import edu.cmu.lti.oaqa.bio.retrieval.query.strategy.QueryGenerator;
-import edu.cmu.lti.oaqa.framework.UimaContextHelper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.PassageCandidate;
 
@@ -85,7 +83,7 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
 
       for (int i = 0; i < ids.length; i++) {
 
-        testAliveness();
+        //testAliveness();
         if (i % batchSize == 0) {
           ScoredExtentResult[] subSers = Arrays.copyOfRange(sers, i,
                   Math.min(i + batchSize, ids.length));
@@ -112,7 +110,7 @@ public class IndriLegalSpanPassageExtractor extends DefaultPassageExtractor {
         String[] ids2 = wrapper.getQueryEnvironment().documentMetadata(sers, "docno");
         texts = null;
         for (int i = 0; i < ids2.length; i++) {
-          testAliveness();
+          //testAliveness();
           if (i % batchSize == 0) {
             ScoredExtentResult[] subSers = Arrays.copyOfRange(sers, i,
                     Math.min(i + batchSize, ids2.length));

@@ -41,7 +41,12 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
     List<String> keytermStrs = new ArrayList<String>();
     for (Keyterm keyterm : keyterms) {
       //only consider the keyterms whose weights >= 0.4
+      // this is only for TREC 2006
+      // this can be set as a parameter
+      // TODO
       if(keyterm.getProbability() >= 0.4)
+      
+      //if (keyterm.getProbability() >= 0.3)
         keytermStrs.add(keyterm.getText().toLowerCase());
     }
     return SimilarityUtils.countWord(keytermStrs.toArray(new String[0]));

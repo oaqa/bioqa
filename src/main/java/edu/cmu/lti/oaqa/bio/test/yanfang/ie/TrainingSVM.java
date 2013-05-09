@@ -51,7 +51,7 @@ public class TrainingSVM extends AbstractLoggedComponent {
   @Override
   public void initialize(UimaContext c) throws ResourceInitializationException {
     super.initialize(c);
-    limit = UimaContextHelper.getConfigParameterIntValue(c, "limit", 10);
+    limit = UimaContextHelper.getConfigParameterIntValue(c, "limit", 20);
     boolean zipped = UimaContextHelper.getConfigParameterBooleanValue(c, "Zipped", true);
     try {
       retriever = new DocumentRetrieverWrapper((String) c.getConfigParameterValue("Prefix"),
@@ -94,6 +94,8 @@ public class TrainingSVM extends AbstractLoggedComponent {
         id2gsPassages.get(id).add(gs_passage);
       }
 
+      System.out.println("==============" + passages.size());
+      
       // get the labels by comparing retrieved passages and golden standard. Regard the passage as
       // relevant as long as it have overlap with the gs
       // this should be gotten from the DB, instead of comparing the results and golden standard
@@ -101,19 +103,20 @@ public class TrainingSVM extends AbstractLoggedComponent {
       List<PassageCandidate> passage_for_features = (List<PassageCandidate>) ((ArrayList<PassageCandidate>) passages)
               .clone();
 
-      // File file = new File("qID");
+       File file = new File("qID");
 
-      // FileWriter fw = new FileWriter(file.getAbsoluteFile());
-      // BufferedWriter bw = new BufferedWriter(fw);
+       FileWriter fw = new FileWriter(file.getAbsoluteFile());
+       BufferedWriter bw = new BufferedWriter(fw);
 
       loop: for (PassageCandidate passage : passages) {
 
         Article article = retriever.getDocument(passage.getDocID());
         TextSpan origSpan = new TextSpan(passage.getStart(), passage.getEnd());
         String psg = article.getSpanText(origSpan);
-        // bw.write(psg);
-
-        // bw.newLine();
+         
+        bw.write(psg);
+        
+        bw.newLine();
 
         // get the labels
         String passage_id = passage.getDocID();
@@ -139,15 +142,15 @@ public class TrainingSVM extends AbstractLoggedComponent {
         // features.get(count).add(ranking);
         // features.get(count).add(score);
 
-        // bw.newLine();
-        // bw.newLine();
+         bw.newLine();
+         bw.newLine();
 
         count++;
         if (count > limit)
           break;
       }
 
-      // bw.close();
+       bw.close();
 
       features = extractFeatures(questionText, passage_for_features, keyterms, limit, retriever,
               false);
