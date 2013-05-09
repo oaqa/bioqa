@@ -16,8 +16,8 @@ persistence-provider:
 collection-reader:
   inherit: bioqa.db.collection-reader
   dataset: BIO-COMBINED
-  sequence-start: 204
-  sequence-end: 204
+  sequence-start: 200
+  sequence-end: 200
   #sequence-end: 160
   
 pipeline:
