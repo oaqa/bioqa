@@ -40,6 +40,8 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
   private double neighborSentSimThreshold;
 
   private Similarity neighborSentSim;
+  
+  private float keytermThreshold;
 
   private enum SentenceType {
     important, neighbor, other
@@ -70,6 +72,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
             "NeighborSentSimThreshold", 1F);
     neighborSentSim = (Similarity) UimaContextHelper.getConfigParameterClassInstance(c,
             "NeighborSentSim", "similarity.MatchingCoefficient");
+    keytermThreshold = UimaContextHelper.getConfigParameterFloatValue(c, "KeytermThreshold", 1F);
   }
 
   @Override
@@ -80,12 +83,10 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     System.out.println("==============*******" + passages.size());
     
     System.out.println(keyterms.size());
-    
-    
-    
+
     // collect keyterms to calculate similarities
     Map<String, Double> keytermCount = countReplicated ? getLowerCasedKeytermCount(keyterms)
-            : getLowerCasedKeytermTypes(keyterms);
+            : getLowerCasedKeytermTypes(keyterms, keytermThreshold);
     
     System.out.println("keytermCount " + keytermCount);
     
@@ -93,6 +94,9 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     Map<String, String> synonym2keyterm = null;
     if (considerSynonyms) {
       synonym2keyterm = getLowerCasedSynonymKeytermMapping(keyterms);
+      
+      //System.out.println("synonyms " + synonym2keyterm);
+      
     }
     // System.out.println(keytermCount);
     // System.out.println(synonym2keyterm);
@@ -111,8 +115,17 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     System.out.println("==============*******" + newPassages.size());
     
     //return newPassages;
-    if (newPassages.size() == 0)
-      return passages;
+    if (newPassages.size() <= 1)
+        return passages;
+    //else if (newPassages.size() < 1000) {
+      //  for (int i = 0; i < passages.size() - newPassages.size(); i++) {
+        // System.out.println("original passages score " + passages.get(i).getProbability());
+         // lower the original passages' probability(score)
+         //passages.get(i).setProbablity(passages.get(i).getProbability() - 1); 
+         //newPassages.add(passages.get(i));
+        //}
+        //return newPassages;
+    //}
     else
         return newPassages;
   }
@@ -235,6 +248,9 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     Collections.sort(newPassages, Collections.reverseOrder());
     newPassages = newPassages.subList(0, Math.min(newPassages.size(), maxNumPassageInParagragh));
     for (PassageCandidate newPassage : newPassages) {
+      
+      //System.out.println("new passage probability " + passage.getProbability());
+      
       newPassage.setProbablity(passage.getProbability());
     }
     return newPassages;

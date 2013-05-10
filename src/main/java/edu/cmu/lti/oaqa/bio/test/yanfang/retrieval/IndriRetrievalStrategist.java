@@ -1,7 +1,6 @@
 package edu.cmu.lti.oaqa.bio.test.yanfang.retrieval;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import lemurproject.indri.ScoredExtentResult;
@@ -11,9 +10,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import edu.cmu.lti.oaqa.bio.core.retrieval.DefaultRetrievalStrategist;
 import edu.cmu.lti.oaqa.bio.retrieval.query.strategy.QueryGenerator;
-import edu.cmu.lti.oaqa.bio.retrieval.query.strategy.QueryStrategy;
-import edu.cmu.lti.oaqa.bio.retrieval.query.structure.QueryComponentContainer;
-import edu.cmu.lti.oaqa.framework.UimaContextHelper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
 
@@ -33,7 +29,7 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
   private String smoothingLambda;
 
   private String backupQuery;
-  
+
   private String answerTypeWeight;
 
   @Override
@@ -81,11 +77,6 @@ public class IndriRetrievalStrategist extends DefaultRetrievalStrategist {
 
       // set retrieval rules for Indri
       wrapper.getQueryEnvironment().setScoringRules(rules);
-
-      //query = "#filreq(#band(solubility heterologously)#weight(  0.1 GENES 0.3 altered 0.3 host 0.3 genome 0.3 improve 0.6 #uw10(solubility #any:gene_ontology) 0.6 #uw10(heterologously #any:gene_ontology) 0.3 expressed 0.3 proteins )) ";
-      
-      //query = "#weight(  0.1 BIOLOGICAL 0.1 SUBSTANCES 0.3 measure 0.3 toxicity 0.3 response 0.6 zoledronic 0.3 acid 0.1 #od2(BIOLOGICAL SUBSTANCES) ) ";
-      
       ScoredExtentResult[] sers = wrapper.getQueryEnvironment().runQuery(query, hitListSize);
       String[] docnos = wrapper.getQueryEnvironment().documentMetadata(sers, "docno");
       String[] docnos2 = new String[hitListSize];
