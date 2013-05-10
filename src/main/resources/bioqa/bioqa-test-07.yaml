@@ -16,8 +16,8 @@ persistence-provider:
 collection-reader:
   inherit: bioqa.db.collection-reader
   dataset: BIO-COMBINED
-  sequence-start: 200
-  sequence-end: 200
+  sequence-start: 234
+  sequence-end: 234
   #sequence-end: 160
   
 pipeline:
@@ -119,9 +119,9 @@ pipeline:
   - inherit: jdbc.cse.phase 
     name: passage-overlap
     options: |
-      - inherit: bioqa.ie.overlap.filter
       - inherit: bioqa.ie.overlap.merge
-      - inherit: base.noop   
+#      - inherit: bioqa.ie.overlap.filter
+ #     - inherit: base.noop   
 
   #- inherit: jdbc.cse.phase
    # name: ranking-model

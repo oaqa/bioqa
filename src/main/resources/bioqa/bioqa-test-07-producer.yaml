@@ -100,9 +100,10 @@ pipeline:
     name: passage-overlap
     option-timeout: 5
     options: |
-      - inherit: bioqa.ie.overlap.filter
       - inherit: bioqa.ie.overlap.merge
-      - inherit: base.noop   
+      #- inherit: bioqa.ie.overlap.filter
+      #- inherit: bioqa.ie.overlap.merge
+      #- inherit: base.noop   
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer
