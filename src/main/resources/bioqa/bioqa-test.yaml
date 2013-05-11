@@ -1,10 +1,9 @@
 configuration: 
   name: bioqa-development-test
-  author: yanfang
+  author: ziy
 
 persistence-provider:
-#  inherit: bioqa.db.cse-persistence-provider  
-  inherit: helloqa.db.local-persistence-provider
+  inherit: bioqa.db.cse-persistence-provider
 
 collection-reader:
   inherit: bioqa.collection.decorated-collection-reader
@@ -19,111 +18,111 @@ collection-reader:
 #  sequence-end: 160
   
 pipeline:
-  - inherit: jdbc.sqlite.cse.phase  
+  - inherit: internal.cse.phase  
     name: keyterm-extractor
     options: |
       - inherit: default.keyterm.default
 
-  - inherit: jdbc.sqlite.cse.phase 
+  - inherit: internal.cse.phase 
     name: pos-tagger
     options: |
       - inherit: bioqa.keyterm.lingpipe-hmm
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.lingpipe-abbreviation
       #- inherit: bioqa.keyterm.lingpipe
 
-  #- inherit: jdbc.sqlite.cse.phase
+  #- inherit: internal.cse.phase
    # name: name-entity-recognizer
     #options: |
      # - inherit: bioqa.keyterm.syn-abbreviation-longform
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.syn-lexical-variants
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: restore
     options: |
       - inherit: bioqa.keyterm.restore
       #- inherit: bioqa.keyterm.restore_before
 
 
-  #- inherit: jdbc.sqlite.cse.phase
+  #- inherit: internal.cse.phase
    # name: synonyms
     #options: |
      # - inherit: bioqa.keyterm.kb.mesh
 
-  #- inherit: jdbc.sqlite.cse.phase
+  #- inherit: internal.cse.phase
    # name: synonyms
     #options: |
      # - inherit: bioqa.keyterm.kb.entrezgene
 
-#  - inherit: jdbc.sqlite.cse.phase
+#  - inherit: internal.cse.phase
 #    name: synonyms
 #    options: |
 #      - inherit: bioqa.keyterm.kb.umls
  
-  #- inherit: jdbc.sqlite.cse.phase
+  #- inherit: internal.cse.phase
    # name: store
     #options: |
      # - inherit: bioqa.keyterm.restore
 
-  #- inherit: jdbc.sqlite.cse.phase
+  #- inherit: internal.cse.phase
    # name: store
     #options: |
      # - inherit: bioqa.keyterm.io.backup
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: keyterm-refiner
     lazy-load-options: true
     options: |
       - inherit: bioqa.keyterm.keyterm-refiner
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: retrieval-strategist
     options: | 
       - inherit: bioqa.retrieval.BasicIndriRetrieval
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: passage-extractor
     options: | 
       - inherit: bioqa.ie.IndriLegalSpan
 
-  #- inherit: jdbc.sqlite.cse.phase
+  #- inherit: internal.cse.phase
    # name: retrieval-strategist
     #options: |
      # - inherit: bioqa.retrieval.io.restore
       
-  #- inherit: jdbc.sqlite.cse.phase
+  #- inherit: internal.cse.phase
    # name: passage-extractor
     #options: |
      # - inherit: default.ie.default
 
-#  - inherit: jdbc.sqlite.cse.phase 
+#  - inherit: internal.cse.phase 
 #    name: passage-span
 #    lazy-load-options: true
 #    options: |
 #      - inherit: bioqa.ie.span.important-sentence@peace
 #      #- inherit: base.noop
 
-#  - inherit: jdbc.sqlite.cse.phase 
+#  - inherit: internal.cse.phase 
 #    name: passage-rank
 #    lazy-load-options: true
 #    options: |
 #      - inherit: bioqa.ie.rank.proximity@peace
 #      #- inherit: base.noop
       
-#  - inherit: jdbc.sqlite.cse.phase 
+#  - inherit: internal.cse.phase 
 #    name: score-combine
 #    options: |
 #      - inherit: bioqa.ie.rank.combine
 #      #- inherit: base.noop
 
-#  - inherit: jdbc.sqlite.cse.phase 
+#  - inherit: internal.cse.phase 
 #    name: passage-overlap
 #    options: |
 #      - inherit: bioqa.ie.overlap.filter

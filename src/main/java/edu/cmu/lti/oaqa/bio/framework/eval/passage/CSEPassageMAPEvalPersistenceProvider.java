@@ -35,8 +35,8 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
   }
 
   @Override
-  public void insertPartialCounts(final Key key, final String sequenceId, final PassageMAPCounts counts)
-          throws SQLException {
+  public void insertPartialCounts(final Key key, final String sequenceId,
+          final PassageMAPCounts counts) throws SQLException {
     final String eName = getClass().getSimpleName();
     String insert = getInsertPassageAggregates();
     final Trace trace = key.getTrace();
@@ -47,11 +47,12 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
         ps.setString(3, eName);
         ps.setFloat(4, counts.getDocavep());
         ps.setFloat(5, counts.getPsgavep());
-        ps.setFloat(6, counts.getAspavep());
-        ps.setFloat(7, counts.getCount());
-        ps.setString(8, sequenceId);
-        ps.setInt(9, key.getStage());
-        ps.setString(10, trace.getTraceHash());
+        ps.setFloat(6, counts.getPsg2avep());
+        ps.setFloat(7, counts.getAspavep());
+        ps.setFloat(8, counts.getCount());
+        ps.setString(9, sequenceId);
+        ps.setInt(10, key.getStage());
+        ps.setString(11, trace.getTraceHash());
       }
     });
   }
@@ -62,9 +63,10 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
     final Multimap<Key, PassageMAPCounts> counts = LinkedHashMultimap.create();
     RowCallbackHandler handler = new RowCallbackHandler() {
       public void processRow(ResultSet rs) throws SQLException {
-        Key key = new Key(rs.getString("experimentId"), new Trace(rs.getString("traceId")), rs.getInt("stage"));
+        Key key = new Key(rs.getString("experimentId"), new Trace(rs.getString("traceId")),
+                rs.getInt("stage"));
         PassageMAPCounts cnt = new PassageMAPCounts(rs.getFloat("docavep"), rs.getFloat("psgavep"),
-                rs.getFloat("aspavep"), rs.getInt("count"));
+                rs.getFloat("psg2avep"), rs.getFloat("aspavep"), rs.getInt("count"));
         counts.put(key, cnt);
       }
     };
@@ -76,7 +78,7 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
     }, handler);
     return counts;
   }
- 
+
   @Override
   public void deletePassageMeasureEval(final ExperimentKey experiment) {
     String insert = getDeletePassageMeasureEval();
@@ -89,8 +91,8 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
   }
 
   @Override
-  public void insertMAPMeasureEval(final Key key, final String eName, final PassageMAPEvaluationData eval)
-          throws SQLException {
+  public void insertMAPMeasureEval(final Key key, final String eName,
+          final PassageMAPEvaluationData eval) throws SQLException {
     String insert = getInsertMAPMeasureEval();
     final Trace trace = key.getTrace();
     DataStoreImpl.getInstance().jdbcTemplate().update(insert, new PreparedStatementSetter() {
@@ -100,20 +102,21 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
         ps.setString(3, eName);
         ps.setFloat(4, eval.getDocMap());
         ps.setFloat(5, eval.getPsgMap());
-        ps.setFloat(6, eval.getAspMap());
-        ps.setFloat(7, eval.getCount());
-        ps.setInt(8, key.getStage());
-        ps.setString(9, trace.getTraceHash());
+        ps.setFloat(6, eval.getPsg2Map());
+        ps.setFloat(7, eval.getAspMap());
+        ps.setFloat(8, eval.getCount());
+        ps.setInt(9, key.getStage());
+        ps.setString(10, trace.getTraceHash());
       }
     });
   }
-  
+
   private String getInsertPassageAggregates() {
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO map_aggregates");
     query.append(" (experimentId, traceId, aggregator, ");
-    query.append("docavep, psgavep, aspavep, count, sequenceId, stage,traceHash) ");
-    query.append(" VALUES (?,?,?,?,?,?,?,?,?,?)");
+    query.append("docavep, psgavep, psg2avep, aspavep, count, sequenceId, stage,traceHash) ");
+    query.append(" VALUES (?,?,?,?,?,?,?,?,?,?,?)");
     return query.toString();
   }
 
@@ -123,11 +126,11 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
     query.append(" experimentId = ? AND traceHash = ? AND aggregator = ? AND sequenceId = ?");
     return query.toString();
   }
-  
+
   private String getSelectPassageAggregates() {
     StringBuilder query = new StringBuilder();
     query.append("SELECT experimentId, traceId, ");
-    query.append(" docavep, psgavep, aspavep, count, stage ");
+    query.append(" docavep, psgavep, psg2avep, aspavep, count, stage ");
     query.append(" FROM map_aggregates WHERE experimentId = ? AND stage = ?");
     return query.toString();
   }
@@ -143,8 +146,8 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
     StringBuilder query = new StringBuilder();
     query.append("INSERT INTO map_eval");
     query.append(" (experimentId, traceId, evaluator, ");
-    query.append(" docmap, psgmap, aspmap,count,stage,traceHash) ");
-    query.append(" VALUES (?,?,?,?,?,?,?,?,?)");
+    query.append(" docmap, psgmap, psg2map, aspmap,count,stage,traceHash) ");
+    query.append(" VALUES (?,?,?,?,?,?,?,?,?,?)");
     return query.toString();
   }
 

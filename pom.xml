@@ -376,12 +376,7 @@
 		<dependency>
 			<groupId>edu.cmu.lti.oaqa.bio.core</groupId>
 			<artifactId>baseqa</artifactId>
-			<version>1.9.2-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.cmu.lti.oaqa.cse</groupId>
-			<artifactId>cse-framework</artifactId>
-			<version>2.3.2-SNAPSHOT</version>
+			<version>1.10.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.cmu.lti.oaqa.ecd</groupId>
@@ -392,6 +387,11 @@
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.7.2</version>
+		</dependency>
+		<dependency>
+		  <groupId>com.google.guava</groupId>
+		  <artifactId>guava</artifactId>
+		  <version>14.0.1</version>
 		</dependency>
 	</dependencies>
 </project>
