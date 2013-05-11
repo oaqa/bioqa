@@ -19,18 +19,6 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
  */
 public class QueryGenerator {
 
-  private List<BioKeyterm> keyTerms;
-
-  private HashMap<String, Boolean> resourceFilter;
-
-  // private static String answerType = "";
-
-  public QueryGenerator(List<BioKeyterm> keyterm) {
-    this.keyTerms = keyterm;
-    resourceFilter = new HashMap<String, Boolean>();
-
-  }
-
   public static String identifyAnswerType(List<Keyterm> keyterm) {
     for (Keyterm k : keyterm) {
 
@@ -57,7 +45,8 @@ public class QueryGenerator {
    * @return formed Indri query
    * 
    */
-  public static String generateIndriQuery(List<Keyterm> keyterms, String field, boolean filter, String answerTypeWeight) {
+  public static String generateIndriQuery(List<Keyterm> keyterms, String field, boolean filter,
+          String answerTypeWeight) {
     String query = ""; // general query
     String mainPart = ""; // boolean-filter part
 
@@ -90,7 +79,7 @@ public class QueryGenerator {
     }
 
     // add answer type information into the query
-    
+
     if (!answerTypeWeight.equals("0")) {
       if (identifyAnswerType(keyterms).equals("gene"))
         query = query + " " + answerTypeWeight + " #any:gene_ontology" + " ";
@@ -98,7 +87,7 @@ public class QueryGenerator {
       if (identifyAnswerType(keyterms).equals("protein"))
         query = query + " " + answerTypeWeight + " #any:protein" + " ";
     }
-    
+
     // forms the query
     String s = mainPart.isEmpty() ? "#weight" + field + "( " + query + " ) " : "#filreq( #band ("
             + mainPart + ")" + "#weight" + field + "( " + query + " ) " + ")";

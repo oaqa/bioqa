@@ -51,6 +51,29 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
     }
     return SimilarityUtils.countWord(keytermStrs.toArray(new String[0]));
   }
+  
+  public static Map<String, Double> getLowerCasedKeytermCount(List<Keyterm> keyterms, float threshold) {
+    List<String> keytermStrs = new ArrayList<String>();
+    for (Keyterm keyterm : keyterms) {
+      //only consider the keyterms whose weights >= 0.4
+      // this is only for TREC 2006
+      // this can be set as a parameter
+      // TODO
+      //if(keyterm.getProbability() >= 0.4)
+      
+      if (keyterm.getProbability() >= threshold)
+        keytermStrs.add(keyterm.getText().toLowerCase());
+    }
+    return SimilarityUtils.countWord(keytermStrs.toArray(new String[0]));
+  }
+  
+  public static Map<String, Double> getLowerCasedKeytermTypes(List<Keyterm> keyterms, float threshold) {
+    Map<String, Double> keytermCount = getLowerCasedKeytermCount(keyterms, threshold);
+    for (String keyterm : keytermCount.keySet()) {
+      keytermCount.put(keyterm, 1.0);
+    }
+    return keytermCount;
+  }
 
   public static Map<String, Double> getLowerCasedKeytermTypes(List<Keyterm> keyterms) {
     Map<String, Double> keytermCount = getLowerCasedKeytermCount(keyterms);

@@ -1,2 +1,1 @@
-#inherit: jdbc.sqlite.log.log-persistence-provider
 inherit: jdbc.log.log-persistence-provider

@@ -46,6 +46,8 @@ public class QueryStrategy {
 
   private boolean hasPOSTagger = true;
 
+  private boolean customizedDic = true;
+
   private String conceptTermWeight = "0.6";
 
   private String regularTermWeight = "0.4";
@@ -53,9 +55,9 @@ public class QueryStrategy {
   private String verbTermWeight = "0.2";
 
   private String geneTermWeight = "0.3";
-  
+
   private String specialTermWeight = "0.3";
-  
+
   private String mustHaveTermWeight = "0.6";
 
   private String mainPart = "";
@@ -86,7 +88,7 @@ public class QueryStrategy {
   public QueryStrategy(List<BioKeyterm> keyterm) {
     this.keyTerms = keyterm;
   }
-  
+
   // set all the variables.
   public void setKeyterms(List<BioKeyterm> keyterm) {
     this.keyTerms = keyterm;
@@ -107,13 +109,17 @@ public class QueryStrategy {
   public void setGeneTermWeight(String w) {
     this.geneTermWeight = w;
   }
-  
+
   public void setSpecialTermWeight(String w) {
     this.specialTermWeight = w;
   }
-  
+
   public void setMustHaveTermWeight(String w) {
     this.mustHaveTermWeight = w;
+  }
+
+  public void setCustomizedDictionary(boolean w) {
+    this.customizedDic = w;
   }
 
   // set which resources that will be used. (default is true)
@@ -173,11 +179,11 @@ public class QueryStrategy {
     return this.queryContainer;
   }
 
-  public List<BioKeyterm> getRefinedKeyterms(){
+  public List<BioKeyterm> getRefinedKeyterms() {
     this.formQueryContainer();
     return this.keyTerms;
   }
-  
+
   /**
    * Forms a query container which has all the necessary information for a query, and deletes
    * duplicated content.
@@ -188,7 +194,6 @@ public class QueryStrategy {
     ArrayList<String> termsUsedInPhrase = new ArrayList<String>(); // mark the terms that have been
     ArrayList<String> apostropheTerms = new ArrayList<String>(); // store the terms having
                                                                  // apostrophe.
-
     // PART I: phrase part -- this part considers all the phrases in this list of BioKeyterm
     loop: for (BioKeyterm keyterm : this.keyTerms) {
 
@@ -198,25 +203,24 @@ public class QueryStrategy {
         // removes characters that will blow Indri out
         String keytermText = CleanTerms.removeIndriSpeCha(keyterm.getText());
 
-        
-        // REMOVE THE FOLLOWING WORDS FROM QUESTIONS  (for TREC 2007)
-        String[] notFit = {"BIOLOGICAL SUBSTANCES", "MOLECULAR FUNCTIONS", "TUMOR TYPES" };
+        // REMOVE THE FOLLOWING WORDS FROM QUESTIONS (for TREC 2007)
+        String[] notFit = { "BIOLOGICAL SUBSTANCES", "MOLECULAR FUNCTIONS", "TUMOR TYPES" };
 
-            // ignore frequency words
-            for (String s : notFit) {
-              if (keytermText.equals(s)) {
-                  
-                KeytermInQuery phraseKeyterm2 = new KeytermInQuery(s, this.specialTermWeight);
-                QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
-                this.queryContainer.add(temp2);
-                
-                keyterm.addExternalResource("", "", new ArrayList<String>(), "RefinedSynonyms");
-                keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
-                
-                continue loop;
-              }                
-            }
-        
+        // ignore frequency words
+        for (String s : notFit) {
+          if (keytermText.equals(s)) {
+
+            KeytermInQuery phraseKeyterm2 = new KeytermInQuery(s, this.specialTermWeight);
+            QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
+            this.queryContainer.add(temp2);
+
+            keyterm.addExternalResource("", "", new ArrayList<String>(), "RefinedSynonyms");
+            keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
+
+            continue loop;
+          }
+        }
+
         // not consider any single word in this part
         if (!keytermText.trim().contains(" ")) {
           continue;
@@ -235,20 +239,19 @@ public class QueryStrategy {
         }
 
         // checks the special terms, the terms that do not have very good resources attached
-        if (!SpecialTermProcess(keytermText).isEmpty()) {
-          QueryComponent temp = SpecialTermProcess(keytermText);
-          temp.setConcept(false);
-          this.queryContainer.add(temp);
-          
-          // add information to keyterm
-          keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
-          keyterm.setProbablity(Float.valueOf(temp.getWeight()));
+        if (this.customizedDic) {
+          if (!SpecialTermProcess(keytermText).isEmpty()) {
+            QueryComponent temp = SpecialTermProcess(keytermText);
+            temp.setConcept(false);
+            this.queryContainer.add(temp);
 
-          continue;
+            // add information to keyterm
+            keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
+            keyterm.setProbablity(Float.valueOf(temp.getWeight()));
+
+            continue;
+          }
         }
-
-        //this.printKeytermContent(keyterm);
-        
         // add synonyms
         List<String> resources = new ArrayList<String>();
         if (hasUMLS) {
@@ -263,26 +266,26 @@ public class QueryStrategy {
           resources.addAll(keyterm.getSynonymsBySource(ENTREZ));
 
         // add abbreviation
-        
-        if(!keyterm.getSynonymsBySource("AbbreviationAndLongForm").isEmpty()) {
+
+        if (!keyterm.getSynonymsBySource("AbbreviationAndLongForm").isEmpty()) {
           // Q 163, 169
-          if(!keyterm.getSynonymsBySource("AbbreviationAndLongForm").contains("APC") &&
-                  !keyterm.getSynonymsBySource("AbbreviationAndLongForm").contains("FHM1") ) 
-          {
+          if (!keyterm.getSynonymsBySource("AbbreviationAndLongForm").contains("APC")
+                  && !keyterm.getSynonymsBySource("AbbreviationAndLongForm").contains("FHM1")) {
             resources.addAll(keyterm.getSynonymsBySource("AbbreviationAndLongForm"));
             termsUsedInPhrase.addAll(keyterm.getSynonymsBySource("AbbreviationAndLongForm"));
           }
-          
-          for(String s : keyterm.getSynonymsBySource("AbbreviationAndLongForm")) {
-            if(BioNameLexicalVariants.getLexicalVariants(s) != null) {
+
+          for (String s : keyterm.getSynonymsBySource("AbbreviationAndLongForm")) {
+            if (BioNameLexicalVariants.getLexicalVariants(s) != null) {
               resources.addAll(BioNameLexicalVariants.getLexicalVariants(s));
             }
           }
         }
 
-        if(keytermText.equals("Transforming growth factor-beta1"))
-          resources.add("Transforming growth factor beta 1");
-        
+        if (customizedDic) {
+          if (keytermText.equals("Transforming growth factor-beta1"))
+            resources.add("Transforming growth factor beta 1");
+        }
         // deals with the brackets in the synonyms
         resources = this.cleaner.processBrackets(resources);
 
@@ -314,9 +317,9 @@ public class QueryStrategy {
         String newKeytermText = keytermText;
 
         // for apostrophe (e.g. "'s") situation
-       // if (!apostropheRemoved.isEmpty())
-         // newKeytermText = keytermText.replace(apostropheRemoved + "s", apostropheRemoved);
-        
+        // if (!apostropheRemoved.isEmpty())
+        // newKeytermText = keytermText.replace(apostropheRemoved + "s", apostropheRemoved);
+
         KeytermInQuery phraseKeyterm = new KeytermInQuery(keytermText, this.conceptTermWeight);
         QueryComponent temp = new QueryComponent(phraseKeyterm,
                 this.cleaner.removeDuplicatedSynonyms(keytermText, resources));
@@ -328,8 +331,8 @@ public class QueryStrategy {
           temp.addSynonyms(newKeytermText);
         }
 
-        if (CheckTerms.isConceptTerm(keytermText) || !keyterm.getSynonymsBySource("AbbreviationAndLongForm").isEmpty()
-                ) {
+        if (CheckTerms.isConceptTerm(keytermText)
+                || !keyterm.getSynonymsBySource("AbbreviationAndLongForm").isEmpty()) {
           temp.setConcept(true);
 
         } else {
@@ -337,15 +340,14 @@ public class QueryStrategy {
         }
 
         this.queryContainer.add(temp);
-         
+
         keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
-        
-        if(temp.isConcept()) {
+
+        if (temp.isConcept()) {
           keyterm.setProbablity(1);
-        }
-        else
+        } else
           keyterm.setProbablity(Float.valueOf(temp.getWeight()));
-        
+
       }
     }
 
@@ -357,68 +359,69 @@ public class QueryStrategy {
         printKeytermContent(keyterm);
         String keytermText = CleanTerms.removeIndriSpeCha(keyterm.getText());
 
-        // REMOVE THE FOLLOWING WORDS FROM QUESTIONS  (for TREC 2007)
+        // REMOVE THE FOLLOWING WORDS FROM QUESTIONS (for TREC 2007)
         String[] notFit = { "PROTEINS", "GENES", "PATHWAYS", "BIOLOGICAL", "SUBSTANCES", "TUMOR",
-                "TYPES", "OR","DRUGS", "SYMPTOMS", "SIGNS", "MOLECULAR", "FUNCTIONS", "DISEASES",
-                "ANTIBODIES", "TOXICITIES", "CELL", "TISSUE", "MUTATIONS", "GENE", "ROLE" };
-        // "DRUGS" is removed temperaly 
-        
+            "TYPES", "OR", "DRUGS", "SYMPTOMS", "SIGNS", "MOLECULAR", "FUNCTIONS", "DISEASES",
+            "ANTIBODIES", "TOXICITIES", "CELL", "TISSUE", "MUTATIONS", "GENE", "ROLE" };
+        // "DRUGS" is removed temperaly
+
         // "measure" is for Q209, which should be delt with in a different way!
-        
 
-            // ignore frequency words
-            for (String s : notFit) {
-              if (keytermText.equals(s)) {
-                                  
-                KeytermInQuery phraseKeyterm2 = new KeytermInQuery(s, this.specialTermWeight);
-                QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
-                this.queryContainer.add(temp2);
-                
-                keyterm.addExternalResource("", "", new ArrayList<String>(), "RefinedSynonyms");
-                keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
-                
-                continue loop;
-              }                
-            }
+        // ignore frequency words
+        for (String s : notFit) {
+          if (keytermText.equals(s)) {
 
-        // special for Q166
-        if(keytermText.equals("amyloid")) {
-          KeytermInQuery phraseKeyterm1 = new KeytermInQuery("amyloid angiopathy", this.conceptTermWeight);
-          QueryComponent temp1 = new QueryComponent(phraseKeyterm1);
-          temp1.addSynonyms("gammatrace protein human");
-          temp1.addSynonyms("Angiopathy Congophilic");
-          temp1.addSynonyms("Amyloidosis Icelandic Type");
-          temp1.addSynonyms("Presenile dementia with spastic ataxia");
-          temp1.addSynonyms("Cerebral Amyloid Angiopathies");
-          temp1.addSynonyms("gammatrace alkaline microprotein human");
-          temp1.addSynonyms("amyloid");
-          temp1.addSynonyms("Cystatin C protein human");
-          temp1.addSynonyms("Angiopathy Cerebral Amyloid");
-          temp1.addSynonyms("Icelandic Type Amyloidosis");
-          temp1.addSynonyms("cystatin C");
-          temp1.addSynonyms("post-gamma-globulin protein human");
-          temp1.addSynonyms("gamma-trace protein human");
-          temp1.addSynonyms("postgammaglobulin protein human");
-          temp1.addSynonyms("Congophilic Angiopathies");
-          temp1.addSynonyms("gamma-trace alkaline microprotein human");
-          temp1.addSynonyms("Neuroendocrine basic polypeptide human");
-          temp1.addSynonyms("Amyloidosis  cerebral");
-          temp1.addSynonyms("amyloid angiopathy");
-          this.queryContainer.add(temp1);
-          keyterm.addExternalResource("", "", temp1.getSynonyms(), "RefinedSynonyms");
-          keyterm.setProbablity(Float.valueOf(temp1.getWeight()));
-          continue;
+            KeytermInQuery phraseKeyterm2 = new KeytermInQuery(s, this.specialTermWeight);
+            QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
+            this.queryContainer.add(temp2);
+
+            keyterm.addExternalResource("", "", new ArrayList<String>(), "RefinedSynonyms");
+            keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
+
+            continue loop;
+          }
         }
-        
-        if(keytermText.equals("cerebral")) {
-          KeytermInQuery phraseKeyterm2 = new KeytermInQuery("cerebral", this.conceptTermWeight);
-          QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
-          this.queryContainer.add(temp2);
-          keyterm.addExternalResource("", "", temp2.getSynonyms(), "RefinedSynonyms");
-          keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
-          continue;
+
+        if (customizedDic) {
+          // special for Q166
+          if (keytermText.equals("amyloid")) {
+            KeytermInQuery phraseKeyterm1 = new KeytermInQuery("amyloid angiopathy",
+                    this.conceptTermWeight);
+            QueryComponent temp1 = new QueryComponent(phraseKeyterm1);
+            temp1.addSynonyms("gammatrace protein human");
+            temp1.addSynonyms("Angiopathy Congophilic");
+            temp1.addSynonyms("Amyloidosis Icelandic Type");
+            temp1.addSynonyms("Presenile dementia with spastic ataxia");
+            temp1.addSynonyms("Cerebral Amyloid Angiopathies");
+            temp1.addSynonyms("gammatrace alkaline microprotein human");
+            temp1.addSynonyms("amyloid");
+            temp1.addSynonyms("Cystatin C protein human");
+            temp1.addSynonyms("Angiopathy Cerebral Amyloid");
+            temp1.addSynonyms("Icelandic Type Amyloidosis");
+            temp1.addSynonyms("cystatin C");
+            temp1.addSynonyms("post-gamma-globulin protein human");
+            temp1.addSynonyms("gamma-trace protein human");
+            temp1.addSynonyms("postgammaglobulin protein human");
+            temp1.addSynonyms("Congophilic Angiopathies");
+            temp1.addSynonyms("gamma-trace alkaline microprotein human");
+            temp1.addSynonyms("Neuroendocrine basic polypeptide human");
+            temp1.addSynonyms("Amyloidosis  cerebral");
+            temp1.addSynonyms("amyloid angiopathy");
+            this.queryContainer.add(temp1);
+            keyterm.addExternalResource("", "", temp1.getSynonyms(), "RefinedSynonyms");
+            keyterm.setProbablity(Float.valueOf(temp1.getWeight()));
+            continue;
+          }
+
+          if (keytermText.equals("cerebral")) {
+            KeytermInQuery phraseKeyterm2 = new KeytermInQuery("cerebral", this.conceptTermWeight);
+            QueryComponent temp2 = new QueryComponent(phraseKeyterm2);
+            this.queryContainer.add(temp2);
+            keyterm.addExternalResource("", "", temp2.getSynonyms(), "RefinedSynonyms");
+            keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
+            continue;
+          }
         }
-                
         // not consider stopwords, "gene", "s", "or" and words that occure in phrases
         // "or" for Q171 "s" is generated by " 's "
         if (CheckTerms.isStopwords(keytermText.toLowerCase()) || keytermText.equals("or")
@@ -439,11 +442,11 @@ public class QueryStrategy {
           QueryComponent temp = SpecialTermProcess(keytermText);
           temp.setConcept(false);
           this.queryContainer.add(temp);
-          
-          // add information to keyterm          
+
+          // add information to keyterm
           keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
           keyterm.setProbablity(Float.valueOf(temp.getWeight()));
-       
+
           continue;
         }
 
@@ -457,16 +460,16 @@ public class QueryStrategy {
             KeytermInQuery temp = new KeytermInQuery(keytermText, this.verbTermWeight);
             QueryComponent temp2 = new QueryComponent(temp, false);
             this.queryContainer.add(temp2);
-            
+
             keyterm.addExternalResource("", "", temp2.getSynonyms(), "RefinedSynonyms");
             keyterm.setProbablity(Float.valueOf(temp2.getWeight()));
-            
+
             continue;
           }
         }
 
-       // this.printKeytermContent(keyterm);
-        
+        // this.printKeytermContent(keyterm);
+
         // add synonyms
         List<String> resources = new ArrayList<String>();
 
@@ -482,19 +485,19 @@ public class QueryStrategy {
             resources.addAll(keyterm.getSynonymsBySource(ENTREZ));
           if (hasMESHAcronym)
             resources.addAll(keyterm.getSynonymsBySource(MESH));
-          
+
           // add the categories as the synonyms
           for (String s : keyterm.getCategories()) {
             String[] split = s.toString().replaceAll("[\\(\\)\\[\\]].*[\\(\\)\\[\\]]", "")
                     .split(";");
             List<String> splitList = (Arrays.asList(split));
-            if(splitList.contains(keytermText)) {
-            for (String s1 : split) {
-              resources.add(s1);
-            }
+            if (splitList.contains(keytermText)) {
+              for (String s1 : split) {
+                resources.add(s1);
+              }
             }
           }
-          
+
         } else {
           if (hasUMLS) {
             for (String resource : keyterm.getAllResourceSources()) {
@@ -508,35 +511,36 @@ public class QueryStrategy {
           if (hasMESH)
             resources.addAll(keyterm.getSynonymsBySource(MESH));
         }
-                
-        if(keytermText.equals("IDE")) {
-          resources.add("INSULYSIN");
-        }
-        
-        // this one should be retrieved.
-        //TODO remove this one when the resource wrapper is done
-        if (keytermText.equals("Pes")) {
-          //Dmel\CG7228, PES, Pes, pescadillo, CG7228, pes
-          resources.add("pescadillo");
-          resources.add("CG7228");
-          resources.add("DmelCG7228");
-        }
-        
-        if (keytermText.equals("TGF-beta1")) {
-          resources.add("transforming growth factor beta 1");
-        }
-        
-        if (keytermText.equals("Bop-Pes")) {
-          resources.add("Bop1");
-          resources.add("Bop1p");
-        }
-        
-        // it works in the situation where the resources are not good enough
-        if (!additionalSynonyms(keytermText).isEmpty()) {
-          resources.clear();
-          resources = additionalSynonyms(keytermText);
-        }
 
+        if (customizedDic) {
+          if (keytermText.equals("IDE")) {
+            resources.add("INSULYSIN");
+          }
+
+          // this one should be retrieved.
+          // TODO remove this one when the resource wrapper is done
+          if (keytermText.equals("Pes")) {
+            // Dmel\CG7228, PES, Pes, pescadillo, CG7228, pes
+            resources.add("pescadillo");
+            resources.add("CG7228");
+            resources.add("DmelCG7228");
+          }
+
+          if (keytermText.equals("TGF-beta1")) {
+            resources.add("transforming growth factor beta 1");
+          }
+
+          if (keytermText.equals("Bop-Pes")) {
+            resources.add("Bop1");
+            resources.add("Bop1p");
+          }
+
+          // it works in the situation where the resources are not good enough
+          if (!additionalSynonyms(keytermText).isEmpty()) {
+            resources.clear();
+            resources = additionalSynonyms(keytermText);
+          }
+        }
         // adds to the container based on the different conditions.
         KeytermInQuery singleKeyterm = new KeytermInQuery(keytermText, this.conceptTermWeight);
         QueryComponent temp = new QueryComponent(singleKeyterm, true,
@@ -554,59 +558,53 @@ public class QueryStrategy {
           temp.setConcept(false);
         }
 
-        // rule-based
-        // for Q200
-        if (keytermText.equals("serum") || keytermText.equals("lupus")) {
-          temp.setConcept(true);
-        }
-        
-        // 224
-        if (keytermText.equals("melanogenesis") || keytermText.equals("lung")) {
-          temp.setConcept(true);
-        }
-        
-        //202
-        if (keytermText.equals("lysosomal")) {
-          temp.setConcept(true);
-        }
-        
-        // 228         
-        if (keytermText.equals("solubility") || keytermText.equals("heterologously")) {
-          temp.setConcept(true);
-        }
+        if (customizedDic) {
+          // rule-based
+          // for Q200
+          if (keytermText.equals("serum") || keytermText.equals("lupus")) {
+            temp.setConcept(true);
+          }
 
-        //233
-       // if (keytermText.equals("membrane") || keytermText.equals("viral")) {
-         // temp.setConcept(true);
-       // }
-        
-        // 208      
-        if (keytermText.equals("zoledronic")) {
-          temp.setConcept(true);
+          // 224
+          if (keytermText.equals("melanogenesis") || keytermText.equals("lung")) {
+            temp.setConcept(true);
+          }
+
+          // 202
+          if (keytermText.equals("lysosomal")) {
+            temp.setConcept(true);
+          }
+
+          // 228
+          if (keytermText.equals("solubility") || keytermText.equals("heterologously")) {
+            temp.setConcept(true);
+          }
+
+          // 208
+          if (keytermText.equals("zoledronic")) {
+            temp.setConcept(true);
+          }
+
+          // 205
+          if (keytermText.equals("coronary")) {
+            temp.setConcept(true);
+          }
+
+          // 223
+          if (keytermText.equals("anaerobic")) {
+            temp.setConcept(true);
+          }
         }
-        
-        //205
-        if (keytermText.equals("coronary")) {
-          temp.setConcept(true);
-        }
-        
-        //223
-        if (keytermText.equals("anaerobic")) {
-          temp.setConcept(true);
-        }
-        
-        
         this.queryContainer.add(temp);
 
         keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
-        
-        if(temp.isConcept()) {
-          
-          keyterm.setProbablity(Float.valueOf(1+ Float.valueOf(this.mustHaveTermWeight)));
-        }
-          else
+
+        if (temp.isConcept()) {
+
+          keyterm.setProbablity(Float.valueOf(1 + Float.valueOf(this.mustHaveTermWeight)));
+        } else
           keyterm.setProbablity(Float.valueOf(temp.getWeight()));
-        
+
       }
     }
   }
@@ -685,7 +683,7 @@ public class QueryStrategy {
       resources.add("NR4A1");
       resources.add("NGFI-B");
     }
-    
+
     // this synonym can be gotten from
     if (keytermText.equals("development")) {
       resources.add("growth");
@@ -705,36 +703,36 @@ public class QueryStrategy {
       resources.add("O-glycans");
       resources.add("N-glycans");
     }
-    
+
     if (keytermText.equals("LITAF")) {
       resources.add("LPS");
     }
-    
+
     if (keytermText.equals("heterologously")) {
       resources.add("heterologous");
     }
-    
+
     if (keytermText.equals("NFkappaB")) {
       resources.add("NF-B");
     }
-    
+
     if (keytermText.equals("Ewing")) {
       resources.add("Ewings");
     }
-    
+
     if (keytermText.equals("Celegans")) {
       resources.add("elegans");
     }
-    
+
     if (keytermText.equals("Raf")) {
       resources.add("BRAF");
     }
-    
+
     if (keytermText.equals("etidronate")) {
       resources.add("bisphosphonates");
       resources.add("Didronel");
     }
-    
+
     return resources;
 
   }
@@ -745,18 +743,18 @@ public class QueryStrategy {
   private void printKeytermContent(BioKeyterm keyterm) {
     // for the sake of information
     // System.out.println(keyterm.getTagBySource("LingPipeHmmPosTagger"));
-    System.out.println("-------------------------" + keyterm.getText() + "   " + keyterm.getTokenType()
-            + " " + keyterm.getTags() + " " + keyterm.getAllTagSources() + " "
-            + keyterm.getAllResourceSources() + " " + keyterm.getCategories());
+    System.out.println("-------------------------" + keyterm.getText() + "   "
+            + keyterm.getTokenType() + " " + keyterm.getTags() + " " + keyterm.getAllTagSources()
+            + " " + keyterm.getAllResourceSources() + " " + keyterm.getCategories());
     System.out.println("MESH:" + keyterm.getSynonymsBySource(MESH));
     System.out.println("EG:" + keyterm.getSynonymsBySource(ENTREZ));
     System.out.println("UMLS:");
-    
+
     for (String resource : keyterm.getAllResourceSources()) {
-        if (resource.startsWith(UMLS))
-          System.out.println(keyterm.getSynonymsBySource(resource));
-      }
-    
+      if (resource.startsWith(UMLS))
+        System.out.println(keyterm.getSynonymsBySource(resource));
+    }
+
     System.out.println("Abbre:" + keyterm.getSynonymsBySource(ABBREVIATION));
     System.out.println("LexicalVariants:" + keyterm.getSynonymsBySource(LEXICAL_VARIANTS));
     System.out.println("POStag:" + keyterm.getAllTagSources());
@@ -764,5 +762,4 @@ public class QueryStrategy {
       System.out.println("Category: " + s);
     }
   }
-
 }

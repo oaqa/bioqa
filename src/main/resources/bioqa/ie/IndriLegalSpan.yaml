@@ -3,7 +3,7 @@ server: peace.isri.cs.cmu.edu
 port: 21237
 gzip: true
 cross-opts:
-  hit-list-size: [1000]
+  hit-list-size: [10]
   PassageSpan: [legalspan]
   #smoothing: [jelinek-mercer]  #all algorithoms: dirichlet two-stage jelinek-mercer
   smoothing: [dirichlet]
