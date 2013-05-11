@@ -18,45 +18,45 @@ collection-reader:
 #  sequence-end: 160
   
 pipeline:
-  - inherit: internal.cse.phase  
+  - inherit: jdbc.sqlite.cse.phase  
     name: keyterm-extractor
     options: |
       - inherit: default.keyterm.default
 
-  - inherit: internal.cse.phase 
+  - inherit: jdbc.sqlite.cse.phase 
     name: pos-tagger
     options: |
       - inherit: bioqa.keyterm.lingpipe-hmm
 
-  - inherit: internal.cse.phase
+  - inherit: jdbc.sqlite.cse.phase
     name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.lingpipe-abbreviation
       #- inherit: bioqa.keyterm.lingpipe
 
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: name-entity-recognizer
     #options: |
      # - inherit: bioqa.keyterm.syn-abbreviation-longform
 
-  - inherit: internal.cse.phase
+  - inherit: jdbc.sqlite.cse.phase
     name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.syn-lexical-variants
 
-  - inherit: internal.cse.phase
+  - inherit: jdbc.sqlite.cse.phase
     name: restore
     options: |
       - inherit: bioqa.keyterm.restore
       #- inherit: bioqa.keyterm.restore_before
 
 
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: synonyms
     #options: |
      # - inherit: bioqa.keyterm.kb.mesh
 
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: synonyms
     #options: |
      # - inherit: bioqa.keyterm.kb.entrezgene
@@ -66,33 +66,33 @@ pipeline:
 #    options: |
 #      - inherit: bioqa.keyterm.kb.umls
  
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: store
     #options: |
      # - inherit: bioqa.keyterm.restore
 
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: store
     #options: |
      # - inherit: bioqa.keyterm.io.backup
 
-  - inherit: internal.cse.phase
+  - inherit: jdbc.sqlite.cse.phase
     name: keyterm-refiner
     lazy-load-options: true
     options: |
       - inherit: bioqa.keyterm.keyterm-refiner
 
-  - inherit: internal.cse.phase
+  - inherit: jdbc.sqlite.cse.phase
     name: retrieval-strategist
     options: | 
       - inherit: bioqa.retrieval.BasicIndriRetrieval
 
-  - inherit: internal.cse.phase
+  - inherit: jdbc.sqlite.cse.phase
     name: passage-extractor
     options: | 
       - inherit: bioqa.ie.IndriLegalSpan
 
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: retrieval-strategist
     #options: |
      # - inherit: bioqa.retrieval.io.restore
