@@ -1,6 +1,6 @@
 configuration: 
   name: bioqa-development-test
-  author: ziy
+  author: yanfang
 
 persistence-provider:
   inherit: bioqa.db.cse-persistence-provider  
@@ -19,17 +19,17 @@ collection-reader:
   #sequence-end: 160
   
 pipeline:
-  - inherit: jdbc.sqlite.cse.phase  
+  - inherit: internal.cse.phase  
     name: keyterm-extractor
     options: |
       - inherit: default.keyterm.default
 
-  - inherit: jdbc.sqlite.cse.phase 
+  - inherit: internal.cse.phase 
     name: pos-tagger
     options: |
       - inherit: bioqa.keyterm.lingpipe-hmm
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.lingpipe-abbreviation
@@ -40,12 +40,12 @@ pipeline:
     #options: |
      # - inherit: bioqa.keyterm.syn-abbreviation-longform
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.syn-lexical-variants
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: restore
     options: |
       - inherit: bioqa.keyterm.restore
@@ -77,18 +77,18 @@ pipeline:
     #options: |
      # - inherit: bioqa.keyterm.io.backup
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: keyterm-refiner
     lazy-load-options: true
     options: |
       - inherit: bioqa.keyterm.keyterm-refiner
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: retrieval-strategist
     options: | 
       - inherit: bioqa.retrieval.BasicIndriRetrieval
 
-  - inherit: jdbc.sqlite.cse.phase
+  - inherit: internal.cse.phase
     name: passage-extractor
     option-timeout: 20
     options: | 
