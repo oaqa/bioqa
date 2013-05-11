@@ -45,11 +45,11 @@ pipeline:
     options: |
       - inherit: bioqa.keyterm.restore
 
-  - inherit: internal.cse.phase
-    name: synonyms
-    option-timeout: 2
-    options: |
-      - inherit: bioqa.keyterm.kb.umls
+ # - inherit: internal.cse.phase
+ #   name: synonyms
+ #   option-timeout: 2
+ #   options: |
+ #     - inherit: bioqa.keyterm.kb.umls
       
   - inherit: internal.cse.phase
     option-timeout: 2

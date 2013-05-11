@@ -57,6 +57,19 @@ public class CheckTerms {
    * Checks if the term is acronym
    */
   public static boolean isAcronym(String term) {
+    
+    // these words should be removed 
+    String[] notFit = { "PROTEINS", "GENES", "PATHWAYS", "BIOLOGICAL", "SUBSTANCES", "TUMOR",
+            "TYPES", "DRUGS", "OR", "SYMPTOMS", "SIGNS", "MOLECULAR", "FUNCTIONS", "DISEASES",
+            "ANTIBODIES", "TOXICITIES", "CELL", "TISSUE", "MUTATIONS", "gene", "role", "genes", "GENE",
+            "ROLE" };
+    
+        // ignore frequency words
+        for (String s : notFit) {
+          if (term.equals(s))
+            return false;
+        }
+  
     return isOnlyUpperCaseOrNumerical(term);
   }
 

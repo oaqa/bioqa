@@ -1,0 +1,136 @@
+configuration: 
+  name: bioqa-development-test
+  author: yanfang
+
+persistence-provider:
+  inherit: bioqa.db.cse-persistence-provider
+  
+async-configuration:
+  inherit: bioqa.async.cse-broker 
+
+collection-reader:
+  inherit: bioqa.db.collection-reader-consumer
+  dataset: BIO-COMBINED
+  sequence-start: 200
+  sequence-end: 235
+  #sequence-end: 160
+  
+pipeline:
+  - inherit: internal.cse.phase  
+    name: keyterm-extractor
+    option-timeout: 2
+    options: |
+      - inherit: default.keyterm.default
+
+  - inherit: internal.cse.phase 
+    option-timeout: 2
+    name: pos-tagger
+    options: |
+      - inherit: bioqa.keyterm.lingpipe-hmm
+
+  - inherit: internal.cse.phase
+    option-timeout: 2
+    name: name-entity-recognizer
+    options: |
+      - inherit: bioqa.keyterm.lingpipe-abbreviation
+
+  - inherit: internal.cse.phase
+    option-timeout: 2
+    name: name-entity-recognizer
+    options: |
+      - inherit: bioqa.keyterm.syn-lexical-variants
+
+  - inherit: internal.cse.phase
+    name: restore
+    options: |
+      - inherit: bioqa.keyterm.io.restore-07
+
+  #- inherit: internal.cse.phase    
+   # option-timeout: 2
+    #name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.mesh
+
+  #- inherit: internal.cse.phase    
+   # option-timeout: 2
+    #name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.entrezgene
+
+  #- inherit: internal.cse.phase    
+   # option-timeout: 2
+    #name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.umls
+      
+#  - inherit: internal.cse.phase    
+#    option-timeout: 2
+#    name: store
+#    options: |
+#      - inherit: bioqa.keyterm.io.backup
+ 
+  - inherit: internal.cse.phase
+    option-timeout: 2
+    name: keyterm-refiner
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.keyterm.keyterm-refiner
+
+  - inherit: internal.cse.phase
+    name: retrieval-strategist
+    option-timeout: 8
+    options: | 
+      - inherit: bioqa.retrieval.BasicIndriRetrieval
+
+  - inherit: internal.cse.phase
+    name: passage-extractor
+    option-timeout: 8
+    options: | 
+      - inherit: bioqa.ie.IndriLegalSpan
+
+  - inherit: internal.cse.phase 
+    name: passage-span
+    option-timeout: 5
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.span.important-sentence@peace
+      - inherit: base.noop
+
+  - inherit: internal.cse.phase 
+    name: passage-rank
+    option-timeout: 5
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.rank.proximity@peace
+      - inherit: base.noop
+
+  - inherit: internal.cse.phase 
+    name: score-combine
+    option-timeout: 5
+    options: |
+      - inherit: bioqa.ie.rank.combine
+      - inherit: base.noop
+
+  - inherit: internal.cse.phase 
+    name: passage-overlap
+    option-timeout: 5
+    options: |
+      - inherit: bioqa.ie.overlap.merge
+      - inherit: bioqa.ie.overlap.filter
+      #- inherit: base.noop   
+
+  - inherit: internal.eval.cse-retrieval-aggregator-consumer
+  - inherit: internal.eval.cse-passage-map-aggregator-consumer
+
+post-process: 
+  - inherit: internal.eval.cse-retrieval-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.f-measure-report-component
+  - inherit: internal.eval.cse-passage-map-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.map-report-component
+  
+
+  

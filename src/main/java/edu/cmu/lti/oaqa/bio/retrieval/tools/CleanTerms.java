@@ -182,7 +182,7 @@ public class CleanTerms {
    * @param str the term
    * @return stemmed term
    */
-  public String getStemmedTerm(String str) {
+  public static String getStemmedTerm(String str) {
     Stemmer s = new Stemmer();
     for (int i = 0; i < str.length(); i++) {
       if (Character.isLetter(str.charAt(i))) {

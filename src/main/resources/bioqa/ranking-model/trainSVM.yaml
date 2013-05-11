@@ -1,0 +1,9 @@
+class: edu.cmu.lti.oaqa.bio.test.yanfang.ie.TrainingSVM
+Prefix: file:/Users/yanfang/Documents/CMU/TREC2006/
+cross-opts:
+  #limit: [10, 20, 30, 50, 70, 100]
+  limit: [20]
+
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider

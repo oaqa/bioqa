@@ -24,7 +24,7 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 public class LingPipeAndAbbreviation extends AbstractKeytermUpdater {
 
-    private Chunker chunker;
+    private static Chunker chunker;
 
     protected void initialize(URL url) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(url.openStream());
@@ -82,6 +82,17 @@ public class LingPipeAndAbbreviation extends AbstractKeytermUpdater {
         return nameEntities;
     }
 
+    public static List<String> tokenize(String sentence) {
+      List<String> result = new ArrayList<String>();
+      Chunking chunking = chunker.chunk(sentence);
+      for (Chunk chunk : chunking.chunkSet()) {
+        result.add(sentence.substring(chunk.start(), chunk.end()));
+    }
+      
+      
+      return result;
+    }
+    
     @Override
     public void initialize(UimaContext aContext) throws ResourceInitializationException {
         super.initialize(aContext);

@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bio.test.yanfang.ie.PassageResultRestore
+RetrievalResultFilePath: /passage-cache/trec2006-passages
+
+persistence-provider: |
+  inherit: internal.log-persistence-provider

@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.bio.test.yanfang.ie.PassageResultBackup
+RetrievalResultDirPath: src/main/resources/passage-cache
+persistence-provider: |
+  inherit: internal.log-persistence-provider

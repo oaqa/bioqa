@@ -37,17 +37,45 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
     }
   }
 
-  protected static Map<String, Double> getLowerCasedKeytermCount(List<Keyterm> keyterms) {
+  public static Map<String, Double> getLowerCasedKeytermCount(List<Keyterm> keyterms) {
     List<String> keytermStrs = new ArrayList<String>();
     for (Keyterm keyterm : keyterms) {
       //only consider the keyterms whose weights >= 0.4
+      // this is only for TREC 2006
+      // this can be set as a parameter
+      // TODO
       if(keyterm.getProbability() >= 0.4)
+      
+      //if (keyterm.getProbability() >= 0.3)
         keytermStrs.add(keyterm.getText().toLowerCase());
     }
     return SimilarityUtils.countWord(keytermStrs.toArray(new String[0]));
   }
+  
+  public static Map<String, Double> getLowerCasedKeytermCount(List<Keyterm> keyterms, float threshold) {
+    List<String> keytermStrs = new ArrayList<String>();
+    for (Keyterm keyterm : keyterms) {
+      //only consider the keyterms whose weights >= 0.4
+      // this is only for TREC 2006
+      // this can be set as a parameter
+      // TODO
+      //if(keyterm.getProbability() >= 0.4)
+      
+      if (keyterm.getProbability() >= threshold)
+        keytermStrs.add(keyterm.getText().toLowerCase());
+    }
+    return SimilarityUtils.countWord(keytermStrs.toArray(new String[0]));
+  }
+  
+  public static Map<String, Double> getLowerCasedKeytermTypes(List<Keyterm> keyterms, float threshold) {
+    Map<String, Double> keytermCount = getLowerCasedKeytermCount(keyterms, threshold);
+    for (String keyterm : keytermCount.keySet()) {
+      keytermCount.put(keyterm, 1.0);
+    }
+    return keytermCount;
+  }
 
-  protected static Map<String, Double> getLowerCasedKeytermTypes(List<Keyterm> keyterms) {
+  public static Map<String, Double> getLowerCasedKeytermTypes(List<Keyterm> keyterms) {
     Map<String, Double> keytermCount = getLowerCasedKeytermCount(keyterms);
     for (String keyterm : keytermCount.keySet()) {
       keytermCount.put(keyterm, 1.0);
@@ -55,7 +83,7 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
     return keytermCount;
   }
 
-  protected static Map<String, Double> getLowerCasedPassageTokenCount(List<String> tokens) {
+  public static Map<String, Double> getLowerCasedPassageTokenCount(List<String> tokens) {
     List<String> lowerCasedTokens = new ArrayList<String>();
     for (String token : tokens) {
       lowerCasedTokens.add(token.toLowerCase());
@@ -63,7 +91,7 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
     return SimilarityUtils.countWord(lowerCasedTokens.toArray(new String[0]));
   }
 
-  protected static Map<String, Double> getLowerCasedPassageTokenTypes(List<String> tokens) {
+  public static Map<String, Double> getLowerCasedPassageTokenTypes(List<String> tokens) {
     Map<String, Double> tokenCount = getLowerCasedPassageTokenCount(tokens);
     for (String token : tokenCount.keySet()) {
       tokenCount.put(token, 1.0);
@@ -71,7 +99,7 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
     return tokenCount;
   }
 
-  protected static Map<String, String> getLowerCasedSynonymKeytermMapping(List<Keyterm> keyterms) {
+  public static Map<String, String> getLowerCasedSynonymKeytermMapping(List<Keyterm> keyterms) {
     Map<String, String> synonym2keyterm = new HashMap<String, String>();
     for (Keyterm keyterm : keyterms) {
       //only consider keyterms whose weights >= 0.4
@@ -96,7 +124,7 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
     return charOffsets;
   }
 
-  protected static List<String> getResolvedTokens(List<String> originalTokens,
+  public static List<String> getResolvedTokens(List<String> originalTokens,
           Map<String, String> synonym2keyterm) {
     List<String> resolvedTokens = new ArrayList<String>();
     for (String orignalToken : originalTokens) {
@@ -109,7 +137,7 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
     return resolvedTokens;
   }
 
-  protected List<String> tokenize(String spanText, Collection<String> keyterms,
+  public static List<String> tokenize(String spanText, Collection<String> keyterms,
           Collection<String> synonyms) {
     Set<String> lowerCasedKeyterms = new HashSet<String>();
     if (keyterms != null) {
@@ -124,7 +152,7 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
     return tokenize(spanText, lowerCasedKeyterms);
   }
 
-  private List<String> tokenize(String spanText, Collection<String> lowerCasedKeyterms) {
+  public static List<String> tokenize(String spanText, Collection<String> lowerCasedKeyterms) {
     String lowerCasedText = spanText.toLowerCase();
     List<String> tokens = new ArrayList<String>();
     int pos = 0;
