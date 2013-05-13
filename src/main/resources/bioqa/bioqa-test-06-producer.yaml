@@ -72,7 +72,7 @@ pipeline:
 
   - inherit: internal.cse.phase
     name: passage-extractor
-    option-timeout: 15
+    option-timeout: 20
     options: | 
       - inherit: bioqa.ie.IndriLegalSpan
 
