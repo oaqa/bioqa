@@ -43,7 +43,7 @@ pipeline:
   - inherit: internal.cse.phase
     name: restore
     options: |
-      - inherit: bioqa.keyterm.io.restore-07
+      - inherit: bioqa.keyterm.io.restore
 
   #- inherit: internal.cse.phase
    # option-timeout: 2
