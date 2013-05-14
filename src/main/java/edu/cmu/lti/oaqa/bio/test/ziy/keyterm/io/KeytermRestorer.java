@@ -38,7 +38,7 @@ public class KeytermRestorer extends AbstractKeytermUpdater {
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {
       BioKeyterm backup = text2keyterm.get(keyterm.getText());
-      if (backup.getAllResourceSources().isEmpty()) continue;
+      if (backup == null ) continue;
       for (String source : backup.getAllResourceSources()) {
         ((BioKeyterm)keyterm).addExternalResource(backup.getConceptBySource(source),
                 backup.getCategoryBySource(source), backup.getSynonymsBySource(source), source);
