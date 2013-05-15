@@ -1,10 +1,10 @@
 class: edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.KeytermRefiner
 
 cross-opts:
-  MESH: [false]  # true # 0
-  ENTREZ: [false]  # true #0 
+  MESH: [false, true]  # true # 0
+  ENTREZ: [false, true]  # true #0 
   UMLS: [false]  # false # 0
-  LexicalVariants: [true, false]  #true
+  LexicalVariants: [true]  #true
   PosTagger: [true]  # true
   MESH-Acronym: [true, false]  # false
   ENTREZ-Acronym: [true, false]  # false
