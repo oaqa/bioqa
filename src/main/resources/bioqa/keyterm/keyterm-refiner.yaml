@@ -2,7 +2,7 @@ class: edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.KeytermRefiner
 
 cross-opts:
   MESH: [false, true] #[true] #[false, true]  # true # 0
-  ENTREZ: [false, true] #[true] #[false, true]  # true #0 
+  ENTREZ: [false] # !!!this one is not used now. the code is calling the MESH instead #[true] #[false, true]  # true #0 
   UMLS: [false]  # false # 0
   LexicalVariants: [true]  #true
   PosTagger: [true]  # true

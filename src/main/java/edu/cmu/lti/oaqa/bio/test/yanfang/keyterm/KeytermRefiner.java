@@ -64,9 +64,14 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
 
-    // get information from the yaml file
-    this.useENTREZ = UimaContextHelper.getConfigParameterBooleanValue(aContext, "ENTREZ", false);
+    // get information from the yaml file    
     this.useMESH = UimaContextHelper.getConfigParameterBooleanValue(aContext, "MESH", false);
+    
+    // TODO
+    // fix this part. current it is using MESH's configuration instead.    
+    //this.useENTREZ = UimaContextHelper.getConfigParameterBooleanValue(aContext, "ENTREZ", false);
+    this.useENTREZ = this.useMESH;
+    
     this.useUMLS = UimaContextHelper.getConfigParameterBooleanValue(aContext, "UMLS", false);
     this.useENTREZAcronym = UimaContextHelper.getConfigParameterBooleanValue(aContext,
             "ENTREZ-Acronym", false);
