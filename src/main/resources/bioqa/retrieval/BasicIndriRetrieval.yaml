@@ -4,10 +4,10 @@ port: 21237
 gzip: true
 cross-opts:
   hit-list-size: [1000]
-  #smoothing: [jelinek-mercer]  #all algorithoms: dirichlet two-stage jelinek-mercer
-  smoothing: [dirichlet]
+  smoothing: [jelinek-mercer]  #all algorithoms: dirichlet two-stage jelinek-mercer
+  #smoothing: [dirichlet] for 2007
   smoothing-mu: [2500] 
-  smoothing-lambda: [1.0]
+  smoothing-lambda: [0.3] # [1.0] for 2007
   answer-type-weight: [0] 
 
 persistence-provider: |
