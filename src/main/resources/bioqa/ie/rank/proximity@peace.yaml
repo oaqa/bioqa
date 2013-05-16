@@ -6,7 +6,7 @@ cross-opts:
   C3: [0.00001] # the importance of term frequency (currently in terms of the number of characters, default is 10 * c1 from [Lawrence:98])
   ConsiderSynonyms: [true] # false is the default value in [Tari:06] and [Bergler:06]
   CombineOriginalScores: [true] # false is the default value in [Tari:06] and [Bergler:06]
-  OriginalWeight: [0.7, 0.5]
+  OriginalWeight: [0.5] #[0.7, 0.5]
 
 persistence-provider: |
   inherit: internal.log-persistence-provider
