@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.cmu.lti.oaqa.bio.core</groupId>
   <artifactId>bioqa</artifactId>
-  <version>0.0.9-SNAPSHOT</version>
+  <version>0.0.12-SNAPSHOT</version>
   <name>Biomedical Question Answering Pipeline</name>
   <parent>
     <groupId>edu.cmu.lti.oaqa</groupId>
