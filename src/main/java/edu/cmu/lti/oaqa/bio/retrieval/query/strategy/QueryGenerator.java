@@ -74,11 +74,10 @@ public class QueryGenerator {
         // content in boolean-filter
         mainPart = mainPart + " " + tempMain;
         query = query + " " + Float.toString(bk.getProbability() - 1) + tempMain;
-       } else if(bk.getProbability() == 1) {
-         mainPart = mainPart + " " + tempMain;
-         query = query + " " + "0.6" + tempMain;
-       }
-      else
+      } else if (bk.getProbability() == 1) {
+        mainPart = mainPart + " " + tempMain;
+        query = query + " " + "0.6" + tempMain;
+      } else
         query = query + " " + Float.toString(bk.getProbability()) + tempMain; // the general query
     }
 
