@@ -16,8 +16,8 @@ persistence-provider:
 collection-reader:
   inherit: bioqa.db.collection-reader
   dataset: BIO-COMBINED
-  sequence-start: 168
-  sequence-end: 168
+  sequence-start: 200
+  sequence-end: 200
   #sequence-end: 160
   
 pipeline:
@@ -45,7 +45,7 @@ pipeline:
   - inherit: internal.cse.phase
     name: restore
     options: |
-      - inherit: bioqa.keyterm.io.restore
+      - inherit: bioqa.keyterm.io.restore-07
       #- inherit: bioqa.keyterm.restore_before
 
 

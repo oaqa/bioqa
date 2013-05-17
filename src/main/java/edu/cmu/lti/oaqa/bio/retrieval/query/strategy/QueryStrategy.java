@@ -600,9 +600,11 @@ public class QueryStrategy {
         keyterm.addExternalResource("", "", temp.getSynonyms(), "RefinedSynonyms");
 
         if (temp.isConcept()) {
+
           keyterm.setProbablity(Float.valueOf(1 + Float.valueOf(this.mustHaveTermWeight)));
         } else
           keyterm.setProbablity(Float.valueOf(temp.getWeight()));
+
       }
     }
   }
