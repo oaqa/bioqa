@@ -9,7 +9,7 @@ cross-opts:
   ImportantSentSim: [similarity.ModifiedOverlapCoefficient]
   NeighborSentSimThreshold: [0.8] # 1 is the default value in [Tari:06] (Neighboring sentences of the important sentences with at least one keyword are merged to form a passage.)
   NeighborSentSim: [similarity.MatchingCoefficient]
-  KeytermThreshold: [0.3, 0.2, 0.4]
+  KeytermThreshold: [0.4]
 
 persistence-provider: |
   inherit: internal.log-persistence-provider
