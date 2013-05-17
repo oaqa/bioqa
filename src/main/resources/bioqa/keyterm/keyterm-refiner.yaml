@@ -8,8 +8,8 @@ cross-opts:
   PosTagger: [true]  # true
   MESH-Acronym: [false]  # false   
   ENTREZ-Acronym: [false]  # false
-  UMLS-Acronym: [true] #[false]  # true   ==========================
-  concept-term-weight: [0.9] #[0.4] 07  #==========================
+  UMLS-Acronym: [false] #[true] for 06 #[false] for 07  # true   ==========================
+  concept-term-weight: [0.4] #[0.9] #[0.4] 07  #==========================
   regular-term-weight: [0.3] #07 #==============
   verb-term-weight: [0.4] #[0.3] 07 ============= 
   gene-term-weight: [0.4] #[0.1] 07 =====================    
