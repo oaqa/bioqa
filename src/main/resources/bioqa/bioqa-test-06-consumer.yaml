@@ -94,7 +94,7 @@ pipeline:
     lazy-load-options: true
     options: |
       - inherit: bioqa.ie.span.important-sentence@peace
-      #- inherit: base.noop
+      - inherit: base.noop
 
   - inherit: internal.cse.phase 
     name: passage-rank
@@ -102,7 +102,7 @@ pipeline:
     lazy-load-options: true
     options: |
       - inherit: base.noop
-      #- inherit: bioqa.ie.rank.proximity@peace
+      - inherit: bioqa.ie.rank.proximity@peace
       #- inherit: base.noop
 
   - inherit: internal.cse.phase 
@@ -110,7 +110,7 @@ pipeline:
     option-timeout: 5
     options: |
       - inherit: base.noop      
-      #- inherit: bioqa.ie.rank.combine
+      - inherit: bioqa.ie.rank.combine
       #- inherit: base.noop
 
   - inherit: internal.cse.phase 
@@ -118,7 +118,7 @@ pipeline:
     option-timeout: 5
     options: |    
       - inherit: bioqa.ie.overlap.merge
-      #- inherit: bioqa.ie.overlap.filter
+      - inherit: bioqa.ie.overlap.filter
       #- inherit: bioqa.ie.overlap.merge
       #- inherit: base.noop   
 

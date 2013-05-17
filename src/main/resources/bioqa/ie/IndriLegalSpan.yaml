@@ -6,7 +6,7 @@ cross-opts:
   hit-list-size: [1000]
   PassageSpan: [legalspan]
   #smoothing: [jelinek-mercer]  #all algorithoms: dirichlet two-stage jelinek-mercer
-  smoothing: [dirichlet]  #07 #==================
+  smoothing: [dirichlet, jelinek-mercer]  #07 #==================
   smoothing-mu: [2500] 
   smoothing-lambda: [0.2] #[0.2] # [0.1] 07 ================== 
   answer-type-weight: [0.2] 
