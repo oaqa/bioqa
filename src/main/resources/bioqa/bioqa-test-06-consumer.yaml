@@ -43,7 +43,7 @@ pipeline:
   - inherit: internal.cse.phase
     name: restore
     options: |
-      - inherit: bioqa.keyterm.io.restore-07
+      - inherit: bioqa.keyterm.io.restore
 
   #- inherit: internal.cse.phase    
    # option-timeout: 2
@@ -57,11 +57,11 @@ pipeline:
     #options: |
      # - inherit: bioqa.keyterm.kb.entrezgene
 
-  #- inherit: internal.cse.phase    
-   # option-timeout: 2
-    #name: synonyms
-    #options: |
-     # - inherit: bioqa.keyterm.kb.umls
+  - inherit: internal.cse.phase    
+    option-timeout: 2
+    name: synonyms
+    options: |
+      - inherit: bioqa.keyterm.kb.umls
       
 #  - inherit: internal.cse.phase    
 #    option-timeout: 2
@@ -94,7 +94,7 @@ pipeline:
     lazy-load-options: true
     options: |
       - inherit: bioqa.ie.span.important-sentence@peace
-      - inherit: base.noop
+      #- inherit: base.noop
 
   - inherit: internal.cse.phase 
     name: passage-rank
@@ -102,22 +102,22 @@ pipeline:
     lazy-load-options: true
     options: |
       - inherit: bioqa.ie.rank.proximity@peace
-      - inherit: base.noop
+      #- inherit: base.noop
 
   - inherit: internal.cse.phase 
     name: score-combine
     option-timeout: 5
     options: |
       - inherit: bioqa.ie.rank.combine
-      - inherit: base.noop
+      #- inherit: base.noop
 
   - inherit: internal.cse.phase 
     name: passage-overlap
     option-timeout: 5
     options: |
-      - inherit: bioqa.ie.overlap.merge
       - inherit: bioqa.ie.overlap.filter
-      #- inherit: base.noop   
+      #- inherit: bioqa.ie.overlap.merge
+            #- inherit: base.noop   
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer

@@ -65,8 +65,13 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
     super.initialize(aContext);
 
     // get information from the yaml file
-    this.useENTREZ = UimaContextHelper.getConfigParameterBooleanValue(aContext, "ENTREZ", false);
+    //TODO
+    //this.useENTREZ = UimaContextHelper.getConfigParameterBooleanValue(aContext, "ENTREZ", false);
+    
     this.useMESH = UimaContextHelper.getConfigParameterBooleanValue(aContext, "MESH", false);
+    
+    this.useENTREZ = this.useMESH;
+    
     this.useUMLS = UimaContextHelper.getConfigParameterBooleanValue(aContext, "UMLS", false);
     this.useENTREZAcronym = UimaContextHelper.getConfigParameterBooleanValue(aContext,
             "ENTREZ-Acronym", false);

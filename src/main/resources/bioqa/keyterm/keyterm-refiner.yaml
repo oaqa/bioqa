@@ -1,20 +1,20 @@
 class: edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.KeytermRefiner
 
 cross-opts:
-  MESH: [false]  # true # 0
+  MESH: [true] #[false]  07 # true # 0       ===============================
   ENTREZ: [false]  # true #0 
   UMLS: [false]  # false # 0
   LexicalVariants: [true]  #true
   PosTagger: [true]  # true
-  MESH-Acronym: [false]  # false
+  MESH-Acronym: [false]  # false   
   ENTREZ-Acronym: [false]  # false
-  UMLS-Acronym: [false]  # true
-  concept-term-weight: [0.4]
-  regular-term-weight: [0.3]
-  verb-term-weight: [0.3]
-  gene-term-weight: [0.1]
+  UMLS-Acronym: [true] #[false]  # true   ==========================
+  concept-term-weight: [0.9] #[0.4] 07  #==========================
+  regular-term-weight: [0.4] #[0.3] 07 #==============
+  verb-term-weight: [0.4] #[0.3] 07 ============= 
+  gene-term-weight: [0.4] #[0.1] 07 =====================    
   special-term-weight: [0.1]
-  must-have-term-weight: [0.5]
+  must-have-term-weight: [0.6] #[0.5]  #=============================
   customized-dictionary: [true]
 
 persistence-provider: |
