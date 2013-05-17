@@ -1,14 +1,14 @@
 class: edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.KeytermRefiner
 
 cross-opts:
-  MESH: [true] #[true] #[false, true]  # true # 0
+  MESH: [false] #[true] #[false, true]  # true # 0   ================================
   ENTREZ: [false] # !!!this one is not used now. the code is calling the MESH instead #[true] #[false, true]  # true #0 
   UMLS: [false]  # false # 0
   LexicalVariants: [true]  #true
   PosTagger: [true]  # true
   MESH-Acronym: [false] #[false] #[true, false]  # false
   ENTREZ-Acronym: [false] #[false] #[true, false]  # false
-  UMLS-Acronym: [true] #[true] #[false, true]  # true
+  UMLS-Acronym: [false] #[true] #[false, true]  # true    ===========================
   concept-term-weight: [0.4] #[0.9] #[0.4] for 07  =======================
   regular-term-weight: [0.3] 
   verb-term-weight: [0.4] #[0.4] #[0.3]
