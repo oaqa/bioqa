@@ -11,7 +11,7 @@ cross-opts:
   UMLS-Acronym: [false] #[true] for 06 #[false] for 07  # true   ==========================
   concept-term-weight: [0.4] #[0.9] #[0.4] 07  #==========================
   regular-term-weight: [0.3] #07 #==============
-  verb-term-weight: [0.4] #[0.3] 07 ============= 
+  verb-term-weight: [0.3] #[0.4] #[0.3] 07 ============= 
   gene-term-weight: [0.1] #[0.4] for 06 [0.1] 07 =====================    
   special-term-weight: [0.1]
   must-have-term-weight: [0.5] #[0.6] 06  #=============================
