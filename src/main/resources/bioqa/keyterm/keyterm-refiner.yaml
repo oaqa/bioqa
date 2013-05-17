@@ -10,7 +10,7 @@ cross-opts:
   ENTREZ-Acronym: [false]  # false
   UMLS-Acronym: [true] #[false]  # true   ==========================
   concept-term-weight: [0.9] #[0.4] 07  #==========================
-  regular-term-weight: [0.4] #[0.3] 07 #==============
+  regular-term-weight: [0.3] #07 #==============
   verb-term-weight: [0.4] #[0.3] 07 ============= 
   gene-term-weight: [0.4] #[0.1] 07 =====================    
   special-term-weight: [0.1]
