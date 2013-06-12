@@ -1,6 +1,6 @@
 configuration: 
   name: bioqa-development-test
-  author: yanfang
+  author: ziy
 
 persistence-provider:
   inherit: bioqa.db.cse-persistence-provider  
@@ -108,14 +108,14 @@ pipeline:
     name: passage-span
     lazy-load-options: true
     options: |
-      - inherit: bioqa.ie.span.important-sentence@peace
+      - inherit: bioqa.ie.span.important-sentence
       #- inherit: base.noop
 
   - inherit: jdbc.cse.phase 
     name: passage-rank
     lazy-load-options: true
     options: |
-      - inherit: bioqa.ie.rank.proximity@peace
+      - inherit: bioqa.ie.rank.proximity
       #- inherit: base.noop
       
   - inherit: jdbc.cse.phase 
