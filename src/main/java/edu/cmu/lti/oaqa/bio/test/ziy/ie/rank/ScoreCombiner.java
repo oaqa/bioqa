@@ -29,8 +29,6 @@ public class ScoreCombiner extends AbstractPassageUpdater {
   private Map<Float, Float> transform(List<Float> scores) {
     Map<Float, Float> ret = new HashMap<Float, Float>();
     
-    //System.out.println("================== " + scores);
-    
     float maxScore = Collections.max(scores);
     switch (mode) {
       case exponential:
@@ -135,12 +133,7 @@ public class ScoreCombiner extends AbstractPassageUpdater {
       docScores.add(document.getProbability());
     }
     Map<Float, Float> docScoreMap = transform(docScores);
-    
-    //System.out.println(documents.get(documents.size() - 1));
-    //System.out.println(documents.get(documents.size() - 1).getProbability());
-    
-    //System.out.println(docScoreMap);
-    
+
     double minDocScore = docScoreMap.get(documents.get(documents.size() - 1).getProbability());
     // transform passage scores
     List<Float> passageScores = new ArrayList<Float>();
@@ -159,8 +152,6 @@ public class ScoreCombiner extends AbstractPassageUpdater {
       passage.setProbablity((float) (passageScoreMap.get(passage.getProbability()) * (1 - docWeight) + docScore
               * docWeight));
     }
-    
-    System.out.println("==============*******" + passages.size());
     
     return passages;
   }

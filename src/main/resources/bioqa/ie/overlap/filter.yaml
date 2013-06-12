@@ -4,6 +4,6 @@ cross-opts:
   FilterMode: [FILTER_OVERLAP, FILTER_IDENTICAL]
   #FilterMode: [FILTER_IDENTICAL]
 #  FilterMode: [FILTER_OVERLAP]
- 
+
 persistence-provider: |
   inherit: internal.log-persistence-provider

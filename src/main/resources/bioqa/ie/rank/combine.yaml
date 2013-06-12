@@ -6,6 +6,5 @@ cross-opts:
  # TransformMode: [reciprocal_of_rank]
   TransformMode: [logarithmic] # =====
 
-
 persistence-provider: |
   inherit: internal.log-persistence-provider
