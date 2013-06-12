@@ -1,5 +1,5 @@
 class: edu.cmu.lti.oaqa.bio.test.ziy.keyterm.KeytermRestorer
-KeytermFilePath: /keyterm-cache-06/mesh-entrezgene-umls
+KeytermFilePath: /keyterm-cache/mesh-entrezgene-umls
 
 persistence-provider: |
   inherit: internal.log-persistence-provider
