@@ -99,10 +99,10 @@ pipeline:
     #options: |
      # - inherit: bioqa.retrieval.io.restore
       
-  - inherit: jdbc.cse.phase 
-    name: passage-extractor
-    options: |
-      - inherit: default.ie.default
+#  - inherit: jdbc.cse.phase 
+#    name: passage-extractor
+#    options: |
+#      - inherit: default.ie.default
 
   - inherit: jdbc.cse.phase 
     name: passage-span

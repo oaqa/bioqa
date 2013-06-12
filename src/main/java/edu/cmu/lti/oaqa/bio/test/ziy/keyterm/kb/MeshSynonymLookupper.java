@@ -13,7 +13,6 @@ public class MeshSynonymLookupper extends AbstractKeytermUpdater {
 
   private MeshWrapper lookupper = new MeshWrapper();
   
-  
   @Override
   protected List<Keyterm> updateKeyterms(String question, List<Keyterm> keyterms) {
     for (Keyterm keyterm : keyterms) {
