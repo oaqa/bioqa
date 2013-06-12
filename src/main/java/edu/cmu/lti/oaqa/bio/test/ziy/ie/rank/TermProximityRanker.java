@@ -85,7 +85,7 @@ public class TermProximityRanker extends ContentAwarePassageUpdater {
     }
     // update passages
     for (PassageCandidate passage : passages) {
-      //testAliveness();
+      testAliveness();
       String docText = retriever.getDocumentText(passage.getDocID());
       // sanity check
       if (passage.getStart() > docText.length() - 1) {

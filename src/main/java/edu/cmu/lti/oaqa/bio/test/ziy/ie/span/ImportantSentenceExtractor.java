@@ -40,7 +40,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
   private double neighborSentSimThreshold;
 
   private Similarity neighborSentSim;
-  
+
   private float keytermThreshold;
 
   private enum SentenceType {
