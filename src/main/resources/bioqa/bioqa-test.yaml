@@ -1,21 +1,22 @@
 configuration: 
   name: bioqa-development-test
-  author: ziy
+  author: yanfang
 
 persistence-provider:
-  inherit: bioqa.db.cse-persistence-provider
-
-collection-reader:
-  inherit: bioqa.collection.decorated-collection-reader
-  dataset: TRECGEN06
-  file: /input/trecgen06.txt
+  inherit: bioqa.db.cse-persistence-provider  
+#  inherit: helloqa.db.local-persistence-provider
 
 #collection-reader:
-#  inherit: bioqa.db.collection-reader
-#  dataset: BIO-COMBINED
-#  sequence-start: 160
-#  sequence-end: 187
-#  sequence-end: 160
+ # inherit: bioqa.collection.decorated-collection-reader
+  #dataset: TRECGEN06
+  #file: /input/trecgen06.txt
+
+collection-reader:
+  inherit: bioqa.db.collection-reader
+  dataset: BIO-COMBINED
+  sequence-start: 160
+  sequence-end: 187
+  #sequence-end: 160
   
 pipeline:
   - inherit: internal.cse.phase  
@@ -34,7 +35,7 @@ pipeline:
       - inherit: bioqa.keyterm.lingpipe-abbreviation
       #- inherit: bioqa.keyterm.lingpipe
 
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: name-entity-recognizer
     #options: |
      # - inherit: bioqa.keyterm.syn-abbreviation-longform
@@ -51,27 +52,27 @@ pipeline:
       #- inherit: bioqa.keyterm.restore_before
 
 
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: synonyms
     #options: |
      # - inherit: bioqa.keyterm.kb.mesh
 
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: synonyms
     #options: |
      # - inherit: bioqa.keyterm.kb.entrezgene
 
-#  - inherit: internal.cse.phase
-#    name: synonyms
-#    options: |
-#      - inherit: bioqa.keyterm.kb.umls
+  #- inherit: jdbc.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.umls
  
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: store
     #options: |
      # - inherit: bioqa.keyterm.restore
 
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: store
     #options: |
      # - inherit: bioqa.keyterm.io.backup
@@ -89,47 +90,75 @@ pipeline:
 
   - inherit: internal.cse.phase
     name: passage-extractor
+    option-timeout: 20
     options: | 
       - inherit: bioqa.ie.IndriLegalSpan
 
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.sqlite.cse.phase
    # name: retrieval-strategist
     #options: |
      # - inherit: bioqa.retrieval.io.restore
       
-  #- inherit: internal.cse.phase
+  #- inherit: jdbc.cse.phase
    # name: passage-extractor
     #options: |
      # - inherit: default.ie.default
 
-#  - inherit: internal.cse.phase 
-#    name: passage-span
-#    lazy-load-options: true
-#    options: |
-#      - inherit: bioqa.ie.span.important-sentence@peace
-#      #- inherit: base.noop
+  - inherit: jdbc.cse.phase 
+    name: passage-span
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.span.important-sentence@peace
+      #- inherit: base.noop
 
-#  - inherit: internal.cse.phase 
-#    name: passage-rank
-#    lazy-load-options: true
-#    options: |
-#      - inherit: bioqa.ie.rank.proximity@peace
-#      #- inherit: base.noop
+  - inherit: jdbc.cse.phase 
+    name: passage-rank
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.rank.proximity@peace
+      #- inherit: base.noop
       
-#  - inherit: internal.cse.phase 
-#    name: score-combine
-#    options: |
-#      - inherit: bioqa.ie.rank.combine
+  - inherit: jdbc.cse.phase 
+    name: score-combine
+    options: |
+      - inherit: bioqa.ie.rank.combine
 #      #- inherit: base.noop
 
-#  - inherit: internal.cse.phase 
-#    name: passage-overlap
-#    options: |
-#      - inherit: bioqa.ie.overlap.filter
-#      #- inherit: base.noop     
+  - inherit: jdbc.cse.phase 
+    name: passage-overlap
+    options: |
+      - inherit: bioqa.ie.overlap.filter
+#      #- inherit: base.noop   
+
+  #- inherit: jdbc.cse.phase
+   # name: ranking-model
+    #options: |
+     # - inherit: bioqa.ranking-model.restore
+   #   - inherit: bioqa.ranking-model.testSVM
+
+  #- inherit: jdbc.cse.phase
+   # name: ranking-model
+    #options: |
+     # - inherit: bioqa.ranking-model.trainSVM
+
+  #- inherit: jdbc.cse.phase
+   # name: ranking-model
+    #options: |
+     # - inherit: bioqa.ranking-model.testSVM
+    #  - inherit: bioqa.ranking-model.trainSVM
 
   - inherit: internal.eval.cse-retrieval-aggregator-consumer
   - inherit: internal.eval.cse-passage-map-aggregator-consumer
+
+#post-process: 
+ # - inherit: internal.eval.cse-retrieval-evaluator-consumer
+ # - inherit: report.csv-report-generator
+  #  builders: |
+   #   - inherit: internal.report.f-measure-report-component
+  #- inherit: internal.eval.cse-passage-map-evaluator-consumer
+  #- inherit: report.csv-report-generator
+   # builders: |
+    #  - inherit: internal.report.map-report-component
 
 post-process: 
   - inherit: internal.eval.cse-retrieval-evaluator-consumer
@@ -140,4 +169,4 @@ post-process:
   - inherit: report.csv-report-generator
     builders: |
       - inherit: internal.report.map-report-component
-  
+

@@ -1,0 +1,4 @@
+inherit: jdbc.db.experiment-persistence-provider
+url: "jdbc:mysql://peace.isri.cs.cmu.edu:12321/oaevaluation?autoReconnect=true"
+username: root
+password: s3p1apa55w0rd

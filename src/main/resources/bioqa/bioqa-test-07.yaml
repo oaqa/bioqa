@@ -1,0 +1,165 @@
+configuration: 
+  name: bioqa-development-test
+  author: yanfang
+
+persistence-provider:
+  #inherit: bioqa.db.cse-persistence-provider
+  inherit: bioqa.db.peace-persistence-provider
+  
+#  inherit: helloqa.db.local-persistence-provider
+
+#collection-reader:
+ # inherit: bioqa.collection.decorated-collection-reader
+  #dataset: TRECGEN06
+  #file: /input/trecgen06.txt
+
+collection-reader:
+  inherit: bioqa.db.collection-reader
+  dataset: BIO-COMBINED
+  sequence-start: 220
+  sequence-end: 220
+  #sequence-end: 160
+  
+pipeline:
+  - inherit: internal.cse.phase  
+    name: keyterm-extractor
+    options: |
+      - inherit: default.keyterm.default
+
+  - inherit: internal.cse.phase 
+    name: pos-tagger
+    options: |
+      - inherit: bioqa.keyterm.lingpipe-hmm
+
+  - inherit: internal.cse.phase
+    name: name-entity-recognizer
+    options: |
+      - inherit: bioqa.keyterm.lingpipe-abbreviation
+      #- inherit: bioqa.keyterm.lingpipe
+
+  - inherit: internal.cse.phase
+    name: name-entity-recognizer
+    options: |
+      - inherit: bioqa.keyterm.syn-lexical-variants
+
+  - inherit: internal.cse.phase
+    name: restore
+    options: |
+      - inherit: bioqa.keyterm.io.restore-07
+      #- inherit: bioqa.keyterm.restore_before
+
+
+  #- inherit: internal.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.mesh
+
+  #- inherit: internal.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.entrezgene
+
+  #- inherit: internal.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.umls
+ 
+  #- inherit: internal.cse.phase
+   # name: store
+    #options: |
+     # - inherit: bioqa.keyterm.io.backup
+
+  - inherit: internal.cse.phase
+    name: keyterm-refiner
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.keyterm.keyterm-refiner
+
+  - inherit: internal.cse.phase
+    name: retrieval-strategist
+    options: | 
+      - inherit: bioqa.retrieval.BasicIndriRetrieval
+
+  - inherit: internal.cse.phase
+    name: passage-extractor
+    option-timeout: 20
+    options: | 
+      - inherit: bioqa.ie.IndriLegalSpan
+
+  #- inherit: jdbc.sqlite.cse.phase
+   # name: retrieval-strategist
+    #options: |
+     # - inherit: bioqa.retrieval.io.restore
+      
+  #- inherit: jdbc.cse.phase
+   # name: passage-extractor
+    #options: |
+     # - inherit: default.ie.default
+
+  - inherit: jdbc.cse.phase 
+    name: passage-span
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.span.important-sentence
+      #- inherit: base.noop
+
+  - inherit: jdbc.cse.phase 
+    name: passage-rank
+    lazy-load-options: true
+    options: |
+      - inherit: bioqa.ie.rank.proximity
+      #- inherit: base.noop
+      
+  - inherit: jdbc.cse.phase 
+    name: score-combine
+    options: |
+      - inherit: bioqa.ie.rank.combine
+     # - inherit: base.noop
+
+  - inherit: jdbc.cse.phase 
+    name: passage-overlap
+    options: |
+      - inherit: bioqa.ie.overlap.merge
+    #  - inherit: bioqa.ie.overlap.filter
+ #     - inherit: base.noop   
+
+  #- inherit: jdbc.cse.phase
+   # name: ranking-model
+    #options: |
+     # - inherit: bioqa.ranking-model.restore
+   #   - inherit: bioqa.ranking-model.testSVM
+
+  #- inherit: jdbc.cse.phase
+   # name: ranking-model
+    #options: |
+     # - inherit: bioqa.ranking-model.trainSVM
+
+  #- inherit: jdbc.cse.phase
+   # name: ranking-model
+    #options: |
+     # - inherit: bioqa.ranking-model.testSVM
+    #  - inherit: bioqa.ranking-model.trainSVM
+
+  - inherit: internal.eval.cse-retrieval-aggregator-consumer
+  - inherit: internal.eval.cse-passage-map-aggregator-consumer
+
+#post-process: 
+ # - inherit: internal.eval.cse-retrieval-evaluator-consumer
+ # - inherit: report.csv-report-generator
+  #  builders: |
+   #   - inherit: internal.report.f-measure-report-component
+  #- inherit: internal.eval.cse-passage-map-evaluator-consumer
+  #- inherit: report.csv-report-generator
+   # builders: |
+    #  - inherit: internal.report.map-report-component
+
+post-process: 
+  - inherit: internal.eval.cse-retrieval-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.f-measure-report-component
+  - inherit: internal.eval.cse-passage-map-evaluator-consumer
+  - inherit: report.csv-report-generator
+    builders: |
+      - inherit: internal.report.map-report-component
+

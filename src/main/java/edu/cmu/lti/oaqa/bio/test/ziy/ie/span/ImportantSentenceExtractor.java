@@ -40,6 +40,8 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
   private double neighborSentSimThreshold;
 
   private Similarity neighborSentSim;
+  
+  private float keytermThreshold;
 
   private enum SentenceType {
     important, neighbor, other
@@ -70,18 +72,31 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
             "NeighborSentSimThreshold", 1F);
     neighborSentSim = (Similarity) UimaContextHelper.getConfigParameterClassInstance(c,
             "NeighborSentSim", "similarity.MatchingCoefficient");
+    keytermThreshold = UimaContextHelper.getConfigParameterFloatValue(c, "KeytermThreshold", 1F);
   }
 
   @Override
   protected List<PassageCandidate> updatePassages(String question, List<Keyterm> keyterms,
           List<RetrievalResult> documents, List<PassageCandidate> passages) {
+    
+    
+    System.out.println("==============*******" + passages.size());
+    
+    System.out.println(keyterms.size());
+
     // collect keyterms to calculate similarities
     Map<String, Double> keytermCount = countReplicated ? getLowerCasedKeytermCount(keyterms)
-            : getLowerCasedKeytermTypes(keyterms);
+            : getLowerCasedKeytermTypes(keyterms, keytermThreshold);
+    
+    System.out.println("keytermCount " + keytermCount);
+    
     // generate synonym to keyterm mapping
     Map<String, String> synonym2keyterm = null;
     if (considerSynonyms) {
       synonym2keyterm = getLowerCasedSynonymKeytermMapping(keyterms);
+      
+      //System.out.println("synonyms " + synonym2keyterm);
+      
     }
     // System.out.println(keytermCount);
     // System.out.println(synonym2keyterm);
@@ -90,17 +105,36 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     for (PassageCandidate passage : passages) {
       for (PassageCandidate newPassage : extractImportantSentences(keytermCount, passage,
               synonym2keyterm)) {
-        testAliveness();
+        //testAliveness();
         if (!newPassages.contains(newPassage)) {
           newPassages.add(newPassage);
         }
       }
     }
-    return newPassages;
+    
+    System.out.println("==============*******" + newPassages.size());
+    
+    //return newPassages;
+    if (newPassages.size() <= 1)
+        return passages;
+    //else if (newPassages.size() < 1000) {
+      //  for (int i = 0; i < passages.size() - newPassages.size(); i++) {
+        // System.out.println("original passages score " + passages.get(i).getProbability());
+         // lower the original passages' probability(score)
+         //passages.get(i).setProbablity(passages.get(i).getProbability() - 1); 
+         //newPassages.add(passages.get(i));
+        //}
+        //return newPassages;
+    //}
+    else
+        return newPassages;
   }
 
   private List<PassageCandidate> extractImportantSentences(Map<String, Double> keytermCount,
           PassageCandidate passage, Map<String, String> synonym2keyterm) {
+    
+    //System.out.println("passage " + passage.getDocID() + " " + passage.getStart());
+    
     Article article = retriever.getDocument(passage.getDocID());
     // sanity check
     if (passage.getStart() > article.getText().length() - 1) {
@@ -123,7 +157,10 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     List<Double> sims = new ArrayList<Double>();
     /* int importantNum = 0, neighborNum = 0; */
     for (TextSpan sentence : sentences) {
-      testAliveness();
+      
+      //System.out.println("sentence: " + article.getSpanText(sentence));
+      
+      //testAliveness();
       // List<String> originalTokens = LingPipeHmmPosTagger.tokenize(article.getSpanText(sentence));
       List<String> originalTokens = tokenize(article.getSpanText(sentence),
               keytermCount == null ? null : keytermCount.keySet(), synonym2keyterm == null ? null
@@ -137,6 +174,12 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
       Map<String, Double> tokenCount = countReplicated ? getLowerCasedPassageTokenCount(resolvedTokens)
               : getLowerCasedPassageTokenTypes(resolvedTokens);
       double sim = 0;
+      
+      //System.out.println("tokenCount " + tokenCount);
+      //System.out.println("keytermCount " +  keytermCount);
+      
+      //TODO
+      // The sim score is 0. This is a problem! 
       if ((sim = importantSentSim.getSimilarity((HashMap<String, Double>) tokenCount,
               (HashMap<String, Double>) keytermCount)) >= importantSentSimThreshold) {
         types.add(SentenceType.important);
@@ -149,6 +192,9 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
         types.add(SentenceType.other);
       }
       sims.add(sim);
+      
+      //System.out.println("sim: " + sim);
+      
       // System.out.println(passage + " " + sentence);
       // System.out.println(tokenCount);
       // System.out.println(originalTokens);
@@ -163,7 +209,7 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     List<PassageCandidate> newPassages = new ArrayList<PassageCandidate>();
     List<TextSpan> passageStack = new ArrayList<TextSpan>();
     for (int i = 0; i < types.size(); i++) {
-      testAliveness();
+      //testAliveness();
       if (types.get(i) != SentenceType.important) {
         continue;
       }
@@ -202,6 +248,9 @@ public class ImportantSentenceExtractor extends ContentAwarePassageUpdater {
     Collections.sort(newPassages, Collections.reverseOrder());
     newPassages = newPassages.subList(0, Math.min(newPassages.size(), maxNumPassageInParagragh));
     for (PassageCandidate newPassage : newPassages) {
+      
+      //System.out.println("new passage probability " + passage.getProbability());
+      
       newPassage.setProbablity(passage.getProbability());
     }
     return newPassages;

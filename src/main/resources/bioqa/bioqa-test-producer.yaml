@@ -3,7 +3,7 @@ configuration:
   author: yanfang
 
 persistence-provider:
-  inherit: bioqa.db.cse-persistence-provider
+  inherit: bioqa.db.peace-persistence-provider
   
 async-configuration:
   inherit: bioqa.async.cse-broker 

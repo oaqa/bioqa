@@ -24,6 +24,8 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
  * From the probability, you can decide whether you should use the keyterm or not. Which resources
  * to use is specified in the yaml file.
  * 
+ * New keyterm synonsym called "RefinedSynonyms"
+ * 
  * @author yanfang (yanfang@cmu.edu)
  */
 public class KeytermRefiner extends AbstractKeytermUpdater {
@@ -52,13 +54,24 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
 
   private String geneWeight;
 
+  private String specialWeight;
+
+  private String mustHaveTermWeight;
+
+  private boolean customizedDictionary;
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
 
     // get information from the yaml file
-    this.useENTREZ = UimaContextHelper.getConfigParameterBooleanValue(aContext, "ENTREZ", false);
+    //TODO
+    //this.useENTREZ = UimaContextHelper.getConfigParameterBooleanValue(aContext, "ENTREZ", false);
+    
     this.useMESH = UimaContextHelper.getConfigParameterBooleanValue(aContext, "MESH", false);
+    
+    this.useENTREZ = this.useMESH;
+    
     this.useUMLS = UimaContextHelper.getConfigParameterBooleanValue(aContext, "UMLS", false);
     this.useENTREZAcronym = UimaContextHelper.getConfigParameterBooleanValue(aContext,
             "ENTREZ-Acronym", false);
@@ -74,10 +87,16 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
             "concept-term-weight", 0.6F));
     this.regularWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext,
             "regular-term-weight", 0.4F));
-    this.verbWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext, "verb-term-weight",
-            0.2F));
-    this.geneWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext, "gene-term-weight",
-            0.3F));
+    this.verbWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext,
+            "verb-term-weight", 0.2F));
+    this.geneWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext,
+            "gene-term-weight", 0.3F));
+    this.specialWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(aContext,
+            "special-term-weight", 0.3F));
+    this.mustHaveTermWeight = String.valueOf(UimaContextHelper.getConfigParameterFloatValue(
+            aContext, "must-have-term-weight", 0.6F));
+    this.customizedDictionary = UimaContextHelper.getConfigParameterBooleanValue(aContext,
+            "customized-dictionary", true);
   }
 
   @Override
@@ -105,6 +124,9 @@ public class KeytermRefiner extends AbstractKeytermUpdater {
     refiner.setRegularTermWeight(this.regularWeight);
     refiner.setVerbTermWeight(this.verbWeight);
     refiner.setGeneTermWeight(this.geneWeight);
+    refiner.setSpecialTermWeight(this.specialWeight);
+    refiner.setMustHaveTermWeight(this.mustHaveTermWeight);
+    refiner.setCustomizedDictionary(this.customizedDictionary);
 
     for (BioKeyterm bioK : refiner.getRefinedKeyterms()) {
       result.add(bioK);

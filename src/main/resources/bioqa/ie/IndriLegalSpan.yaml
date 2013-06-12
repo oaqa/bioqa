@@ -3,11 +3,13 @@ server: peace.isri.cs.cmu.edu
 port: 21237
 gzip: true
 cross-opts:
-  hit-list-size: [10]
+  hit-list-size: [1000]
   PassageSpan: [legalspan]
-  smoothing: [jelinek-mercer]  #all algorithoms: dirichlet two-stage jelinek-mercer
+  #smoothing: [jelinek-mercer]  #all algorithoms: dirichlet two-stage jelinek-mercer
+  smoothing: [dirichlet, jelinek-mercer]  #07 #==================
   smoothing-mu: [2500] 
-  smoothing-lambda: [0.1] 
+  smoothing-lambda: [0.2] #[0.2] # [0.1] 07 ================== 
+  answer-type-weight: [0.2] 
 
 persistence-provider: |
   inherit: internal.log-persistence-provider
