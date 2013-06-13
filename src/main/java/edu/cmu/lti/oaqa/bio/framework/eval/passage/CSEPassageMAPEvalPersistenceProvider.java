@@ -113,7 +113,7 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
 
   private String getInsertPassageAggregates() {
     StringBuilder query = new StringBuilder();
-    query.append("INSERT INTO map_aggregates");
+    query.append("INSERT INTO map_aggregates_str");
     query.append(" (experimentId, traceId, aggregator, ");
     query.append("docavep, psgavep, psg2avep, aspavep, count, sequenceId, stage,traceHash) ");
     query.append(" VALUES (?,?,?,?,?,?,?,?,?,?,?)");
@@ -122,7 +122,7 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
 
   private String getDeletePassageAggrEval() {
     StringBuilder query = new StringBuilder();
-    query.append("DELETE FROM map_aggregates WHERE ");
+    query.append("DELETE FROM map_aggregates_str WHERE ");
     query.append(" experimentId = ? AND traceHash = ? AND aggregator = ? AND sequenceId = ?");
     return query.toString();
   }
@@ -131,7 +131,7 @@ public class CSEPassageMAPEvalPersistenceProvider extends AbstractPassageMAPEval
     StringBuilder query = new StringBuilder();
     query.append("SELECT experimentId, traceId, ");
     query.append(" docavep, psgavep, psg2avep, aspavep, count, stage ");
-    query.append(" FROM map_aggregates WHERE experimentId = ? AND stage = ?");
+    query.append(" FROM map_aggregates_str WHERE experimentId = ? AND stage = ?");
     return query.toString();
   }
 
