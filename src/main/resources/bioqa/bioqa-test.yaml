@@ -3,20 +3,22 @@ configuration:
   author: ziy
 
 persistence-provider:
-  inherit: bioqa.db.cse-persistence-provider  
+  inherit: bioqa.db.local-mysql-persistence-provider
+#  inherit: bioqa.db.roche-persistence-provider
+#  inherit: bioqa.db.cse-persistence-provider  
 #  inherit: helloqa.db.local-persistence-provider
 
-#collection-reader:
- # inherit: bioqa.collection.decorated-collection-reader
-  #dataset: TRECGEN06
-  #file: /input/trecgen06.txt
-
 collection-reader:
-  inherit: bioqa.db.collection-reader
-  dataset: BIO-COMBINED
-  sequence-start: 160
-  sequence-end: 187
-  #sequence-end: 160
+  inherit: bioqa.collection.decorated-collection-reader
+  dataset: TRECGEN06
+  file: /input/trecgen06.txt
+
+#collection-reader:
+#  inherit: bioqa.db.collection-reader
+#  dataset: BIO-COMBINED
+#  sequence-start: 160
+#  sequence-end: 187
+#  #sequence-end: 160
   
 pipeline:
   - inherit: jdbc.cse.phase  
@@ -62,10 +64,10 @@ pipeline:
     #options: |
      # - inherit: bioqa.keyterm.kb.entrezgene
 
-  #- inherit: jdbc.cse.phase
-   # name: synonyms
-    #options: |
-     # - inherit: bioqa.keyterm.kb.umls
+#  - inherit: jdbc.cse.phase
+#    name: synonyms
+#    options: |
+#      - inherit: bioqa.keyterm.kb.umls
  
   #- inherit: jdbc.sqlite.cse.phase
    # name: store
@@ -109,26 +111,26 @@ pipeline:
     lazy-load-options: true
     options: |
       - inherit: bioqa.ie.span.important-sentence
-      #- inherit: base.noop
+#      - inherit: base.noop
 
   - inherit: jdbc.cse.phase 
     name: passage-rank
     lazy-load-options: true
     options: |
       - inherit: bioqa.ie.rank.proximity
-      #- inherit: base.noop
+#      - inherit: base.noop
       
   - inherit: jdbc.cse.phase 
     name: score-combine
     options: |
       - inherit: bioqa.ie.rank.combine
-#      #- inherit: base.noop
+#      - inherit: base.noop
 
   - inherit: jdbc.cse.phase 
     name: passage-overlap
     options: |
       - inherit: bioqa.ie.overlap.filter
-#      #- inherit: base.noop   
+#      - inherit: base.noop   
 
   #- inherit: jdbc.cse.phase
    # name: ranking-model
