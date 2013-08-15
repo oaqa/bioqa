@@ -1,0 +1,36 @@
+200|What serum [PROTEINS] change expression in association with high disease activity in lupus?
+201|What [MUTATIONS] in the Raf gene are associated with cancer?
+202|What [DRUGS] are associated with lysosomal abnormalities in the nervous system?
+203|What [CELL OR TISSUE TYPES] express receptor binding sites for vasoactive intestinal peptide (VIP) on their cell surface?
+204|What nervous system [CELL OR TISSUE TYPES] synthesize neurosteroids in the brain?
+205|What [SIGNS OR SYMPTOMS] of anxiety disorder are related to coronary artery disease?
+206|What [TOXICITIES] are associated with zoledronic acid?
+207|What [TOXICITIES] are associated with etidronate?
+208|What [BIOLOGICAL SUBSTANCES] have been used to measure toxicity in response to zoledronic acid?
+209|What [BIOLOGICAL SUBSTANCES] have been used to measure toxicity in response to etidronate?
+210|What [MOLECULAR FUNCTIONS] are attributed to glycan modification?
+211|What [ANTIBODIES] have been used to detect protein PSD-95?
+212|What [GENES] are involved in insect segmentation?
+213|What [GENES] are involved in Drosophila neuroblast development?
+214|What [GENES] are involved axon guidance in C.elegans?
+215|What [PROTEINS] are involved in actin polymerization in smooth muscle?
+216|What [GENES] regulate puberty in humans?
+217|What [PROTEINS] in rats perform functions different from those of their human homologs?
+218|What [GENES] are implicated in regulating alcohol preference?
+219|In what [DISEASES] of brain development do centrosomal genes play a role?
+220|What [PROTEINS] are involved in the activation or recognition mechanism for PmrD?
+221|Which [PATHWAYS] are mediated by CD44?
+222|What [MOLECULAR FUNCTIONS] is LITAF involved in?
+223|Which anaerobic bacterial [STRAINS] are resistant to Vancomycin?
+224|What [GENES] are involved in the melanogenesis of human lung cancers?
+225|What [BIOLOGICAL SUBSTANCES] induce clpQ expression?
+226|What [PROTEINS] make up the murine signal recognition particle?
+227|What [GENES] are induced by LPS in diabetic mice?
+228|What [GENES] when altered in the host genome improve solubility of heterologously expressed proteins?
+229|What [SIGNS OR SYMPTOMS] are caused by human parvovirus infection?
+230|What [PATHWAYS] are involved in Ewing's sarcoma?
+231|What [TUMOR TYPES] are found in zebrafish?
+232|What [DRUGS] inhibit HIV type 1 infection?
+233|What viral [GENES] affect membrane fusion during HIV infection?
+234|What [GENES] make up the NFkappaB signaling pathway?
+235|Which [GENES] involved in NFkappaB signaling regulate iNOS?
