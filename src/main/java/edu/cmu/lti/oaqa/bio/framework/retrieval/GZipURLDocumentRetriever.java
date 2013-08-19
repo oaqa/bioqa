@@ -19,15 +19,6 @@ import org.apache.uima.cas.CAS;
  */
 public class GZipURLDocumentRetriever extends DocumentRetriever {
 
-  /**
-   * @deprecated Should explicitly identify the prefix of the url, use
-   *             {@link #GZipURLDocumentRetriever(String)} instead.
-   */
-  @Deprecated
-  public GZipURLDocumentRetriever() {
-    super();
-  }
-
   public GZipURLDocumentRetriever(String prefix) {
     super(prefix);
   }

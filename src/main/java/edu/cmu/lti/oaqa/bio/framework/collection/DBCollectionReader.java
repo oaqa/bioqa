@@ -18,12 +18,8 @@ import edu.cmu.lti.oaqa.framework.collection.impl.DataElementRowMapper;
 
 public final class DBCollectionReader extends IterableCollectionReader {
 
-  /**
- * @uml.property  name="jdbcTemplate"
- * @uml.associationEnd  
- */
-JdbcTemplate jdbcTemplate;
-  
+  JdbcTemplate jdbcTemplate;
+
   @Override
   protected Iterator<DataElement> getInputSet() throws ResourceInitializationException {
     String url = (String) getConfigParameterValue("url");
@@ -36,7 +32,7 @@ JdbcTemplate jdbcTemplate;
     Integer[] subset = (Integer[]) getConfigParameterValue("subset");
     try {
       DataStore ds = DataStoreImpl.getInstance(url, username, password);
-      this.jdbcTemplate = ds.jdbcTemplate(); 
+      this.jdbcTemplate = ds.jdbcTemplate();
       if (subset != null) {
         return getDataSubset(getDataset(), subset);
       } else if (namedSubset != null) {
@@ -48,7 +44,7 @@ JdbcTemplate jdbcTemplate;
       throw new ResourceInitializationException(e);
     }
   }
-  
+
   protected Iterator<DataElement> getDataset(final String dataset, final Integer startId,
           final Integer endId) throws SQLException {
     List<DataElement> result = jdbcTemplate.query(getSelectQuery(), new PreparedStatementSetter() {
@@ -64,29 +60,31 @@ JdbcTemplate jdbcTemplate;
 
   protected Iterator<DataElement> getDataset(final String dataset, final String namedSubset)
           throws SQLException {
-    List<DataElement> result = jdbcTemplate.query(getSelectNamedSubsetQuery(), new PreparedStatementSetter() {
-      @Override
-      public void setValues(PreparedStatement ps) throws SQLException {
-        ps.setString(1, namedSubset);
-      }
-    }, new DataElementRowMapper());
+    List<DataElement> result = jdbcTemplate.query(getSelectNamedSubsetQuery(),
+            new PreparedStatementSetter() {
+              @Override
+              public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, namedSubset);
+              }
+            }, new DataElementRowMapper());
     return result.iterator();
   }
 
   protected Iterator<DataElement> getDataSubset(final String dataset, final Integer[] ids)
           throws SQLException {
-    List<DataElement> result = jdbcTemplate.query(getSelectSubsetQuery(ids.length), 
+    List<DataElement> result = jdbcTemplate.query(getSelectSubsetQuery(ids.length),
             new PreparedStatementSetter() {
-      @Override
-      public void setValues(PreparedStatement ps) throws SQLException {
-        ps.setString(1, dataset);
-        for (int i = 0; i < ids.length; i++) {
-          ps.setInt(i + 2, ids[i]);
-        }
-      }
-    }, new DataElementRowMapper());
+              @Override
+              public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, dataset);
+                for (int i = 0; i < ids.length; i++) {
+                  ps.setInt(i + 2, ids[i]);
+                }
+              }
+            }, new DataElementRowMapper());
     return result.iterator();
   }
+
   private String getSelectQuery() {
     StringBuilder sb = new StringBuilder();
     sb.append("SELECT id,dataset,sequenceId,question,answerPattern ");
@@ -112,7 +110,7 @@ JdbcTemplate jdbcTemplate;
     sb.append(" ORDER by sequenceId ASC");
     return sb.toString();
   }
-  
+
   private String getSelectNamedSubsetQuery() {
     StringBuilder sb = new StringBuilder();
     sb.append("SELECT id, dataset,sequenceId,question,answerPattern ");
@@ -125,6 +123,6 @@ JdbcTemplate jdbcTemplate;
   @Override
   public void close() throws IOException {
     // TODO Auto-generated method stub
-    
+
   }
 }

@@ -19,25 +19,12 @@ import org.xml.sax.SAXException;
  */
 public abstract class DocumentRetriever {
 
-  /**
- * @uml.property  name="prefix"
- */
-protected String prefix;
-
-  /**
-   * @deprecated Should explicitly identify the prefix of the url, use
-   *             {@link #DocumentRetriever(String)} instead.
-   */
-  @Deprecated
-  public DocumentRetriever() {
-    prefix = "http://peace.isri.cs.cmu.edu:9080/";
-  }
+  protected String prefix;
 
   public DocumentRetriever(String prefix) {
     this.prefix = prefix;
   }
 
-  // docurl of the form http://peace.isri.cs.cmu.edu:9080/TRECGenomics/xmi/1234565.xmi
   protected abstract CAS retrieveCAS(URL url, CAS aCAS);
 
   protected abstract URL urlify(String CorpusIdentifier, String docno) throws MalformedURLException;

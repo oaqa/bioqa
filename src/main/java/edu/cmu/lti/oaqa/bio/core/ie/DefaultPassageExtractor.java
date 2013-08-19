@@ -17,47 +17,24 @@ import edu.cmu.lti.oaqa.framework.data.PassageCandidate;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
 
 /**
+ * Passage extractor by retrieving relevant passage (specified by a given extend:
+ * {@link #passageSpan}) from Indri search engine.
  * 
  * @author Zi Yang <ziy@cs.cmu.edu>
  * 
  */
 public class DefaultPassageExtractor extends AbstractPassageExtractor {
 
-  /**
-   * @author yanfang
-   */
   protected static enum PassageSpanType {
-    /**
-     * @uml.property name="legalspan"
-     * @uml.associationEnd
-     */
-    legalspan, /**
-     * @uml.property name="sentence"
-     * @uml.associationEnd
-     */
-    sentence
+    legalspan, sentence
   };
 
-  /**
-   * @uml.property name="hitListSize"
-   */
   protected int hitListSize;
 
-  /**
-   * @uml.property name="batchSize"
-   */
   protected int batchSize;
 
-  /**
-   * @uml.property name="passageSpan"
-   * @uml.associationEnd
-   */
   protected PassageSpanType passageSpan;
 
-  /**
-   * @uml.property name="wrapper"
-   * @uml.associationEnd
-   */
   protected static IndriWrapper wrapper;
 
   @Override
@@ -80,9 +57,9 @@ public class DefaultPassageExtractor extends AbstractPassageExtractor {
             .getConfigParameterValue("PassageSpan"));
     String serverUrl = (String) aContext.getConfigParameterValue("server");
     Integer serverPort = (Integer) aContext.getConfigParameterValue("port");
-    try { 
+    try {
       if (wrapper == null) {
-       wrapper = new IndriWrapper(serverUrl, serverPort);
+        wrapper = new IndriWrapper(serverUrl, serverPort);
       }
     } catch (Exception e) {
       throw new ResourceInitializationException(e);

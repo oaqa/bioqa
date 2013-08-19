@@ -17,10 +17,9 @@ import edu.cmu.lti.oaqa.framework.eval.passage.PassageHelper;
 
 public class DocumentRetrievalAnnotator extends CasMultiplier_ImplBase {
 
-  /**
- * @uml.property  name="corpusId"
- */
-private String corpusId;
+  private String corpusId;
+
+  private String url;
 
   public boolean hasNext() {
     return false;
@@ -41,13 +40,13 @@ private String corpusId;
       JCas jcas = aCas.getJCas();
       JCas gsView = ViewManager.getView(jcas, ViewType.DOCUMENT_GS);
       List<Passage> gs = PassageHelper.loadDocumentSet(gsView);
-      DocumentRetriever docRetriever = new URLDocumentRetriever();
+      DocumentRetriever docRetriever = new URLDocumentRetriever(url);
       for (Passage passage : gs) {
         CAS tempCas = getEmptyCAS();
         try {
           docRetriever.retrieveCAS(corpusId, passage.getUri(), tempCas);
-          String text = tempCas.getDocumentText()
-            .substring(passage.getBegin(), passage.getEnd() + 1);
+          String text = tempCas.getDocumentText().substring(passage.getBegin(),
+                  passage.getEnd() + 1);
           passage.setText(text);
         } finally {
           tempCas.release();

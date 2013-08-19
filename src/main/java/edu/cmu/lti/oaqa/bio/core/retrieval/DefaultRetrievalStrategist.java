@@ -14,21 +14,15 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
 
 /**
+ * Default retrieval strategist based on Indri search engine.
  * 
  * @author Zi Yang <ziy@cs.cmu.edu>
  * 
  */
 public class DefaultRetrievalStrategist extends AbstractRetrievalStrategist {
 
-  /**
-   * @uml.property name="hitListSize"
-   */
   protected int hitListSize;
 
-  /**
-   * @uml.property name="wrapper"
-   * @uml.associationEnd
-   */
   protected static IndriWrapper wrapper;
 
   @Override

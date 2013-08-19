@@ -52,7 +52,7 @@ public class BioKeyterm extends Keyterm implements Serializable {
   public BioKeyterm() {
     super();
   }
-  
+
   public BioKeyterm(String text, int sequenceId, int tokenType) {
     super(text);
     this.sequenceId = sequenceId;

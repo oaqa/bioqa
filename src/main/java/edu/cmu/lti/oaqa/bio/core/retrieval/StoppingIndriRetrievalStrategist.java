@@ -12,9 +12,6 @@ import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 public class StoppingIndriRetrievalStrategist extends DefaultRetrievalStrategist {
 
-  /**
-   * @uml.property name="stopWordList" multiplicity="(0 -1)" dimension="1"
-   */
   private String[] stopWordList;
 
   @Override

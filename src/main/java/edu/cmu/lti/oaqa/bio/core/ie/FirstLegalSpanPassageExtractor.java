@@ -14,21 +14,15 @@ import edu.cmu.lti.oaqa.framework.data.PassageCandidate;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
 
 /**
+ * A base passage extractor by returning the first legal span from document.
  * 
  * @author Zi Yang <ziy@cs.cmu.edu>
  * 
  */
 public class FirstLegalSpanPassageExtractor extends AbstractPassageExtractor {
 
-  /**
-   * @uml.property name="hitListSize"
-   */
   private int hitListSize = 0;
 
-  /**
-   * @uml.property name="retriever"
-   * @uml.associationEnd
-   */
   private DocumentRetrieverWrapper retriever;
 
   @Override
@@ -38,7 +32,8 @@ public class FirstLegalSpanPassageExtractor extends AbstractPassageExtractor {
     if (hlsValue != null) {
       this.hitListSize = hlsValue.intValue();
     }
-    retriever = new DocumentRetrieverWrapper(true, false);
+    retriever = new DocumentRetrieverWrapper((String) aContext.getConfigParameterValue("url"),
+            (String) aContext.getConfigParameterValue("prefix"), true);
   }
 
   @Override

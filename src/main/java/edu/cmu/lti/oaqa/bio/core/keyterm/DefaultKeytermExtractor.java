@@ -11,6 +11,7 @@ import edu.cmu.lti.oaqa.cse.basephase.keyterm.AbstractKeytermExtractor;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 
 /**
+ * A simple keyterm extraction based on white spaces, with punctuations removed.
  * 
  * @author Zi Yang <ziy@cs.cmu.edu>
  * 

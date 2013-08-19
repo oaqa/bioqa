@@ -16,15 +16,6 @@ import org.apache.uima.cas.CAS;
  */
 public class URLDocumentRetriever extends DocumentRetriever {
 
-  /**
-   * @deprecated Should explicitly identify the prefix of the url, use
-   *             {@link #URLDocumentRetriever(String)} instead.
-   */
-  @Deprecated
-  public URLDocumentRetriever() {
-    super();
-  }
-
   public URLDocumentRetriever(String prefix) {
     super(prefix);
   }

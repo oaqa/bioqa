@@ -12,11 +12,7 @@ import edu.cmu.lti.oaqa.framework.collection.AbstractCollectionReaderProducer;
 
 public final class DBCollectionReaderProducer extends AbstractCollectionReaderProducer {
 
-  /**
- * @uml.property  name="reader"
- * @uml.associationEnd  
- */
-private DBCollectionReader reader;
+  private DBCollectionReader reader;
 
   @Override
   public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)

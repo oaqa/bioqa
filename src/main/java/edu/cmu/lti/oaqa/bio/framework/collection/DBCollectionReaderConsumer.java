@@ -14,11 +14,7 @@ import edu.cmu.lti.oaqa.framework.collection.impl.DataElementRowMapper;
 
 public final class DBCollectionReaderConsumer extends AbstractCollectionReaderConsumer {
 
- /**
- * @uml.property  name="jdbcTemplate"
- * @uml.associationEnd  
- */
-private JdbcTemplate jdbcTemplate;
+  private JdbcTemplate jdbcTemplate;
 
   @Override
   public void initialize() throws ResourceInitializationException {

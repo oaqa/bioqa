@@ -23,39 +23,31 @@ import edu.cmu.lti.oaqa.framework.DataStoreImpl;
 import edu.cmu.lti.oaqa.framework.report.ReportComponent;
 import edu.cmu.lti.oaqa.framework.report.ReportComponentBuilder;
 
-public class DatabaseReportComponentBuilder extends Resource_ImplBase implements ReportComponentBuilder {
+public class DatabaseReportComponentBuilder extends Resource_ImplBase implements
+        ReportComponentBuilder {
 
-  /**
- * @uml.property  name="query"
- */
-private String query;
-  /**
- * @uml.property  name="keys" multiplicity="(0 -1)" dimension="1"
- */
-private String[] keys;
-  /**
- * @uml.property  name="fields" multiplicity="(0 -1)" dimension="1"
- */
-private String[] fields;
-  /**
- * @uml.property  name="headers" multiplicity="(0 -1)" dimension="1"
- */
-private String[] headers;
-  /**
- * @uml.property  name="formats" multiplicity="(0 -1)" dimension="1"
- */
-private String[] formats;
-  
+  private String query;
+
+  private String[] keys;
+
+  private String[] fields;
+
+  private String[] headers;
+
+  private String[] formats;
+
   @Override
-  public boolean initialize(ResourceSpecifier aSpecifier,
-          Map<String,Object> aAdditionalParams) throws ResourceInitializationException {
+  public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
+          throws ResourceInitializationException {
     this.query = ((String) aAdditionalParams.get("query"));
     this.keys = ((String) aAdditionalParams.get("keys")).split(",");
     this.fields = ((String) aAdditionalParams.get("fields")).split(",");
     this.formats = ((String) aAdditionalParams.get("formats")).split(",");
     this.headers = ((String) aAdditionalParams.get("headers")).split(",");
     if (fields.length != formats.length) {
-      throw new ResourceInitializationException("Fields and types fields lengths must agree: {0} != {1}", new Object[] {fields.length, formats.length});
+      throw new ResourceInitializationException(
+              "Fields and types fields lengths must agree: {0} != {1}", new Object[] {
+                  fields.length, formats.length });
     }
     return true;
   }
@@ -63,8 +55,7 @@ private String[] formats;
   @Override
   public ReportComponent getReportComponent(final String... args) {
     JdbcTemplate template = DataStoreImpl.getInstance().jdbcTemplate();
-    final ImmutableTable.Builder<String, String, String> builder = 
-      new ImmutableTable.Builder<String, String, String>();
+    final ImmutableTable.Builder<String, String, String> builder = new ImmutableTable.Builder<String, String, String>();
     final Joiner joiner = Joiner.on("/");
     RowCallbackHandler handler = new RowCallbackHandler() {
       public void processRow(ResultSet rs) throws SQLException {
@@ -96,7 +87,7 @@ private String[] formats;
       @Override
       public List<String> getHeaders() {
         return Arrays.asList(headers);
-      }    
+      }
     };
   }
 }
