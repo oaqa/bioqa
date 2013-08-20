@@ -27,13 +27,13 @@ public abstract class DocumentRetriever {
 
   protected abstract CAS retrieveCAS(URL url, CAS aCAS);
 
-  protected abstract URL urlify(String CorpusIdentifier, String docno) throws MalformedURLException;
+  protected abstract URL urlify(String docno) throws MalformedURLException;
 
   // CorpusIdentifier of the form TrecGenomics/xmi
   // docno in the form of 1234565.xmi
-  public CAS retrieveCAS(String CorpusIdentifier, String docno, CAS aCAS) {
+  public CAS retrieveCAS(String docno, CAS aCAS) {
     try {
-      return retrieveCAS(urlify(CorpusIdentifier, docno), aCAS);
+      return retrieveCAS(urlify(docno), aCAS);
     } catch (MalformedURLException e) {
       e.printStackTrace();
     }

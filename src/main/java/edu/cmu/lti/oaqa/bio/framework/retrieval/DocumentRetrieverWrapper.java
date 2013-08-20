@@ -17,17 +17,14 @@ public class DocumentRetrieverWrapper {
 
   private DocumentRetriever retriever;
 
-  private String prefix;
-
   private CAS tempCas;
 
-  public DocumentRetrieverWrapper(String url, String prefix, boolean gzip) {
+  public DocumentRetrieverWrapper(String prefix, boolean gzip) {
     if (gzip) {
-      this.retriever = new GZipURLDocumentRetriever(url);
+      this.retriever = new GZipURLDocumentRetriever(prefix);
     } else {
-      this.retriever = new URLDocumentRetriever(url);
+      this.retriever = new URLDocumentRetriever(prefix);
     }
-    this.prefix = prefix;
     try {
       tempCas = CasCreationUtils.createCas(
               TypeSystemDescriptionFactory.createTypeSystemDescription(), null, null);
@@ -37,12 +34,12 @@ public class DocumentRetrieverWrapper {
   }
 
   public String getDocumentText(String id) {
-    retriever.retrieveCAS(prefix, id, tempCas);
+    retriever.retrieveCAS(id, tempCas);
     return tempCas.getDocumentText();
   }
 
   public Article getDocument(String id) {
-    retriever.retrieveCAS(prefix, id, tempCas);
+    retriever.retrieveCAS(id, tempCas);
     Article article = new Article(id, tempCas.getDocumentText());
     try {
       AnnotationIndex<Annotation> legalspans = tempCas.getJCas().getAnnotationIndex(LegalSpan.type);

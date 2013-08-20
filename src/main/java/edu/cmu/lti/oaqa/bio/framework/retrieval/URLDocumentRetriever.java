@@ -21,8 +21,8 @@ public class URLDocumentRetriever extends DocumentRetriever {
   }
 
   @Override
-  protected URL urlify(String CorpusIdentifier, String docno) throws MalformedURLException {
-    return new URL(prefix + CorpusIdentifier + "/" + docno + ".xmi");
+  protected URL urlify(String docno) throws MalformedURLException {
+    return new URL(prefix + "/" + docno + ".xmi");
   }
 
   @Override

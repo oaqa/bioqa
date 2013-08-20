@@ -9,6 +9,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import edu.cmu.lti.oaqa.bio.framework.retrieval.DocumentRetrieverWrapper;
 import edu.cmu.lti.oaqa.cse.basephase.ie.AbstractPassageExtractor;
+import edu.cmu.lti.oaqa.framework.UimaContextHelper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.PassageCandidate;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
@@ -32,8 +33,9 @@ public class FirstLegalSpanPassageExtractor extends AbstractPassageExtractor {
     if (hlsValue != null) {
       this.hitListSize = hlsValue.intValue();
     }
-    retriever = new DocumentRetrieverWrapper((String) aContext.getConfigParameterValue("url"),
-            (String) aContext.getConfigParameterValue("prefix"), true);
+    String prefix = (String) aContext.getConfigParameterValue("prefix");
+    boolean zipped = UimaContextHelper.getConfigParameterBooleanValue(aContext, "zipped", true);
+    retriever = new DocumentRetrieverWrapper(prefix, zipped);
   }
 
   @Override

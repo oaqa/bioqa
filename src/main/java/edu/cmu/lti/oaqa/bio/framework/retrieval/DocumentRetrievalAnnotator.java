@@ -15,9 +15,8 @@ import edu.cmu.lti.oaqa.framework.ViewManager;
 import edu.cmu.lti.oaqa.framework.ViewManager.ViewType;
 import edu.cmu.lti.oaqa.framework.eval.passage.PassageHelper;
 
+@Deprecated
 public class DocumentRetrievalAnnotator extends CasMultiplier_ImplBase {
-
-  private String corpusId;
 
   private String url;
 
@@ -31,7 +30,7 @@ public class DocumentRetrievalAnnotator extends CasMultiplier_ImplBase {
 
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    this.corpusId = (String) aContext.getConfigParameterValue("corpusId");
+    this.url = (String) aContext.getConfigParameterValue("url");
   }
 
   @Override
@@ -44,7 +43,7 @@ public class DocumentRetrievalAnnotator extends CasMultiplier_ImplBase {
       for (Passage passage : gs) {
         CAS tempCas = getEmptyCAS();
         try {
-          docRetriever.retrieveCAS(corpusId, passage.getUri(), tempCas);
+          docRetriever.retrieveCAS(passage.getUri(), tempCas);
           String text = tempCas.getDocumentText().substring(passage.getBegin(),
                   passage.getEnd() + 1);
           passage.setText(text);

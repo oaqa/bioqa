@@ -11,13 +11,12 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import edu.cmu.lti.oaqa.bio.framework.retrieval.DocumentRetrieverWrapper;
-import edu.cmu.lti.oaqa.cse.basephase.ie.AbstractPassageUpdater;
 import edu.cmu.lti.oaqa.framework.UimaContextHelper;
 import edu.cmu.lti.oaqa.framework.data.Keyterm;
 import edu.cmu.lti.oaqa.framework.data.PassageCandidate;
 import edu.cmu.lti.oaqa.framework.data.RetrievalResult;
 
-public class TestSVM extends AbstractPassageUpdater {
+public class TestSVM extends ContentAwarePassageUpdater {
 
   private int limit;
 
@@ -27,9 +26,6 @@ public class TestSVM extends AbstractPassageUpdater {
   public void initialize(UimaContext c) throws ResourceInitializationException {
     super.initialize(c);
     limit = UimaContextHelper.getConfigParameterIntValue(c, "limit", 0);
-    boolean zipped = UimaContextHelper.getConfigParameterBooleanValue(c, "Zipped", true);
-    retriever = new DocumentRetrieverWrapper((String) c.getConfigParameterValue("Url"),
-            (String) c.getConfigParameterValue("Prefix"), zipped);
   }
 
   @Override

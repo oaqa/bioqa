@@ -34,9 +34,9 @@ public abstract class ContentAwarePassageUpdater extends AbstractPassageUpdater 
   @Override
   public void initialize(UimaContext c) throws ResourceInitializationException {
     super.initialize(c);
-    boolean zipped = UimaContextHelper.getConfigParameterBooleanValue(c, "Zipped", true);
-    retriever = new DocumentRetrieverWrapper((String) c.getConfigParameterValue("Url"),
-            (String) c.getConfigParameterValue("Prefix"), zipped);
+    String prefix = (String) c.getConfigParameterValue("prefix");
+    boolean zipped = UimaContextHelper.getConfigParameterBooleanValue(c, "zipped", true);
+    retriever = new DocumentRetrieverWrapper(prefix, zipped);
   }
 
   public static Map<String, Double> getLowerCasedKeytermCount(List<Keyterm> keyterms) {
