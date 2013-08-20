@@ -1,4 +1,5 @@
 inherit: eval.trace-consumer
 name: retrieval-measures-evaluator 
+
 experiment-listeners: |
-  - inherit: internal.eval.cse-passage-map-evaluator
+  - inherit: bioqa.eval.passage-map-evaluator

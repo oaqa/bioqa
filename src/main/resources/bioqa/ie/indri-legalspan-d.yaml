@@ -1,0 +1,13 @@
+class: edu.cmu.lti.oaqa.bio.core.ie.IndriLegalSpanPassageExtractor
+server: peace.isri.cs.cmu.edu
+port: 21237
+gzip: true
+cross-opts:
+  hit-list-size: [1000]
+  PassageSpan: [legalspan]
+  smoothing: [dirichlet]  #all algorithoms: dirichlet two-stage jelinek-mercer
+  smoothing-mu: [0, 1000, 2000, 2500, 3000, 4000] 
+  smoothing-lambda: [0.1] 
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

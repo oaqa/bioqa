@@ -1,4 +1,5 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.retrieval.io.RetrievalResultBackuper
-RetrievalResultDirPath: src/main/resources/retrieval-cache
+class: edu.cmu.lti.oaqa.bio.core.retrieval.io.RetrievalResultBackuper
+RetrievalResultDirPath: src/main/resources/cache/retrieval
+
 persistence-provider: |
-  inherit: internal.log-persistence-provider
+  inherit: jdbc.log.log-persistence-provider

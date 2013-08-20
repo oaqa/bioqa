@@ -1,8 +1,0 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.retrieval.SynonymAwareRetrievalStrategist
-hit-list-size: 1000
-server: peace.isri.cs.cmu.edu
-port: 21235
-gzip: true
-
-persistence-provider: |
-  inherit: internal.log-persistence-provider

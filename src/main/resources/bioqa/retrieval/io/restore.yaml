@@ -1,5 +1,5 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.retrieval.io.RetrievalResultRestorer
-RetrievalResultFilePath: /retrieval-cache/levelone
+class: edu.cmu.lti.oaqa.bio.core.retrieval.io.RetrievalResultRestorer
+RetrievalResultFilePath: /cache/retrieval/levelone
 
 persistence-provider: |
-  inherit: internal.log-persistence-provider
+  inherit: jdbc.log.log-persistence-provider

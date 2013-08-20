@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bio.core.keyterm.io.KeytermRestorer
+KeytermFilePath: /cache/keyterm/mesh-entrezgene-umls-1
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

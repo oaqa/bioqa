@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bio.core.keyterm.io.KeytermBackuper
+KeytermDirPath: src/main/resources/cache/keyterm-06
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

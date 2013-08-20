@@ -1,5 +1,6 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.ie.rank.TermProximityRanker
-Prefix: file:/scratch/corpus/
+class: edu.cmu.lti.oaqa.bio.core.ie.rank.TermProximityRanker
+prefix: file:/scratch/corpus/GZipTRECGenomics/annotated_xmigz
+zipped: true
 cross-opts:
   C1: [0.0001] # a constant which controls the overall magnitude of R (currently in terms of the number of characters, default is 100 from [Lawrence:98])
   C2: [100] # the maximum distance between query terms which is considered useful (currently in terms of the number of characters, default is 5000 from [Lawrence:98])
@@ -9,4 +10,4 @@ cross-opts:
   OriginalWeight: [0.7] #[0.8] 06 #[0.7]  #07 ===========
 
 persistence-provider: |
-  inherit: internal.log-persistence-provider
+  inherit: jdbc.log.log-persistence-provider

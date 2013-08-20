@@ -1,4 +1,0 @@
-class: edu.cmu.lti.oaqa.bio.test.yanfang.keyterm.AddAbbreviationAndLongForm
-
-persistence-provider: |
-  inherit: internal.log-persistence-provider

@@ -1,0 +1,18 @@
+class: edu.cmu.lti.oaqa.bio.core.keyterm.kb.KeytermRefiner
+
+cross-opts:
+  MESH: [true, false]
+  ENTREZ: [true, false]
+  UMLS: [false, true]
+  LexicalVariants: [true, false]
+  PosTagger: [true]
+  MESH-Acronym: [false, true]
+  ENTREZ-Acronym: [false, true]
+  UMLS-Acronym: [true, false]
+  concept-term-weight: [0.8, 0, 0.3, 0.4, 0.6, 1]
+  regular-term-weight: [0.3, 0, 0.4, 0.6, 0.8, 1]
+  verb-term-weight: [0.4, 0, 0.3, 0.6, 0.8, 1]
+  gene-term-weight: [0.4, 0, 0.3, 0.6, 0.8, 1]
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

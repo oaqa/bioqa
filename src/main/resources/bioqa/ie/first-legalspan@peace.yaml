@@ -1,0 +1,6 @@
+class: edu.cmu.lti.oaqa.bio.core.ie.FirstLegalSpanPassageExtractor
+prefix: file:/scratch/corpus/GZipTRECGenomics/annotated_xmigz
+zipped: true
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

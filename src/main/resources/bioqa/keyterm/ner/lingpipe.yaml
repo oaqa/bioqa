@@ -1,0 +1,7 @@
+class: edu.cmu.lti.oaqa.bio.core.keyterm.ner.LingPipeNameEntityRecognizer
+ModelFilePath: /ne-en-bio-genia.TokenShapeChunker
+#cross-opts:
+#  ModelFilePath: [/ne-en-bio-genetag.HmmChunker, /ne-en-bio-genia.TokenShapeChunker]
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

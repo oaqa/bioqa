@@ -1,0 +1,8 @@
+class: edu.cmu.lti.oaqa.bio.core.retrieval.SynonymAwareRetrievalStrategist
+hit-list-size: 1000
+server: peace.isri.cs.cmu.edu
+port: 21235
+gzip: true
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

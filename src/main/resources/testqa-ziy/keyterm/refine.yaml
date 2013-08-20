@@ -1,4 +1,0 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.keyterm.KeytermRefiner
-
-persistence-provider: |
-  inherit: internal.log-persistence-provider

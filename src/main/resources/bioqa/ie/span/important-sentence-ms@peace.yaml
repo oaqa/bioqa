@@ -1,5 +1,6 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.ie.span.ImportantSentenceExtractor
-Prefix: file:/scratch/corpus/
+class: edu.cmu.lti.oaqa.bio.core.ie.span.ImportantSentenceExtractor
+prefix: file:/scratch/corpus/GZipTRECGenomics/annotated_xmigz
+zipped: true
 cross-opts:
   MaxNumSentInPassage: [1, 2, 3] # 3 is the default value in [Tari:06]
   ConsiderSynonyms: [true]  # false is the default value in [Tari:06]
@@ -11,4 +12,4 @@ cross-opts:
   NeighborSentSim: [similarity.MatchingCoefficient]
 
 persistence-provider: |
-  inherit: internal.log-persistence-provider
+  inherit: jdbc.log.log-persistence-provider

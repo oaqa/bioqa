@@ -1,7 +1,0 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.ie.io.PassageCandidateRestorer
-cross-opts:
-#  PassageCandidateFilePath: [/ie-cache/levelone, /ie-cache/levelone-legalspan]
-  PassageCandidateFilePath: [/ie-cache/levelone-legalspan]
-
-persistence-provider: |
-  inherit: internal.log-persistence-provider

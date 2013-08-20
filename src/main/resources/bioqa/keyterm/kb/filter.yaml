@@ -1,0 +1,9 @@
+class: edu.cmu.lti.oaqa.bio.core.keyterm.kb.KnowledgeBaseFilter
+cross-opts:
+  UseTag: [true]
+  UseMesh: [true, false]
+  UseEntrezGene: [true, false]
+  UseUmls: [true, false]
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

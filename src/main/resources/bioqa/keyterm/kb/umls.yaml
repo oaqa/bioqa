@@ -1,4 +1,4 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.keyterm.kb.UmlsSynonymLookupper
+class: edu.cmu.lti.oaqa.bio.core.keyterm.kb.UmlsSynonymLookupper
 
 persistence-provider: |
-  inherit: internal.log-persistence-provider
+  inherit: jdbc.log.log-persistence-provider

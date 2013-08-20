@@ -1,4 +1,4 @@
 class: edu.cmu.lti.oaqa.bio.core.keyterm.DefaultKeytermExtractor
 
 persistence-provider: |
-  inherit: internal.log-persistence-provider
+  inherit: jdbc.log.log-persistence-provider

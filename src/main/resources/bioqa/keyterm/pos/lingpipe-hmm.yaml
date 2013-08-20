@@ -1,0 +1,7 @@
+class: edu.cmu.lti.oaqa.bio.core.keyterm.pos.LingPipeHmmPosTagger
+ModelFilePath: /pos-en-bio-medpost.HiddenMarkovModel
+#cross-opts:
+#  ModelFilePath: [/pos-en-bio-medpost.HiddenMarkovModel, /pos-en-bio-genia.HiddenMarkovModel]
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

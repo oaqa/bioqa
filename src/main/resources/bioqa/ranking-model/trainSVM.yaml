@@ -1,4 +1,4 @@
-class: edu.cmu.lti.oaqa.bio.test.yanfang.ie.TrainingSVM
+class: edu.cmu.lti.oaqa.bio.core.ie.TrainingSVM
 Prefix: file:/Users/yanfang/Documents/CMU/TREC2006/
 cross-opts:
   #limit: [10, 20, 30, 50, 70, 100]
@@ -6,4 +6,4 @@ cross-opts:
 
 
 persistence-provider: |
-  inherit: internal.log-persistence-provider
+  inherit: jdbc.log.log-persistence-provider

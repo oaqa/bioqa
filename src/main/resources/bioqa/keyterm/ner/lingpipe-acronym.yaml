@@ -1,0 +1,5 @@
+class: edu.cmu.lti.oaqa.bio.core.keyterm.ner.LingPipeAcronymResolver
+ModelFilePath: /ne-en-bio-genia.TokenShapeChunker
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

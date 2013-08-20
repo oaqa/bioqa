@@ -1,0 +1,6 @@
+class: edu.cmu.lti.oaqa.bio.core.keyterm.pos.StanfordMaxentPosTagger
+ModelFilePath: /edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger
+#ModelFilePath: /wsj-0-18-left3words.tagger
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider

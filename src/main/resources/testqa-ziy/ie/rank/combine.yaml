@@ -1,9 +1,0 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.ie.rank.ScoreCombiner
-cross-opts:
-#  DocWeight: [0.1, 0.3, 0.5, 0.7, 0.9]
-  DocWeight: [0.3]
-#  TransformMode: [no_transform, exponential, reciprocal_of_rank, normalized, normalized_of_exponential, exponential_of_normalized] # [Tari:06] uses reciprocal_of_rank to combine scores from document retrieval
-  TransformMode: [logarithmic]
-
-persistence-provider: |
-  inherit: internal.log-persistence-provider

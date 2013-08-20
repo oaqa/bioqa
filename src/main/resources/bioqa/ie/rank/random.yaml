@@ -1,4 +1,4 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.ie.rank.RandomScoreAssigner
+class: edu.cmu.lti.oaqa.bio.core.ie.rank.RandomScoreAssigner
 
 persistence-provider: |
-  inherit: internal.log-persistence-provider
+  inherit: jdbc.log.log-persistence-provider

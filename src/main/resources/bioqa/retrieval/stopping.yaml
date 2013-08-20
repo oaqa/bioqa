@@ -5,4 +5,4 @@ port: 21237
 stop-word-list: [is, who, what, the, a, of, in, an, how, do, does, and]
 
 persistence-provider: |
-  inherit: internal.log-persistence-provider
+  inherit: jdbc.log.log-persistence-provider

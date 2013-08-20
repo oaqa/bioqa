@@ -1,5 +1,0 @@
-class: edu.cmu.lti.oaqa.bio.test.ziy.keyterm.io.KeytermBackuper
-KeytermDirPath: src/main/resources/keyterm-cache-07
-
-persistence-provider: |
-  inherit: internal.log-persistence-provider

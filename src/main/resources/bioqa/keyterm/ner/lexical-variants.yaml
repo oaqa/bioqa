@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.bio.core.keyterm.ner.LexicalVariantsResolver
+
+persistence-provider: |
+  inherit: jdbc.log.log-persistence-provider
