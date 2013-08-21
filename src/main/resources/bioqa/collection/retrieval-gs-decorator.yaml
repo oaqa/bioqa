@@ -1,3 +1,4 @@
 class: edu.cmu.lti.oaqa.framework.eval.PassageDatasetDecorator
+
 persistence-provider: |
   class: edu.cmu.lti.oaqa.bio.framework.eval.GoldStandardPersistenceProvider

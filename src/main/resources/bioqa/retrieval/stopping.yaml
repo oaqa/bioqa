@@ -1,7 +1,7 @@
 class: edu.cmu.lti.oaqa.bio.core.retrieval.StoppingIndriRetrievalStrategist
-hit-list-size: 1000
-server: peace.isri.cs.cmu.edu
-port: 21237
+hit-list-size: 10
+server: peace.isri.cs.cmu.edu # INDRI_URL
+port: 21237 # INDRI_PORT
 stop-word-list: [is, who, what, the, a, of, in, an, how, do, does, and]
 
 persistence-provider: |

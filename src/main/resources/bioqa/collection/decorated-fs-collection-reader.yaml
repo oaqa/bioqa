@@ -4,4 +4,4 @@ decorators: |
   - inherit: bioqa.collection.passage-gs-decorator
 
 persistence-provider: |
-  inherit: bioqa.db.local-persistence-provider
+  inherit: bioqa.persistence.local-sqlite-persistence-provider

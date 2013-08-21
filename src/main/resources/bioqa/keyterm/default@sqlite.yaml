@@ -1,0 +1,4 @@
+class: edu.cmu.lti.oaqa.bio.core.keyterm.DefaultKeytermExtractor
+
+persistence-provider: |
+  inherit: jdbc.sqlite.log.log-persistence-provider

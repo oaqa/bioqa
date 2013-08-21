@@ -3,7 +3,7 @@ configuration:
   author: ziy
 
 persistence-provider:
-  inherit: bioqa.db.local-mysql-persistence-provider
+  inherit: bioqa.persistence.local-mysql-persistence-provider
 #  inherit: bioqa.db.roche-persistence-provider
 #  inherit: bioqa.db.cse-persistence-provider  
 #  inherit: helloqa.db.local-persistence-provider

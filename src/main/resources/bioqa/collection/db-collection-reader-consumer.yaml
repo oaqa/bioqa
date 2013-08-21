@@ -7,6 +7,6 @@ decorators: |
   - inherit: bioqa.collection.retrieval-gs-decorator
   
 persistence-provider: |
-  inherit: bioqa.db.peace-persistence-provider
+  inherit: bioqa.persistence.peace-persistence-provider
   
 broker-url: tcp://peace.isri.cs.cmu.edu:61616

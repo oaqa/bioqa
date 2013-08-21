@@ -3,16 +3,8 @@ configuration:
   author: yanfang
 
 persistence-provider:
-  #inherit: bioqa.db.cse-persistence-provider
-  inherit: bioqa.db.peace-persistence-provider
+  inherit: bioqa.persistence.peace-persistence-provider
   
-#  inherit: helloqa.db.local-persistence-provider
-
-#collection-reader:
- # inherit: bioqa.collection.decorated-collection-reader
-  #dataset: TRECGEN06
-  #file: /input/trecgen06.txt
-
 collection-reader:
   inherit: bioqa.db.collection-reader
   dataset: BIO-COMBINED

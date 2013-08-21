@@ -150,6 +150,9 @@
       </dependencies>
     </profile>
   </profiles>
+  <properties>
+    <config>config</config>
+  </properties>
   <build>
     <plugins>
       <plugin>
@@ -172,7 +175,7 @@
               also adding the project build directory -->
             <classpath />
             <argument>edu.cmu.lti.oaqa.ecd.driver.ECDDriver</argument>
-            <argument>bioqa.bioqa-test</argument>
+            <argument>${config}</argument>
           </arguments>
         </configuration>
       </plugin>

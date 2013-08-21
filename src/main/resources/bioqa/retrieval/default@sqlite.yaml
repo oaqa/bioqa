@@ -4,4 +4,4 @@ server: peace.isri.cs.cmu.edu # INDRI_URL
 port: 21237 # INDRI_PORT
 
 persistence-provider: |
-  inherit: jdbc.log.log-persistence-provider
+  inherit: jdbc.sqlite.log.log-persistence-provider

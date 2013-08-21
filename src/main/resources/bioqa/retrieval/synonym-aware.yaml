@@ -1,7 +1,7 @@
 class: edu.cmu.lti.oaqa.bio.core.retrieval.SynonymAwareRetrievalStrategist
-hit-list-size: 1000
-server: peace.isri.cs.cmu.edu
-port: 21235
+hit-list-size: 10
+server: peace.isri.cs.cmu.edu # INDRI_URL
+port: 21235 # INDRI_PORT
 gzip: true
 
 persistence-provider: |
