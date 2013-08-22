@@ -1,4 +1,4 @@
-class: edu.cmu.lti.oaqa.bio.core.keyterm.ner.LingPipeNameEntityRecognizer
+class: edu.cmu.lti.oaqa.bio.core.keyterm.ner.LingPipeNamedEntityRecognizer
 ModelFilePath: /ne-en-bio-genia.TokenShapeChunker
 #cross-opts:
 #  ModelFilePath: [/ne-en-bio-genetag.HmmChunker, /ne-en-bio-genia.TokenShapeChunker]

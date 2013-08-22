@@ -30,31 +30,50 @@ pipeline:
     options: |
       - inherit: bioqa.keyterm.ner.lingpipe-acronym
       - inherit: bioqa.keyterm.ner.lingpipe
+      - inherit: base.noop
 
-  - inherit: jdbc.cse.phase
-    name: acrynom-longform-resolver
-    options: |
-      - inherit: bioqa.keyterm.ner.acronym-longform
+  #- inherit: jdbc.cse.phase
+   # name: acrynom-longform-resolver
+    #options: |
+     # - inherit: bioqa.keyterm.ner.acronym-longform
+     # - inherit: base.noop
 
   - inherit: jdbc.cse.phase
     name: lexical-variants-resolver
     options: |
       - inherit: bioqa.keyterm.ner.lexical-variants
+      - inherit: base.noop
 
   - inherit: jdbc.cse.phase
-    name: mesh-synonyms
+    name: restore
     options: |
-      - inherit: bioqa.keyterm.kb.mesh
+      - inherit: bioqa.keyterm.io.restore
+      - inherit: bioqa.keyterm.io.restore_before
 
-  - inherit: jdbc.cse.phase
-    name: entrezgene-synonyms
-    options: |
-      - inherit: bioqa.keyterm.kb.entrezgene
+  #- inherit: jdbc.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.mesh
 
-  - inherit: jdbc.cse.phase
-    name: umls-synonyms
-    options: |
-      - inherit: bioqa.keyterm.kb.umls
+  #- inherit: jdbc.cse.phase
+   # name: synonyms
+    #options: |
+     # - inherit: bioqa.keyterm.kb.entrezgene
+
+#  - inherit: jdbc.cse.phase
+#    name: synonyms
+#    options: |
+#      - inherit: bioqa.keyterm.kb.umls
+
+  #- inherit: jdbc.cse.phase
+   # name: store
+    #options: |
+     # - inherit: bioqa.keyterm.restore
+
+  #- inherit: jdbc.cse.phase
+   # name: store
+    #options: |
+     # - inherit: bioqa.keyterm.io.backup
 
   - inherit: jdbc.cse.phase
     name: keyterm-refiner
@@ -99,6 +118,23 @@ pipeline:
     options: |
       - inherit: bioqa.ie.overlap.filter
       - inherit: base.noop
+
+  #- inherit: jdbc.cse.phase
+   # name: ranking-model
+    #options: |
+     # - inherit: bioqa.ranking-model.restore
+   #   - inherit: bioqa.ranking-model.testSVM
+
+  #- inherit: jdbc.cse.phase
+   # name: ranking-model
+    #options: |
+     # - inherit: bioqa.ranking-model.trainSVM
+
+  #- inherit: jdbc.cse.phase
+   # name: ranking-model
+    #options: |
+     # - inherit: bioqa.ranking-model.testSVM
+    #  - inherit: bioqa.ranking-model.trainSVM
 
   - inherit: jdbc.eval.retrieval-aggregator-consumer
   - inherit: bioqa.eval.passage-map-aggregator-consumer

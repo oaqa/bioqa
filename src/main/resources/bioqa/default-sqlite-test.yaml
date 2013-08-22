@@ -3,7 +3,7 @@
 # to test the pipeline
 
 configuration:
-  name: default-local-sqlite-test
+  name: default-sqlite-test
   author: ziy
 
 persistence-provider:
