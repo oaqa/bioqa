@@ -1,0 +1,4 @@
+inherit: jdbc.db.experiment-persistence-provider
+url: "jdbc:mysql://localhost:3306/oaqa?autoReconnect=true"
+username: root
+password: root
