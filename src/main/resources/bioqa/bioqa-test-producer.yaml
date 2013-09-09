@@ -107,7 +107,7 @@ pipeline:
       - inherit: bioqa.ie.rank.combine
       - inherit: base.noop
 
-  - inherit: jdbc.cse.phase 
+  - inherit: jdbc.cse.phase
     name: passage-overlap
     option-timeout: 5
     options: |
