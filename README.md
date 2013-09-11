@@ -5,8 +5,10 @@ The Biomedical Question Answering Framework provides an effective open-source so
 
 > **The BioQA framework is not just one particular QA system, but represents infinite number of possible QA solutions by intergrating various related toolkits, algorithms, knowledge bases or other resources defined in a BioQA configuration space.**
 
-The framework employs the topic set and benchmarks from the question answering task of [TREC Genomics Track][], as well as commonlyused tools, resources, and algorithms cited by participants. A set of basic components has been selected and adapted to the [CSE Framework][] implementation by writing wrapper code where necessary, and users can also easily extend to wrap other existing tools or newly developped algorithms. This configuration space represented by the extended configuration descriptors (defined for the resulting set of configured components, e.g. [default-sqlite-test.yaml](../blob/master/src/main/resources/bioqa/default-sqlite-test.yaml), [default-mysql-test.yaml](../blob/master/src/main/resources/bioqa/default-mysql-test.yaml), [bioqa-test.yaml](../blob/master/src/main/resources/bioqa/bioqa-test.yaml)) can be explored with the [CSE Framework][] automatically, yielding an optimal and generalizable configuration which can outperform published results of the given components for the same task.
+The framework employs the topic set and benchmarks from the question answering task of [TREC Genomics Track][], as well as commonlyused tools, resources, and algorithms cited by participants. A set of basic components has been selected and adapted to the [CSE Framework][] implementation by writing wrapper code where necessary, and users can also easily extend to wrap other existing tools or newly developped algorithms. This configuration space represented by the extended configuration descriptors (defined for the resulting set of configured components, e.g. [default-sqlite-test.yaml](src/main/resources/bioqa/default-sqlite-test.yaml), [default-mysql-test.yaml](src/main/resources/bioqa/default-mysql-test.yaml), [bioqa-test.yaml](src/main/resources/bioqa/bioqa-test.yaml)) can be explored with the [CSE Framework][] automatically, yielding an optimal and generalizable configuration which can outperform published results of the given components for the same task.
 
+Source code, Maven dependency, and BibTex citation
+--------------------------------------------------
 
 **GitHub home**: https://github.com/oaqa/bioqa
 
@@ -36,8 +38,40 @@ The framework employs the topic set and benchmarks from the question answering t
 }
 ```
 
-Overview
---------
+How to test it?
+---------------
+
+**Prerequisite**
+
+1. Be sure [Maven](http://maven.apache.org/) is installed and properly configured to fetch the dependency artifacts.
+2. Offline corpus annotation and indexing
+    1. Annotate the [TREC Genomics corpus](http://ir.ohsu.edu/genomics/2006data.html#docs) with the `legalspan` and `sentence` annotations with the `legalspans.txt` file from the organizer and any sentence segmenter respectively using [UIMA](https://uima.apache.org/). Serialized the annotated CAS corresponding to each document to an XMI file.
+    2. Optionally you may gzip each xmi file.
+    3. Index the annotated corpus with [Indri](http://www.lemurproject.org/indri/) search engine. (You should be able to search for extents `legalspan` and `sentence`.)
+
+**Test a simple configuration space on a single machine with SqLite being the persistence database**
+
+1. A schema with no content can be downloaded from the [emptydb project](https://github.com/oaqa/emptydb/raw/master/oaqa-eval.db3) and save to `BIOQA_HOME/data/`. If you save it in a difference location or you change the username/password, you need to update `src/main/resources/bioqa/persistence/local-sqlite-persistence-provider.yaml`.
+2. Update the YAML descriptors by providing the information how to access and Indri. Replace `INDRI_URL` and `INDRI_PORT` with your actual indri url and indri port in `src/main/resources/bioqa/retrieval/default-sqlite.yaml` and `src/main/resources/bioqa/ie/default-sqlite/yaml`.
+3. Execute the maven `exec:exec` goal with the *main* yaml `bioqa.default-sqlite-test.yaml` specified: `exec:exec -Dconfig=bioqa.default-sqlite-test`.
+
+**Test a simple configuration space on a single machine with SqLite being the persistence database**
+
+1. Create your own MySQL schema, and update `src/main/resources/bioqa/persistence/local-mysql-persistence-provider.yaml` with your own `url`, `username` and `password`.
+2. Update the YAML descriptors by providing the information how to access and Indri in the same way as on a single machine.
+3. Execute the maven `exec:exec` goal with the *main* yaml `bioqa.default-mysql-test.yaml` specified: `exec:exec -Dconfig=bioqa.default-mysql-test`.
+
+**Test the configuration space provided by full bioqa framework** (See Section 6 of the [CSE paper][] for more detailed for component description.)
+
+**Test it on a cluster**
+
+1. 
+
+
+
+How to extend it
+----------------
+
 
 
 [OAQA Repository]: http://mu.lti.cs.cmu.edu:8081/nexus/content/groups/public/
