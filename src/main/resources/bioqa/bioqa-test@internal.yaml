@@ -1,18 +1,18 @@
 # execute
-#      mvn exec:exec -Dconfig=bioqa.bioqa-test-07
+#      mvn exec:exec -Dconfig=bioqa.bioqa-test@internal
 # to test the pipeline
 
 configuration:
-  name: bioqa-test-07
-  author: yanfang
+  name: bioqa-test
+  author: ziy
 
 persistence-provider:
   inherit: bioqa.persistence.peace-persistence-provider
 
 collection-reader:
   inherit: bioqa.collection.decorated-fs-collection-reader-06
-  dataset: TRECGEN07
-  file: /input/trecgen07.txt
+  dataset: TRECGEN06
+  file: /input/trecgen06.txt
 
 pipeline:
   - inherit: jdbc.cse.phase
@@ -29,6 +29,12 @@ pipeline:
     name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.ner.lingpipe-acronym
+      - inherit: bioqa.keyterm.ner.lingpipe
+
+  - inherit: jdbc.cse.phase
+    name: acrynom-longform-resolver
+    options: |
+      - inherit: bioqa.keyterm.ner.acronym-longform
 
   - inherit: jdbc.cse.phase
     name: lexical-variants-resolver
@@ -36,9 +42,19 @@ pipeline:
       - inherit: bioqa.keyterm.ner.lexical-variants
 
   - inherit: jdbc.cse.phase
-    name: keyterm-restore
+    name: mesh-synonyms
     options: |
-      - inherit: bioqa.keyterm.io.restore-07
+      - inherit: bioqa.keyterm.kb.mesh
+
+  - inherit: jdbc.cse.phase
+    name: entrezgene-synonyms
+    options: |
+      - inherit: bioqa.keyterm.kb.entrezgene
+
+  - inherit: jdbc.cse.phase
+    name: umls-synonyms
+    options: |
+      - inherit: bioqa.keyterm.kb.umls
 
   - inherit: jdbc.cse.phase
     name: keyterm-refiner
@@ -49,35 +65,40 @@ pipeline:
   - inherit: jdbc.cse.phase
     name: retrieval-strategist
     options: |
-      - inherit: bioqa.retrieval.indri
+      - inherit: bioqa.retrieval.indri@internal
 
   - inherit: jdbc.cse.phase
     name: passage-extractor
     option-timeout: 20
     options: |
-      - inherit: bioqa.ie.indri-legalspan
+      - inherit: bioqa.ie.default@internal
+      - inherit: bioqa.ie.indri-legalspan@internal
 
   - inherit: jdbc.cse.phase
     name: passage-span
     lazy-load-options: true
     options: |
-      - inherit: bioqa.ie.span.important-sentence
+      - inherit: bioqa.ie.span.important-sentence@internal
+      - inherit: base.noop
 
   - inherit: jdbc.cse.phase
     name: passage-rank
     lazy-load-options: true
     options: |
-      - inherit: bioqa.ie.rank.proximity
+      - inherit: bioqa.ie.rank.proximity@internal
+      - inherit: base.noop
 
   - inherit: jdbc.cse.phase 
     name: score-combine
     options: |
       - inherit: bioqa.ie.rank.combine
+      - inherit: base.noop
 
   - inherit: jdbc.cse.phase
     name: passage-overlap
     options: |
-      - inherit: bioqa.ie.overlap.merge
+      - inherit: bioqa.ie.overlap.filter
+      - inherit: base.noop
 
   - inherit: jdbc.eval.retrieval-aggregator-consumer
   - inherit: bioqa.eval.passage-map-aggregator-consumer

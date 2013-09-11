@@ -4,4 +4,4 @@ server: INDRI_URL
 port: INDRI_PORT
 
 persistence-provider: |
-  inherit: jdbc.log.log-persistence-provider
+  inherit: jdbc.sqlite.log.log-persistence-provider

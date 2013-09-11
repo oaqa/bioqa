@@ -1,9 +1,10 @@
 class: edu.cmu.lti.oaqa.bio.core.ie.DefaultPassageExtractor
 hit-list-size: 10
-server: peace.isri.cs.cmu.edu # INDRI_URL
-port: 21237 # INDRI_PORT
+server: INDRI_URL
+port: INDRI_PORT
 gzip: true
-PassageSpan: legalspan
+cross-opts:
+  PassageSpan: [legalspan, sentence]
 
 persistence-provider: |
   inherit: jdbc.sqlite.log.log-persistence-provider

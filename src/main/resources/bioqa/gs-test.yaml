@@ -6,7 +6,7 @@ persistence-provider:
   inherit: bioqa.persistence.local-mysql-persistence-provider
 
 collection-reader:
-  inherit: bioqa.collection.decorated-fs-collection-reader
+  inherit: bioqa.collection.decorated-fs-collection-reader-06
   dataset: TRECGEN06
   file: /input/trecgen06.txt
 

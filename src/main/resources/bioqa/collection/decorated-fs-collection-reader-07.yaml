@@ -1,0 +1,7 @@
+inherit: fs.fs-collection-reader
+  
+decorators: |
+  - inherit: bioqa.collection.passage-gs-decorator-07
+
+persistence-provider: |
+  inherit: bioqa.persistence.local-sqlite-persistence-provider

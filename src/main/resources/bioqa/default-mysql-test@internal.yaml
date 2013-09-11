@@ -1,5 +1,5 @@
 # execute
-#      mvn exec:exec -Dconfig=bioqa.default-mysql-test
+#      mvn exec:exec -Dconfig=bioqa.default-mysql-test@internal
 # to test the pipeline
 
 configuration:
@@ -7,7 +7,7 @@ configuration:
   author: ziy
 
 persistence-provider:
-  inherit: bioqa.persistence.local-mysql-persistence-provider
+  inherit: bioqa.persistence.peace-persistence-provider
 
 collection-reader:
   inherit: bioqa.collection.decorated-fs-collection-reader-06
@@ -23,12 +23,12 @@ pipeline:
   - inherit: jdbc.cse.phase
     name: retrieval-strategist
     options: |
-      - inherit: bioqa.retrieval.default
+      - inherit: bioqa.retrieval.default@internal
 
   - inherit: jdbc.cse.phase
     name: passage-extractor
     options: |
-      - inherit: bioqa.ie.default
+      - inherit: bioqa.ie.default@internal
 
   - inherit: jdbc.eval.retrieval-aggregator-consumer
   - inherit: bioqa.eval.passage-map-aggregator-consumer

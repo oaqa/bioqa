@@ -1,7 +1,7 @@
 class: edu.cmu.lti.oaqa.bio.framework.collection.DBCollectionReaderProducer
-url: JDBC_CONNECTION_URL
-username: USERNAME
-password: PASSWORD
+url: "jdbc:mysql://peace.isri.cs.cmu.edu:12321/oaevaluation?autoReconnect=true"
+username: root
+password: s3p1apa55w0rd
 
 decorators: |
   - inherit: bioqa.collection.retrieval-gs-decorator
@@ -9,4 +9,4 @@ decorators: |
 persistence-provider: |
   inherit: bioqa.persistence.peace-persistence-provider
   
-broker-url: tcp://URL:PORT
+broker-url: tcp://peace.isri.cs.cmu.edu:61616

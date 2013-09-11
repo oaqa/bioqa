@@ -1,13 +1,13 @@
 # execute
-#      mvn exec:exec -Dconfig=bioqa.default-mysql-test
+#      mvn exec:exec -Dconfig=bioqa.default-sqlite-test@internal
 # to test the pipeline
 
 configuration:
-  name: default-mysql-test
+  name: default-sqlite-test
   author: ziy
 
 persistence-provider:
-  inherit: bioqa.persistence.local-mysql-persistence-provider
+  inherit: bioqa.persistence.local-sqlite-persistence-provider
 
 collection-reader:
   inherit: bioqa.collection.decorated-fs-collection-reader-06
@@ -15,20 +15,20 @@ collection-reader:
   file: /input/trecgen06.txt
 
 pipeline:
-  - inherit: jdbc.cse.phase
+  - inherit: jdbc.sqlite.cse.phase
     name: keyterm-extractor
     options: |
-      - inherit: bioqa.keyterm.default
+      - inherit: bioqa.keyterm.default-sqlite
 
-  - inherit: jdbc.cse.phase
+  - inherit: jdbc.sqlite.cse.phase
     name: retrieval-strategist
     options: |
-      - inherit: bioqa.retrieval.default
+      - inherit: bioqa.retrieval.default-sqlite@internal
 
-  - inherit: jdbc.cse.phase
+  - inherit: jdbc.sqlite.cse.phase
     name: passage-extractor
     options: |
-      - inherit: bioqa.ie.default
+      - inherit: bioqa.ie.default-sqlite@internal
 
   - inherit: jdbc.eval.retrieval-aggregator-consumer
   - inherit: bioqa.eval.passage-map-aggregator-consumer

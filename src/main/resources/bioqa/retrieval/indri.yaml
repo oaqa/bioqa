@@ -1,13 +1,12 @@
 class: edu.cmu.lti.oaqa.bio.core.retrieval.IndriRetrievalStrategist
 hit-list-size: 1000
-server: peace.isri.cs.cmu.edu # INDRI_URL
-port: 21237 # INDRI_PORT
+server: INDRI_URL
+port: INDRI_PORT
 gzip: true
 cross-opts:
-  smoothing: [jelinek-mercer]  #all algorithoms: dirichlet two-stage jelinek-mercer
-  #smoothing: [dirichlet]  ==============
+  smoothing: [jelinek-mercer, dirichlet]
   smoothing-mu: [2500] 
-  smoothing-lambda: [0.3] #[1.0] 07 ==========   
+  smoothing-lambda: [0.3]   
   answer-type-weight: [0]
 
 persistence-provider: |

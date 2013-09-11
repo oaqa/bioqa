@@ -1,7 +1,7 @@
 class: edu.cmu.lti.oaqa.bio.core.ie.DefaultPassageExtractor
 hit-list-size: 10
-server: INDRI_URL
-port: INDRI_PORT
+server: peace.isri.cs.cmu.edu
+port: 21237
 gzip: true
 cross-opts:
   PassageSpan: [legalspan, sentence]

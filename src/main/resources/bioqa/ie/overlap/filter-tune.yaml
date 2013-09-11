@@ -2,8 +2,6 @@ class: edu.cmu.lti.oaqa.bio.core.ie.overlap.OverlappingPassageFilter
 limit: 1000
 cross-opts:
   FilterMode: [FILTER_OVERLAP, FILTER_IDENTICAL]
-#  FilterMode: [FILTER_IDENTICAL]
-#  FilterMode: [FILTER_OVERLAP]
 
 persistence-provider: |
   inherit: jdbc.log.log-persistence-provider

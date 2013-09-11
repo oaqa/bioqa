@@ -10,7 +10,7 @@ persistence-provider:
   inherit: bioqa.persistence.local-sqlite-persistence-provider
 
 collection-reader:
-  inherit: bioqa.collection.decorated-fs-collection-reader
+  inherit: bioqa.collection.decorated-fs-collection-reader-06
   dataset: TRECGEN06
   file: /input/trecgen06.txt
 
@@ -18,17 +18,17 @@ pipeline:
   - inherit: jdbc.sqlite.cse.phase
     name: keyterm-extractor
     options: |
-      - inherit: bioqa.keyterm.default@sqlite
+      - inherit: bioqa.keyterm.default-sqlite
 
   - inherit: jdbc.sqlite.cse.phase
     name: retrieval-strategist
     options: |
-      - inherit: bioqa.retrieval.default@sqlite
+      - inherit: bioqa.retrieval.default-sqlite
 
   - inherit: jdbc.sqlite.cse.phase
     name: passage-extractor
     options: |
-      - inherit: bioqa.ie.default@sqlite
+      - inherit: bioqa.ie.default-sqlite
 
   - inherit: jdbc.eval.retrieval-aggregator-consumer
   - inherit: bioqa.eval.passage-map-aggregator-consumer
