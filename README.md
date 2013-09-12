@@ -12,7 +12,7 @@ Source code, Maven dependency, and BibTex citation
 
 **GitHub home**: https://github.com/oaqa/bioqa
 
-**Maven dependency** (Artifact is publicly available in the [OAQA Repository][]  or [Central Repository][].)
+**Use it in your project**: Artifact is publicly available in the [OAQA Repository][]  or [Central Repository][].
 ```xml
 <dependency>
   <groupId>edu.cmu.lti.oaqa.bio.core</groupId>
@@ -21,7 +21,7 @@ Source code, Maven dependency, and BibTex citation
 </dependency>
 ```
 
-**Citation**
+**Cite it in your paper**
 ```tex
 @inproceedings{Yang:2013,
  author = {Yang, Zi and Garduno, Elmer and Fang, Yan and Maiberg, Avner and McCormack, Collin and Nyberg, Eric},
@@ -91,3 +91,19 @@ Please refer to [OAQA Tutorial] to learn how to create your own framework.
 [CSE Framework]: https://github.com/oaqa/cse-framework/
 [UIMA-AS]: https://uima.apache.org/doc-uimaas-what.html
 [OAQA Tutorial]: https://github.com/oaqa/oaqa-tutorial/wiki/Tutorial
+
+License
+-------
+
+Copyright 2013 Carnegie Mellon University
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+Questions?
+----------
+
+If you have any questions or suggestions, please feel free to create an issue, or contact [me](http://www.cs.cmu.edu/~ziy).
