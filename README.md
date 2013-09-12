@@ -73,7 +73,7 @@ How to test it?
 ### Test it on a cluster with CSE Asynchrous Driver based on [UIMA-AS][]
 
 1. Be sure [UIMA-AS] is installed on the cluster.
-2. Update the broker `URL` and `PORT` in `src/main/resources/bioqa/async/cse-broker.yaml`, `src/main/resources/bioqa/collection/db-collection-reader-consumer.yaml` and ``src/main/resources/bioqa/collection/db-collection-reader-provider.yaml`.
+2. Update the broker `URL` and `PORT` in `src/main/resources/bioqa/async/cse-broker.yaml`, `src/main/resources/bioqa/collection/db-collection-reader-consumer.yaml` and `src/main/resources/bioqa/collection/db-collection-reader-provider.yaml`.
 3. The inputs and gold-standard outputs need to stored a prior in the `inputelements` table of the databas, which will be retrieved directly from database while the program is being executed.
 4. Update the database access information `JDBC_CONNECTION_URL`, `USERNAME`, and `PASSWORD` in both `src/main/resources/bioqa/collection/db-collection-reader-consumer.yaml` and ``src/main/resources/bioqa/collection/db-collection-reader-provider.yaml`.
 5. Execute the producer on the cluster's master node and start the consumer on each slave node.
