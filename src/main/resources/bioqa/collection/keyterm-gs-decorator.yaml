@@ -1,4 +1,4 @@
-class: edu.cmu.lti.oaqa.framework.eval.KeytermGoldStandardDecorator
+class: edu.cmu.lti.oaqa.framework.eval.gs.KeytermGoldStandardDecorator
 
 persistence-provider: |
   inherit: bioqa.collection.keyterm-gs-persistence-provider
