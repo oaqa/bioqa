@@ -3,10 +3,10 @@ configuration:
   author: yanfang
 
 persistence-provider:
-  inherit: bioqa.persistence.peace-persistence-provider
+  inherit: bioqa.persistence.remote-persistence-provider
   
 async-configuration:
-  inherit: bioqa.async.cse-broker 
+  inherit: bioqa.async.cse-broker
 
 collection-reader:
   inherit: bioqa.collection.db-collection-reader-consumer
@@ -89,7 +89,7 @@ pipeline:
     option-timeout: 5
     lazy-load-options: true
     options: |
-      - inherit: bioqa.ie.span.important-sentence@peace
+      - inherit: bioqa.ie.span.important-sentence
       - inherit: base.noop
 
   - inherit: jdbc.cse.phase
@@ -97,7 +97,7 @@ pipeline:
     option-timeout: 5
     lazy-load-options: true
     options: |
-      - inherit: bioqa.ie.rank.proximity@peace
+      - inherit: bioqa.ie.rank.proximity
       - inherit: base.noop
 
   - inherit: jdbc.cse.phase 

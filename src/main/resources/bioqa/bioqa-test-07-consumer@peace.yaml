@@ -1,18 +1,18 @@
 configuration: 
-  name: bioqa-development-test
+  name: bioqa-test-07
   author: yanfang
 
 persistence-provider:
   inherit: bioqa.persistence.peace-persistence-provider
   
 async-configuration:
-  inherit: bioqa.async.cse-broker 
+  inherit: bioqa.async.cse-broker@peace
 
 collection-reader:
-  inherit: bioqa.collection.db-collection-reader-producer
+  inherit: bioqa.collection.db-collection-reader-consumer
   dataset: BIO-COMBINED
-  sequence-start: 160
-  sequence-end: 187
+  sequence-start: 200
+  sequence-end: 235
 
 pipeline:
   - inherit: jdbc.cse.phase
@@ -32,13 +32,6 @@ pipeline:
     name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.ner.lingpipe-acronym
-      - inherit: bioqa.keyterm.ner.lingpipe
-
-  - inherit: jdbc.cse.phase
-    option-timeout: 2
-    name: acrynom-longform-resolver
-    options: |
-      - inherit: bioqa.keyterm.ner.acronym-longform
 
   - inherit: jdbc.cse.phase
     option-timeout: 2
@@ -47,22 +40,9 @@ pipeline:
       - inherit: bioqa.keyterm.ner.lexical-variants
 
   - inherit: jdbc.cse.phase
-    option-timeout: 2
-    name: mesh-synonyms
+    name: keyterm-restore
     options: |
-      - inherit: bioqa.keyterm.kb.mesh
-
-  - inherit: jdbc.cse.phase
-    option-timeout: 2
-    name: entrezgene-synonyms
-    options: |
-      - inherit: bioqa.keyterm.kb.entrezgene
-
-  - inherit: jdbc.cse.phase
-    option-timeout: 2
-    name: umls-synonyms
-    options: |
-      - inherit: bioqa.keyterm.kb.umls
+      - inherit: bioqa.keyterm.io.restore-07
 
   - inherit: jdbc.cse.phase
     option-timeout: 2
@@ -79,9 +59,8 @@ pipeline:
 
   - inherit: jdbc.cse.phase
     name: passage-extractor
-    option-timeout: 8
+    option-timeout: 15
     options: |
-      - inherit: bioqa.ie.default@internal
       - inherit: bioqa.ie.indri-legalspan@internal
 
   - inherit: jdbc.cse.phase
@@ -111,8 +90,8 @@ pipeline:
     name: passage-overlap
     option-timeout: 5
     options: |
+      - inherit: bioqa.ie.overlap.merge
       - inherit: bioqa.ie.overlap.filter
-      - inherit: base.noop
 
   - inherit: jdbc.eval.retrieval-aggregator-consumer
   - inherit: bioqa.eval.passage-map-aggregator-consumer

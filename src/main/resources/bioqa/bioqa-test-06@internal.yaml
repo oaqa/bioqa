@@ -1,40 +1,36 @@
-configuration: 
+# execute
+#      mvn exec:exec -Dconfig=bioqa.bioqa-test-06@internal
+# to test the pipeline
+
+configuration:
   name: bioqa-test-06
   author: yanfang
 
 persistence-provider:
   inherit: bioqa.persistence.peace-persistence-provider
-  
-async-configuration:
-  inherit: bioqa.async.cse-broker 
 
 collection-reader:
-  inherit: bioqa.collection.db-collection-reader-producer
-  dataset: BIO-COMBINED
-  sequence-start: 160
-  sequence-end: 187
+  inherit: bioqa.collection.decorated-fs-collection-reader-06
+  dataset: TRECGEN06
+  file: /input/trecgen06.txt
 
 pipeline:
   - inherit: jdbc.cse.phase
     name: keyterm-extractor
-    option-timeout: 2
     options: |
       - inherit: bioqa.keyterm.default
 
   - inherit: jdbc.cse.phase
-    option-timeout: 2
     name: pos-tagger
     options: |
       - inherit: bioqa.keyterm.pos.lingpipe-hmm
 
   - inherit: jdbc.cse.phase
-    option-timeout: 2
     name: name-entity-recognizer
     options: |
       - inherit: bioqa.keyterm.ner.lingpipe-acronym
 
   - inherit: jdbc.cse.phase
-    option-timeout: 2
     name: lexical-variants-resolver
     options: |
       - inherit: bioqa.keyterm.ner.lexical-variants
@@ -45,59 +41,43 @@ pipeline:
       - inherit: bioqa.keyterm.io.restore-06
 
   - inherit: jdbc.cse.phase
-    option-timeout: 2
-    name: umls-synonyms
-    options: |
-      - inherit: bioqa.keyterm.kb.umls
-      
-  - inherit: jdbc.cse.phase
     name: keyterm-refiner
-    option-timeout: 2
     lazy-load-options: true
     options: |
       - inherit: bioqa.keyterm.kb.keyterm-refiner
 
   - inherit: jdbc.cse.phase
     name: retrieval-strategist
-    option-timeout: 8
     options: |
-      - inherit: bioqa.retrieval.indri
+      - inherit: bioqa.retrieval.indri@internal
 
   - inherit: jdbc.cse.phase
     name: passage-extractor
     option-timeout: 20
     options: |
-      - inherit: bioqa.ie.indri-legalspan
+      - inherit: bioqa.ie.indri-legalspan@internal
 
   - inherit: jdbc.cse.phase
     name: passage-span
-    option-timeout: 5
     lazy-load-options: true
     options: |
-      - inherit: bioqa.ie.span.important-sentence@peace
-      - inherit: base.noop
+      - inherit: bioqa.ie.span.important-sentence@internal
 
   - inherit: jdbc.cse.phase
     name: passage-rank
-    option-timeout: 5
     lazy-load-options: true
     options: |
-      - inherit: bioqa.ie.rank.proximity@peace
-      - inherit: base.noop
+      - inherit: bioqa.ie.rank.proximity@internal
 
   - inherit: jdbc.cse.phase 
     name: score-combine
-    option-timeout: 5
     options: |
       - inherit: bioqa.ie.rank.combine
-      - inherit: base.noop
 
   - inherit: jdbc.cse.phase
     name: passage-overlap
-    option-timeout: 5
     options: |
       - inherit: bioqa.ie.overlap.merge
-      - inherit: bioqa.ie.overlap.filter
 
   - inherit: jdbc.eval.retrieval-aggregator-consumer
   - inherit: bioqa.eval.passage-map-aggregator-consumer

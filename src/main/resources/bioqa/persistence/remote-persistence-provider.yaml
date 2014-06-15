@@ -1,0 +1,4 @@
+inherit: jdbc.db.experiment-persistence-provider
+url: "jdbc:mysql://URL:PORT/SCHEMA?autoReconnect=true"
+username: root
+password: root

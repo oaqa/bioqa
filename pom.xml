@@ -351,7 +351,7 @@
     <dependency>
       <groupId>edu.cmu.lti.oaqa.bio.model</groupId>
       <artifactId>bio-model</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.4</version>
     </dependency>
     <dependency>
       <groupId>edu.cmu.lti.oaqa.bio.annotate</groupId>
@@ -361,7 +361,7 @@
     <dependency>
       <groupId>edu.cmu.lti.oaqa.bio.core</groupId>
       <artifactId>baseqa</artifactId>
-      <version>1.10.2-SNAPSHOT</version>
+      <version>1.10.3</version>
     </dependency>
     <dependency>
       <groupId>org.xerial</groupId>
