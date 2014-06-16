@@ -1,4 +1,0 @@
-inherit: jdbc.async.async-config
-
-broker-url: tcp://peace.isri.cs.cmu.edu:61616
-timeout-multiplier: 10

@@ -1,7 +1,0 @@
-class: edu.cmu.lti.oaqa.bio.core.retrieval.DefaultRetrievalStrategist
-hit-list-size: 10
-server: peace.isri.cs.cmu.edu
-port: 21237
-
-persistence-provider: |
-  inherit: jdbc.sqlite.log.log-persistence-provider

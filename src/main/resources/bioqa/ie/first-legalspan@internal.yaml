@@ -1,6 +1,0 @@
-class: edu.cmu.lti.oaqa.bio.core.ie.FirstLegalSpanPassageExtractor
-prefix: http://peace.isri.cs.cmu.edu:9080/GZipTRECGenomics/annotated_xmigz
-zipped: true
-
-persistence-provider: |
-  inherit: jdbc.log.log-persistence-provider
