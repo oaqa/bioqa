@@ -1,6 +1,8 @@
 Biomedical Question Answering Framework
 =======================================
 
+_Update: Please check out our new [biomedical QA system](https://github.com/oaqa/bioasq) for BioASQ challenge._
+
 The Biomedical Question Answering Framework provides an effective open-source solution to automatically finding the optimal combination of components and their configurations (configuration space exploration problem, or CSE problem) in building a biomedical question answer system (e.g. to respond to a question in [TREC Genomics Track][], *What is the role of PrnP in mad cow disease?*).
 
 > **The BioQA framework is not just one particular QA system, but represents infinite number of possible QA solutions by intergrating various related toolkits, algorithms, knowledge bases or other resources defined in a BioQA configuration space.**
